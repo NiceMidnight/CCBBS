@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.PostsMapper">
+    <select id="selectAllPost" resultMap="postResultMap" parameterType="java.util.Map">
+        SELECT
+            po.post_id,
+            po.post_title,
+            po.post_content,
+            po.topic_id,
+            tfp.topic_name as topic_name,
+            po.user_id,
+            u.user_name as user_name,
+            po.created_at,
+            po.post_visibility,
+            po.post_status,
+            po.view_count
+        FROM
+            post po
+        LEFT JOIN
+            user u ON po.user_id = u.id
+        LEFT JOIN
+            topic_for_post tfp ON po.topic_id = tfp.topic_id
+        <where>
+            <if test="postTitle != null and postTitle != ''">
+                AND po.post_title LIKE CONCAT('%', #{postTitle}, '%')
+            </if>
+            <if test="postContent != null and postContent != ''">
+                AND po.post_content LIKE CONCAT('%', #{postContent}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.user_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updatePostStatus" parameterType="post">
+        UPDATE post
+        SET post_status = #{post_status}
+        WHERE post_id = #{post_id}
+    </update>
+
+    <resultMap id="postResultMap" type="Post">
+        <id property="postId" column="post_id"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="topicName" column="topic_name"/>
+        <result property="postTitle" column="post_title"/>
+        <result property="postContent" column="post_content"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="postStatus" column="post_status"/>
+        <result property="postVisibility" column="post_visibility"/>
+        <result property="viewCount" column="view_count"/>
+    </resultMap>
+</mapper>

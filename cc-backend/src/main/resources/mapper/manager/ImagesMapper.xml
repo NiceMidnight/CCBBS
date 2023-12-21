@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.ImagesMapper">
+    <select id="selectAllImg" resultType="SysImageResource">
+        SELECT
+            si.id,
+            si.img_name,
+            si.img_path,
+            u.user_name as user_name,
+            si.upload_time,
+            si.visible,
+            di.dict_item_name as type_name
+        FROM
+            sys_images si
+                LEFT JOIN
+            user u ON si.user_id = u.id
+                LEFT JOIN
+            dict di ON si.type = di.dict_type_id AND di.dict_type_name = '图片类别'
+        <where>
+            <if test="type != null">
+                AND si.type = #{type}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.user_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+        </where>
+    </select>
+    <update id="updateSysImgStatus" parameterType="sysImageResource">
+        UPDATE sys_images
+        SET visible = #{visible}
+        WHERE id = #{id}
+    </update>
+</mapper>
