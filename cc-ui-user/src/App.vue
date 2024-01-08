@@ -1,12 +1,12 @@
 <template>
   <div style="width: 100%; height: 100%; overflow: auto;">
     <RouterView/>
-    <div class="foot">
-      <div class="footer-content">
-        <p>&copy; 2023 Your Company Name. All rights reserved. --2023贵公司名称。版权所有</p>
-        <p>Contact us: contact@example.com --联系我们:contact@example.com</p>
-      </div>
-    </div>
+<!--    <div class="foot">-->
+<!--      <div class="footer-content">-->
+<!--        <p>&copy; 2023 Your Company Name. All rights reserved. &#45;&#45;2023贵公司名称。版权所有</p>-->
+<!--        <p>Contact us: contact@example.com &#45;&#45;联系我们:contact@example.com</p>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 

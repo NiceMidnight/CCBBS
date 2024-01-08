@@ -167,7 +167,7 @@ const onLoad = async () => {
     })
     //  用户信息
     if (localStorage.getItem("TokenInfo")) {
-      await getUserInfo(localStorage.getItem("TokenInfo")).then((res) => {
+      await getUserInfo().then((res) => {
         userInfo.value = res.data
         console.log(res)
       })

@@ -35,7 +35,6 @@ const articleId = Number(route.params.id);
 const article = ref();
 
 onMounted(async () => {
-  console.log(articleId);
   await getArticle(articleId).then((res) => {
     article.value = res.data;
     console.log(res.data);

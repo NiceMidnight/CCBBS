@@ -38,20 +38,21 @@ public class AdminLoginController {
      * @date 2023/8/14 17:21
      */
     @RequestMapping("/getInfo") //通过redis获取管理员信息
-    public Result getInfo(@RequestParam String token) {
+    public Result getInfo(@RequestHeader("Authorization") String tokenInfo) {
 //        System.out.println(token);
-        User managerInfo = adminLoginService.getManagerInfo(token);
-        return Result.successCDT(managerInfo.getUserName(),token);
+        User managerInfo = adminLoginService.getManagerInfo(tokenInfo);
+        return Result.successCDT(managerInfo.getUserName(),tokenInfo);
     }
 
     /**
      * TODO 获取用户名称
      */
     @GetMapping("/getUserName")
-    public Result getUserName(@RequestParam String token) {
-        String userName = adminLoginService.getUserName(token);
+    public Result getUserName(@RequestHeader("Authorization") String tokenInfo) {
+        String userName = adminLoginService.getUserName(tokenInfo);
         return Result.successCDM(userName,"获取用户名称成功");
     }
+
     @RequestMapping("/logout")
     public Result logout() {
         return Result.successCM("登出...");

@@ -30,9 +30,9 @@ public class ArticleController {
      * TODO 添加文章
      */
     @PostMapping("/addArticle")
-    public Result addArticle(@RequestBody Article articleData, @RequestParam("loginToken") String loginToken) {
+    public Result addArticle(@RequestBody Article articleData,@RequestHeader("Authorization") String tokenInfo) {
         System.out.println(articleData);
-        boolean addArticle = articleService.addArticle(articleData, loginToken);
+        boolean addArticle = articleService.addArticle(articleData, tokenInfo);
         if (addArticle) {
             return Result.successCM("添加文章成功");
         }
@@ -53,8 +53,8 @@ public class ArticleController {
      * TODO 编辑文章
      */
     @PostMapping("/editArticle")
-    public Result editArticle(@RequestBody Article article,@RequestParam("loginToken")String loginToken) {
-        boolean editArticle = articleService.editArticle(article, loginToken);
+    public Result editArticle(@RequestBody Article article,@RequestHeader("Authorization")String tokenInfo) {
+        boolean editArticle = articleService.editArticle(article, tokenInfo);
         if (editArticle) {
             return Result.successCM("编辑成功");
         }

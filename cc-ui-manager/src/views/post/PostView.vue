@@ -22,11 +22,12 @@
       <!-- 自动递增的行ID列 -->
       <el-table-column type="index" label="行id" width="80" align="center"/>
       <el-table-column prop="postId" label="文章id" width="80" align="center"/>
-      <el-table-column prop="topicName" label="所属主题"  width="100" align="center"/>
+      <el-table-column prop="topicName" label="所属主题"  width="120" align="center"/>
       <el-table-column prop="postTitle" label="文章标题" width="160" align="center"/>
       <el-table-column prop="postContent" label="文章内容"  width="350" align="center"/>
-      <el-table-column prop="userName" label="上传用户"  width="200" align="center"/>
-      <el-table-column prop="createdAt" label="上传时间"  width="200" align="center" :formatter="timeHandler"/>
+      <el-table-column prop="userName" label="上传用户"  width="120" align="center"/>
+      <el-table-column prop="nickName" label="用户昵称"  width="120" align="center"/>
+      <el-table-column prop="createdAt" label="上传时间"  width="150" align="center" :formatter="timeHandler"/>
       <el-table-column  label="操作" width="150" align="center" v-slot="scope">
         <el-button type="default" @click="postView(scope.row['postId'])" plain>查看</el-button>
       </el-table-column>
@@ -46,10 +47,14 @@
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        background layout="prev, pager, next" :total="tableData['total']"
+        :background="background"
+        :small="small"
+        :disabled="disabled"
+        layout="prev, pager, next"
+        :total="tableData['total']"
+        @size-change=""
         @current-change="(pageNum) => { onChange(pageNum)}"
     />
-
     <el-drawer v-model="drawer" :title="post['postTitle']" :direction="'ltr'">
       <span>{{ post['postContent'] }}</span>
     </el-drawer>
@@ -63,6 +68,9 @@ import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {compliancePostApi, getAllPostApi, irregularityPostApi, postViewApi} from "@/api/post";
 import {timeHandler} from "@/utils/timeHandler";
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
 const drawer = ref(false)
 /**
  * 表单数据---查询数据

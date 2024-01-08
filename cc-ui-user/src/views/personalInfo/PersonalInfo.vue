@@ -53,7 +53,7 @@ const squareUrl= 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpn
 //  个人信息
 onMounted(async () => {
   if (token) {
-    await getUserInfo(token).then((res) => {
+    await getUserInfo().then((res) => {
       personalInfo.value = res.data
       console.log(personalInfo.value)
     })

@@ -29,14 +29,11 @@ export const getAllArticle = (queryCondition : QueryCondition) => {
  * @param articleData
  * @param loginToken
  */
-export const addArticleApi = (articleData:articleData,loginToken:string) => {
+export const addArticleApi = (articleData:articleData) => {
     return request({
         method:'POST',
         url:'/manager/article/addArticle',
         data: articleData,
-        params:{
-            loginToken:loginToken
-        }
     })
 }
 /**
@@ -61,14 +58,11 @@ export type EditArticleData = {
     articleTitle: string
     articleContent: string
 }
-export const editArticleApi = (editArticleData:EditArticleData,loginToken:string) => {
+export const editArticleApi = (editArticleData:EditArticleData) => {
     return request({
         method:"POST",
         url:"/manager/article/editArticle",
         data:editArticleData,
-        params:{
-            loginToken:loginToken
-        }
     })
 }
 /**

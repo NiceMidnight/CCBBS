@@ -1,72 +1,131 @@
 <template>
-  <div class="app-container">
-    <!-- 左侧组件列表 -->
-    <div class="sidebar">
-      <div
-          v-for="(component, index) in components"
-          :key="index"
-          @click="selectComponent(index)"
-          :class="{ 'selected': selectedComponentIndex === index }"
-      >
-        {{ component.name }}
-      </div>
-    </div>
-123
-    <!-- 右侧组件显示区域 -->
-    <div class="main-content">
-      <component :is="selectedComponent" />
-    </div>
+  <div>
+    <el-container class="post-container">
+      <el-aside class="left-menu">
+        <div class="menu-bar"><el-icon><ChatDotRound /></el-icon>讨论区</div>
+        <el-menu :default-active="postTopicData['topicId']" class="el-menu-vertical-demo" @select="handleMenuSelect">
+          <el-menu-item :index="`0`">首页</el-menu-item>
+          <el-menu-item
+              v-for="postTopicData in postTopicData"
+              :key="`${postTopicData['topicId']}`"
+              :index="`${postTopicData['topicId']}`"
+          >
+            {{ postTopicData['topicName'] }}
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+
+      <!-- 右侧部分 -->
+      <el-main class="right-content">
+        <div>
+          {{ selectedData }}
+        </div>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
 <script setup lang="ts">
-import Component1 from "./components/Component1.vue";
-import Component2 from "./components/Component2.vue";
+import { ref, reactive } from 'vue';
+import { onMounted } from "@vue/runtime-core";
+import { getAllPostApi, getPostTopicApi } from "../../api/post";
+import { ElMessage } from "element-plus";
+import {ChatDotRound} from "@element-plus/icons-vue";
 
-const components = [
-  { name: "Component 1", component: Component1 },
-  { name: "Component 2", component: Component2 },
-  // Add more components as needed
-];
-
-let selectedComponentIndex = 0;
-
-const selectComponent = (index) => {
-  selectedComponentIndex = index;
+const selectedData = ref(0);
+const selectOption = (option: number) => {
+  selectedData.value = option;
+  console.log(selectedData.value);
 };
+
+const handleMenuSelect = async (index: string) => {
+  queryForm.data.topicId = Number(index)
+  await getAllPostApi(queryForm, postMsg.value).then((res) => {
+    postData.value = res.data;
+    console.log(res);
+  });
+  selectOption(Number(index));
+};
+
+const postMsg = ref('');
+const queryForm = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  total: 1,
+  data: {
+    topicId: 0
+  },
+});
+// 表格数据
+const postData = ref([]);
+const postTopicData = ref([]);
+onMounted(async () => {
+  try {
+    await getPostTopicApi().then((res) => {
+      postTopicData.value = res.data;
+      console.log(res);
+    });
+    await getAllPostApi(queryForm, postMsg.value).then((res) => {
+      postData.value = res.data;
+      console.log(res);
+    });
+  } catch (e) {
+    ElMessage.error(e);
+  }
+});
 </script>
 
 <style scoped>
-.app-container {
+.post-container {
+  width: 100%;
+  max-width: 1400px;
+  height: 800px;
   display: flex;
-  height: 100vh; /* 设置高度为视窗高度 */
-}
-
-.sidebar {
-  width: 200px;
-  background-color: #f0f0f0;
+  margin: auto; /* 居中 */
+  background-color: white;
   padding: 20px;
-  border-right: 1px solid #ccc;
-  overflow-y: auto; /* 如果组件列表过多，启用纵向滚动条 */
+  border-radius: 20px;
+}
+.left-menu {
+  width: 15%;
+  overflow: hidden; /* 去掉 el-aside 的滚动条样式 */
+  .menu-bar {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    //justify-content: center; /* 水平居中 */
+    height: 8%;
+    font-size: 25px;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    color: #0ea67b;
+  }
+}
+.right-content {
+  background-color: rgba(203, 238, 255, 0.3); /* 设置背景色为蓝色 */
+  padding: 20px; /* 设置内边距，以便内容不贴边 */
+  flex: 1; /* 让右侧部分占据剩余的所有空间 */
+  border-radius: 20px;
 }
 
-.sidebar div {
-  cursor: pointer;
-  padding: 10px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s;
+.el-main {
+  padding: 20px; /* 设置内边距，以便内容不贴边 */
 }
 
-.sidebar div:hover {
-  background-color: #ddd;
-}
-
-.sidebar .selected {
-  background-color: #ddd;
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
+/* 响应式字体大小 */
+@media screen and (max-width: 768px) {
+  .right-content {
+    font-size: 15px; /* 设置较小的字体大小 */
+  }
+  .left-menu {
+    width: 110px;
+    .menu-bar {
+      display: flex;
+      align-items: center; /* 垂直居中 */
+    //justify-content: center; /* 水平居中 */
+      height: 8%;
+      font-size: 25px;
+      font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+      color: #0ea67b;
+    }
+  }
 }
 </style>

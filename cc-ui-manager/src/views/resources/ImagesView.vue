@@ -157,7 +157,7 @@ const upload = ref<UploadInstance | null>(null)
  */
 const addSysImages = async () => {
   dialogVisible.value = true
-  await getUserName(localStorage.getItem("TokenInfo")).then((res) => {
+  await getUserName().then((res) => {
     console.log(res)
     formData.userName = res.data
   })

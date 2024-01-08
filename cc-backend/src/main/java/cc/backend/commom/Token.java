@@ -1,6 +1,8 @@
 package cc.backend.commom;
 
 
+import cc.backend.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -27,11 +30,14 @@ public class Token {
      * @description TODO 生成token并以token为键user为值存入redis
      * @date 2023/8/14 17:25
      */
-    public String TokenSave(int id) {
+    public String TokenSave(User user) throws JsonProcessingException {
         // 生成token令牌
         String loginToken = UUID.randomUUID() + "";
-        //  存redis数据库
-        redisTemplate.opsForValue().set(loginToken, String.valueOf(id), Duration.ofDays(7));
+        // 使用 Jackson 序列化器将 User 对象转换为 JSON 字符串
+        ObjectMapper objectMapper = new ObjectMapper();
+        String serializedUser = objectMapper.writeValueAsString(user);
+        // 存储到 Redis
+        redisTemplate.opsForValue().set(loginToken, serializedUser, Duration.ofDays(7));
         return loginToken;
     }
 
@@ -39,14 +45,20 @@ public class Token {
      * @description TODO 获取登录信息
      * @date 2023/8/14 17:37
      */
-    @SneakyThrows
-    public int TokenInfo(String loginToken) {
-        return Integer.valueOf((String) redisTemplate.opsForValue().get(loginToken));
-    }
 
     @SneakyThrows
     public int getUserId(String tokenInfo) {
         String token = tokenInfo.substring(7);
-        return Integer.valueOf((String) redisTemplate.opsForValue().get(token));
+        // 从 Redis 中获取字符串
+        String retrievedUserString = (String) redisTemplate.opsForValue().get(token);
+        // 使用 Jackson 反序列化为 User 对象
+        User retrievedUser = objectMapper.readValue(retrievedUserString, User.class);
+        // 现在你可以使用 'retrievedUser' 对象了
+        if (retrievedUser != null) {
+            System.out.println("检索的用户ID: " + retrievedUser.getId());
+            return retrievedUser.getId();
+        } else {
+            return -1;
+        }
     }
 }

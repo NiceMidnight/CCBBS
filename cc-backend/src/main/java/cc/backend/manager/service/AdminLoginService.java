@@ -11,7 +11,6 @@ import cc.backend.entity.User;
  **/
 public interface AdminLoginService {
     String login(User user);
-
     User getManagerInfo(String token);
     String getUserName(String token);
 }

@@ -142,7 +142,7 @@ const articleData = reactive({
 })
 const addArticle = async () => {
   addArticleDialogVisible.value = true
-  await getUserName(localStorage.getItem("TokenInfo")).then((res) => {
+  await getUserName().then((res) => {
     console.log(res)
     articleData.createdBy = res.data
   })
@@ -161,7 +161,7 @@ const handleClose = () => {
 }
 const onSubmitAddArticle = async () => {
   try {
-    await addArticleApi(articleData,localStorage.getItem("TokenInfo")).then((res) => {
+    await addArticleApi(articleData).then((res) => {
       addArticleDialogVisible.value = false
       if (res["code"] === 500) {
         ElMessage.error(res["msg"])
@@ -214,7 +214,7 @@ const editHandleClose = () => {
 }
 const onSubmitEditArticle = async () => {
   try {
-    await editArticleApi(editArticleData,localStorage.getItem("TokenInfo")).then((res) => {
+    await editArticleApi(editArticleData).then((res) => {
       console.log(res)
       if (res["code"] === 500) {
         ElMessage.error("文章"+editArticleData.articleId+res["msg"])

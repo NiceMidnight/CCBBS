@@ -81,18 +81,4 @@ public class ResourcesController {
         return Result.successCDM(article,"获取文章"+articleId+"成功");
     }
 
-    @Autowired
-    private PostServiceImpl postService;
-
-    /**
-     * TODO 获取帖子信息
-     */
-    @PostMapping("/getPost")
-    public Result getPost(@RequestBody SearchData<Post> queryCondition, @RequestParam String postMsg) {
-        System.out.println(postMsg);
-        System.out.println(queryCondition);
-        SearchData<Post> allPost = postService.getAllPost(queryCondition, postMsg);
-        return Result.successCDM(allPost,"获取帖子信息成功");
-    }
-
 }

@@ -8,8 +8,9 @@ import cc.backend.entity.forpost.TopicForPost;
  * @Author Tiamo_null
  * @Date 2023/12/17
  */
-public interface TopicForPostService {
+public interface TopicForPostsService {
     SearchData<TopicForPost> getTFP( SearchData<TopicForPost> queryCondition);
+    boolean addTFP(TopicForPost topicForPost,String tokenInfo);
     boolean enableTFP(Integer topicId,String tokenInfo);
     boolean disableTFP(Integer topicId,String tokenInfo);
 }

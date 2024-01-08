@@ -9,11 +9,11 @@
             ar.article_title,
             ar.article_content,
             ar.created_id,
-            u_created.user_name as created_by,
+            u_created.nick_name as created_by,
             ar.created_time,
             ar.updated_id,
             ar.updated_time,
-            u_updated.user_name as updated_by,
+            u_updated.nick_name as updated_by,
             ar.view_count
         FROM
             article ar
@@ -29,7 +29,7 @@
                 AND ar.article_content LIKE CONCAT('%', #{articleContent}, '%')
             </if>
             <if test="userName != null and userName != ''">
-                AND u_created.user_name LIKE CONCAT('%', #{userName}, '%')
+                AND u_created.nick_name LIKE CONCAT('%', #{userName}, '%')
             </if>
         </where>
     </select>
@@ -40,11 +40,11 @@
             ar.article_title,
             ar.article_content,
             ar.created_id,
-            u_created.user_name as created_by,
+            u_created.nick_name as created_by,
             ar.created_time,
             ar.updated_id,
             ar.updated_time,
-            u_updated.user_name as updated_by,
+            u_updated.nick_name as updated_by,
             ar.view_count,
             ar.topic_id,
             tfa.topic_name as topic_name

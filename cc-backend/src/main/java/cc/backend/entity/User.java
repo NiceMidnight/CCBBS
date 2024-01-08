@@ -33,6 +33,10 @@ public class User {
      */
     private String userName;
     /**
+     * 用户昵称
+     */
+    private String nickName;
+    /**
      * 密码不被查询
      */
     @TableField(select = false)
@@ -79,4 +83,8 @@ public class User {
      * 个性签名
      */
     private String userPersonality;
+    /**
+     * 粉丝
+     */
+    private int fans;
 }

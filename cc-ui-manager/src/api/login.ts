@@ -35,11 +35,10 @@ export const login = (loginInfo: LoginInfo) => {
  * 获取管理员信息
  * @param token
  */
-export const getInfo = (token) => {
+export const getInfo = () => {
     return request({
         method:'GET',
         url:'/manager/getInfo',
-        params: { token }
     })
 }
 

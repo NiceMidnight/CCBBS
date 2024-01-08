@@ -38,19 +38,20 @@ public class AdminLoginServiceImpl implements AdminLoginService {
      * @description TODO 登录验证
      * @date 2023/8/14 17:25
      */
+    @SneakyThrows
     @Override
     public String login(User user) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
                 .eq(true,User::getUserName,user.getUserName())
                 .eq(true,User::getPassword,user.getPassword())
                 .eq(User::getUserDeleted, 1)    //  逻辑删除
-                .eq(User::getUserRole,1);    //  用户角色--管理员
+                .eq(User::getUserRole,1)    //  用户角色--管理员
+                .select(User::getId,User::getUserName,User::getUserRole,User::getUserDeleted,User::getUserStatus,User::getNickName);
         User isExist = usersMapper.selectOne(lambdaQueryWrapper);
         if (isExist != null) {
             // 用户存在，并且密码匹配，登录成功
-            return token.TokenSave(isExist.getId());
+            return token.TokenSave(isExist);
         }
         return null;
     }
@@ -61,8 +62,8 @@ public class AdminLoginServiceImpl implements AdminLoginService {
      */
     @SneakyThrows
     @Override
-    public User getManagerInfo(String token) {
-        int userId = this.token.TokenInfo(token);
+    public User getManagerInfo(String tokenInfo) {
+        int userId = this.token.getUserId(tokenInfo);
         User user = usersMapper.selectById(userId);
         return user;
     }
@@ -71,9 +72,10 @@ public class AdminLoginServiceImpl implements AdminLoginService {
      * TODO 获取用户名称
      */
     @Override
-    public String getUserName(String token) {
-        int userId = this.token.TokenInfo(token);
+    public String getUserName(String tokenInfo) {
+        int userId = this.token.getUserId(tokenInfo);
         String userName = usersMapper.findUserNameById(userId);
         return userName;
     }
+
 }

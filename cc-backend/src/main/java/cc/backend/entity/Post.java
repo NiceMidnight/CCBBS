@@ -45,10 +45,15 @@ public class Post {
      */
     private Integer userId;
     /**
-     * 管理员用户名
+     * 用户名
      */
     @TableField(exist = false)
     private String userName;
+    /**
+     * 用户昵称
+     */
+    @TableField(exist = false)
+    private String nickName;
     /**
      * 创建日期
      */

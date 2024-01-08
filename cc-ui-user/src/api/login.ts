@@ -53,11 +53,10 @@ export const loginApi = (user: UnwrapRef<{ password: string; userName: string }>
  * 获取信息api
  * @param token
  */
-export const getUserInfo = (loginToken:string) => {
+export const getUserInfo = () => {
     return request({
         method:'GET',
         url:'/user/getUserInfo',
-        params: { loginToken }
     })
 }
 

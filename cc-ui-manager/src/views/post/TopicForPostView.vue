@@ -10,7 +10,7 @@
             <el-button type="success" @click="onQuery">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">添加</el-button>
+            <el-button type="primary" @click="addTopic">添加</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -53,49 +53,46 @@
     />
   </el-card>
 
-<!--  <el-dialog-->
-<!--      v-model="addDictDialogVisible"-->
-<!--      title="添加字典内容"-->
-<!--      width="30%"-->
-<!--      draggable-->
-<!--  >-->
-<!--    <div style="margin: 10px" />-->
-<!--    <el-form-->
-<!--        :label-position="'right'"-->
-<!--        label-width="100px"-->
-<!--        :model="addDictData"-->
-<!--        style="max-width: 500px"-->
-<!--    >-->
-<!--      <el-form-item label="类型Id" style="width: 350px;">-->
-<!--        <el-input v-model="addDictData.dictTypeId" @input="handleDictTypeIdInput" placeholder="请输入字典类型Id,不能与原有Id冲突" />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="字典类型名称">-->
-<!--        <el-select-->
-<!--            v-model="addDictData.dictTypeName"-->
-<!--            placeholder="请输入字典类型名称"-->
-<!--            clearable-->
-<!--        >-->
-<!--          <el-option-->
-<!--              v-for="option in options"-->
-<!--              :key="option.dictTypeName"-->
-<!--              :value="option.dictTypeName"-->
-<!--              :label="option.dictTypeName"-->
-<!--          />-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
+  <el-dialog
+      v-model="addTopicDialogVisible"
+      title="添加帖子主题"
+      width="30%"
+      draggable
+  >
+    <div style="margin: 10px" />
+    <el-form
+        :label-position="'right'"
+        label-width="100px"
+        :model="addTopicData"
+        style="max-width: 500px"
+    >
+      <el-form-item label="主题名称" style="width: 350px;">
+        <el-input v-model="addTopicData.topicName" placeholder="输入主题名称" />
+      </el-form-item>
+      <el-form-item label="主题状态">
+        <el-select
+            v-model="addTopicData.topicStatus"
+            placeholder="请输入字典类型名称"
+            clearable
+        >
+          <el-option
+              v-for="option in options"
+              :key="option"
+              :value="option"
+              :label="option"
+          />
+        </el-select>
+      </el-form-item>
 
-<!--      <el-form-item label="类型属性名称">-->
-<!--        <el-input v-model="addDictData.dictItemName" placeholder="请输入字典类型属性名称"/>-->
-<!--      </el-form-item>-->
 
-<!--    </el-form>-->
-<!--    <template #footer>-->
-<!--      <span class="dialog-footer">-->
-<!--        <el-button @click="addHandleClose">取消</el-button>-->
-<!--        <el-button type="primary" @click="onSubmitAddDict">提交</el-button>-->
-<!--      </span>-->
-<!--    </template>-->
-<!--  </el-dialog>-->
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addHandleClose">取消</el-button>
+        <el-button type="primary" @click="onSubmitAddTopic">提交</el-button>
+      </span>
+    </template>
+  </el-dialog>
 
 
 </template>
@@ -103,9 +100,70 @@
 <script setup lang="ts">
 
 import {reactive, ref} from "vue";
-import {ElMessage} from "element-plus";
-import {deleteTopicApi, disableTopicApi, enableTopicApi, getTFPApi} from "@/api/topicForPost";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {
+  addTopicApi,
+  deleteTopicApi,
+  disableTopicApi,
+  enableTopicApi,
+  getTFPApi,
+  getTFPStatusApi
+} from "@/api/topicForPost";
 import {timeHandler} from "@/utils/timeHandler";
+
+/**
+ * 字典类型选择器
+ */
+const options = ref([])
+/**
+ * 添加主题
+ */
+const addTopicDialogVisible = ref(false)
+const addTopicData = reactive({
+  topicName:'',
+  topicStatus:'',
+})
+const addTopic = async () => {
+  try {
+    addTopicDialogVisible.value = true
+    await getTFPStatusApi().then((res) => {
+      options.value = res.data
+      console.log(res)
+    })
+  } catch (e) {
+
+  }
+}
+const addHandleClose = () => {
+  ElMessageBox.confirm('是否取消添加帖子主题，数据将清空！')
+      .then(() => {
+        addTopicDialogVisible.value = false
+        Object.keys(addTopicData).forEach(key => {
+          addTopicData[key] = ''
+        })
+      })
+      .catch(() => {
+        // catch error
+      })
+}
+const onSubmitAddTopic = async () => {
+  try {
+    await addTopicApi(addTopicData).then((res) => {
+      if (res["code"] === '200') {
+        addTopicDialogVisible.value = false
+        ElMessage.success(res["msg"])
+        Object.keys(addTopicData).forEach(key => {
+          addTopicData[key] = ''
+        })
+        onLoad()
+      } else if (res["code"] === '500') {
+        ElMessage.error(res["msg"])
+      }
+    })
+  } catch (e) {
+
+  }
+}
 /**
  * 数据内容---加载数据(主题内容表格数据)
  */
@@ -187,6 +245,8 @@ const deleteTopic = async (topicId: number) => {
     } else ElMessage.error(res["msg"])
   })
 }
+
+
 </script>
 
 <style lang="scss" scoped>

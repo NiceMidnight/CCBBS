@@ -32,16 +32,18 @@
     </template>
     <el-table :data="tableData['data']" border style="width: 100%">
       <!-- 自动递增的行ID列 -->
-      <el-table-column type="index" label="行id"  width="100" align="center"/>
-      <el-table-column prop="id" label="用户Id" width="130" align="center"/>
+      <el-table-column type="index" label="行id"  width="70" align="center"/>
+      <el-table-column prop="id" label="用户Id" width="70" align="center"/>
       <el-table-column label="头像"  width="130" align="center" v-slot="{ row }">
         <el-avatar :size="50" :src="getImage(row['userHead']) || circleUrl" />
       </el-table-column>
-      <el-table-column prop="userName" label="用户名"  width="130" align="center"/>
+      <el-table-column prop="userName" label="用户名"  width="100" align="center"/>
+      <el-table-column prop="nickName" label="昵称"  width="100" align="center"/>
       <el-table-column prop="userSex" label="性别" width="100" align="center" :formatter="formatUserSex"/>
       <el-table-column prop="userAge" label="年龄" width="100" align="center"/>
       <el-table-column prop="userPhone" label="手机号" width="150" align="center"/>
       <el-table-column prop="userAddress" label="住址" align="center"/>
+      <el-table-column prop="fans" label="粉丝" width="70" align="center"/>
       <el-table-column prop="userDate" label="注册时间" align="center" width="180" :formatter="timeHandler"/>
       <el-table-column label="状态" align="center"  width="200" v-slot="{ row }">
         <el-switch

@@ -11,7 +11,8 @@
       <el-menu-item index="/post">帖子</el-menu-item>
       <el-menu-item index="personalInfo">个人信息</el-menu-item>
       <el-menu-item index="/reservation">联系我们</el-menu-item>
-      <el-menu-item index="/forum">论坛</el-menu-item>
+      <div><el-menu-item index="/forum">论坛</el-menu-item></div>
+
       <div class="search-container" v-if="isSearchVisible">
         <el-input placeholder="搜索" class="search-input" />
         <el-button type="primary" round @click="" class="search-button">

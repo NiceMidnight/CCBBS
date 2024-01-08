@@ -56,10 +56,10 @@ export const forbidUser = (userId: number) => {
 /**
  * 获取单个用户名称
  */
-export const getUserName = (token:string) => {
+export const getUserName = () => {
     return request({
         method:'GET',
-        url:`/manager/getUserName?token=${token}`
+        url:`/manager/getUserName`
     })
 }
 

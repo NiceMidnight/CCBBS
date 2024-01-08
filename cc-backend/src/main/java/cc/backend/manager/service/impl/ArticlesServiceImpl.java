@@ -39,8 +39,8 @@ public class ArticlesServiceImpl implements ArticlesService {
      * TODO 添加文章
      */
     @Override
-    public boolean addArticle(Article articleData, String loginToken) {
-        Integer userId = token.TokenInfo(loginToken);
+    public boolean addArticle(Article articleData, String tokenInfo) {
+        Integer userId = token.getUserId(tokenInfo);
         articleData.setCreatedId(userId);
         articleData.setCreatedTime(new Date());
         System.out.println("时间---------------"+articleData.getUpdatedTime());
@@ -50,8 +50,8 @@ public class ArticlesServiceImpl implements ArticlesService {
      * TODO 编辑文章
      */
     @Override
-    public boolean editArticle(Article article, String loginToken) {
-        int userId = token.TokenInfo(loginToken);
+    public boolean editArticle(Article article, String tokenInfo) {
+        int userId = token.getUserId(tokenInfo);
         article.setUpdatedId(userId);
         article.setUpdatedTime(new Date());
         System.out.println(article);

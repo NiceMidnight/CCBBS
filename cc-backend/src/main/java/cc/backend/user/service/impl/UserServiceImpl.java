@@ -6,6 +6,7 @@ import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     /**
      * TODO 登录验证
      */
+    @SneakyThrows
     @Override
     public String login(User user) {
         //  用户名密码验证
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 .eq(User::getUserRole,0);       //  用户角色--用户
         User isExist = userMapper.selectOne(lambdaQueryWrapper);
         if (isExist != null) { //  登录成功
-            return token.TokenSave(isExist.getId());
+            return token.TokenSave(isExist);
         }
         return null;
     }
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserInfo(String loginToken) {
-        int userId = token.TokenInfo(loginToken);
+        int userId = token.getUserId(loginToken);
         User user = userMapper.selectById(userId);
         return user;
     }

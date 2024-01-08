@@ -11,6 +11,7 @@
             po.topic_id,
             tfp.topic_name as topic_name,
             po.user_id,
+            u.nick_name as nick_name,
             u.user_name as user_name,
             po.created_at,
             po.post_visibility,
@@ -49,6 +50,7 @@
         <result property="postContent" column="post_content"/>
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
         <result property="createdAt" column="created_at"/>
         <result property="postStatus" column="post_status"/>
         <result property="postVisibility" column="post_visibility"/>

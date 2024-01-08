@@ -6,6 +6,14 @@ export type QueryCondition = Partial<{
         topicName: string
     }
 }>
+export type AddTFPData = {
+    topicName:string,
+    topicStatus:string,
+}
+/**
+ * 获取所有主题
+ * @param queryCondition
+ */
 export const getTFPApi = (queryCondition:QueryCondition) => {
     return request({
         method:'POST',
@@ -13,6 +21,28 @@ export const getTFPApi = (queryCondition:QueryCondition) => {
         data:queryCondition
     })
 }
+export const getTFPStatusApi = () => {
+    return request({
+        method:'GET',
+        url:'/manager/tfp/getTFPStatus'
+    })
+}
+/**
+ * 添加主题
+ * @param addTFPData
+ */
+export const addTopicApi = (addTFPData:AddTFPData) => {
+    return request({
+        method:'POST',
+        url:'/manager/tfp/addTFP',
+        data: addTFPData
+    })
+}
+
+/**
+ * 启用主题
+ * @param topicId
+ */
 export const enableTopicApi = ( topicId:number ) => {
     return request({
         method:'GET',
@@ -22,7 +52,10 @@ export const enableTopicApi = ( topicId:number ) => {
         }
     })
 }
-
+/**
+ * 禁用主题
+ * @param topicId
+ */
 export const disableTopicApi = ( topicId:number ) => {
     return request({
         method:'GET',
@@ -32,7 +65,10 @@ export const disableTopicApi = ( topicId:number ) => {
         }
     })
 }
-
+/**
+ * 删除主题
+ * @param topicId
+ */
 export const deleteTopicApi = ( topicId:number ) => {
     return request({
         method:'GET',

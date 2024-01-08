@@ -57,8 +57,7 @@ public class PostsServiceImpl implements PostsService {
      */
     @Override
     public Post postView(Integer postId) {
-        Post post = postsMapper.selectById(postId);
-        return post;
+        return postsMapper.selectById(postId);
     }
 
 }

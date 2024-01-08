@@ -81,9 +81,9 @@ public class UserController {
      * TODO 通过token获取用户信息
      */
     @GetMapping("/getUserInfo")
-    public Result getUserInfo(@RequestParam String loginToken) {
-        User userInfo = userService.getUserInfo(loginToken);
-        return Result.successCDT(userInfo,loginToken);
+    public Result getUserInfo(@RequestHeader("Authorization") String tokenInfo) {
+        User userInfo = userService.getUserInfo(tokenInfo);
+        return Result.successCDT(userInfo,tokenInfo);
     }
 
     /**

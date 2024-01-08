@@ -42,10 +42,10 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import { useRouter} from "vue-router";
 
 const router = useRouter()
-const store = useTokenStore().token
+
 const username = ref()
 
-getInfo(store).then((res) => {
+getInfo().then((res) => {
   username.value = window.localStorage.getItem("userName") || res.data
   window.localStorage.setItem("userName",username.value)
   // console.log(res.data)

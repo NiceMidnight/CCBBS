@@ -15,7 +15,7 @@ import java.util.Date;
  * @Date 2023/12/17
  */
 @Mapper
-public interface TopicForPostMapper extends BaseMapper<TopicForPost> {
+public interface TopicForPostsMapper extends BaseMapper<TopicForPost> {
     IPage<TopicForPost> selectTFP(IPage<TopicForPost> iPage,@Param("topicName") String topicName);
     int updateTFPStatus(@Param("topicId") Integer topicId,
                         @Param("topicStatus") TopicStatus topicStatus,

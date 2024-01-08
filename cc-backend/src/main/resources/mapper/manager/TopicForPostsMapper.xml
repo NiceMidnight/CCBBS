@@ -2,16 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.backend.manager.mapper.TopicForPostMapper">
+<mapper namespace="cc.backend.manager.mapper.TopicForPostsMapper">
     <select id="selectTFP" resultType="topicForPost">
         SELECT
         tfp.topic_id,
         tfp.topic_name,
         tfp.created_id,
-        u_created.user_name as created_by,
+        u_created.nick_name as created_by,
         tfp.created_time,
         tfp.updated_id,
-        u_updated.user_name as updated_by,
+        u_updated.nick_name as updated_by,
         tfp.updated_time,
         tfp.topic_status
         FROM

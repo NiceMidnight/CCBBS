@@ -6,6 +6,9 @@ export type QueryCondition = Partial<{
     pageNum: number
     pageSize: number
     total: number
+    data:{
+        topicId:number
+    }
 }>
 export type Post = {
     postId: number,
@@ -15,10 +18,18 @@ export type Post = {
 export const getAllPostApi = (queryCondition:QueryCondition,postMsg:string) => {
     return request({
         method:"POST",
-        url:"/user/resources/getPost",
+        url:"/user/post/getAllPost",
         data:queryCondition,
         params:{
             postMsg:postMsg
         }
+    })
+}
+
+export const getPostTopicApi = () => {
+    return request({
+        method:"GET",
+        url:"/user/tfp/getPostTopic",
+
     })
 }
