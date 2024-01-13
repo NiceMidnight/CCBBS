@@ -26,7 +26,7 @@
       <el-table-column type="index" label="行id" width="100" align="center"/>
       <el-table-column prop="articleId" label="文章id" width="100" align="center"/>
       <el-table-column prop="articleTitle" label="文章标题" width="200" align="center"/>
-      <el-table-column prop="articleContent" label="文章内容"  width="330" align="center"/>
+      <el-table-column prop="articleContent" label="文章内容"  width="330" align="center" :formatter="truncateTextFormatter"/>
       <el-table-column prop="createdBy" label="创建者"  width="100" align="center"/>
       <el-table-column prop="createdTime" label="创建时间"  width="200" align="center" :formatter="timeHandler"/>
       <el-table-column prop="updatedBy" label="更新者"  width="100" align="center"/>
@@ -40,8 +40,15 @@
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        background layout="prev, pager, next" :total="tableData['total']"
-        @current-change="(pageNum) => { onChange(pageNum)}"
+        :page-sizes="[ 10, 20, 30]"
+        :small="small"
+        :disabled="disabled"
+        :background="background"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="tableData['total']"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        style="margin-top: 20px"
     />
     <el-drawer v-model="drawer" :title="article['articleTitle']" :direction="'ltr'">
       <span>{{ article['articleContent'] }}</span>
@@ -77,7 +84,6 @@
       </span>
     </template>
   </el-dialog>
-
 <!--编辑文章-->
   <el-dialog
       v-model="editArticleDialogVisible"
@@ -130,7 +136,15 @@ import {
 } from "../../api/article";
 import {getUserName} from "@/api/users";
 import {timeHandler} from "@/utils/timeHandler";
+import {truncateText} from "@/utils/textHandler";
 const drawer = ref(false)
+/**
+ * 文本截断
+ * @param row
+ */
+const truncateTextFormatter = (row: any) => {
+  return truncateText(row.articleContent, 42);
+};
 /**
  * 添加文章
  */
@@ -229,6 +243,7 @@ const onSubmitEditArticle = async () => {
     ElMessage.error(e)
   }
 }
+
 /**
  * 表单数据---查询数据
  */
@@ -266,18 +281,38 @@ const onQuery = async() => {
     ElMessage.error(e)
   }
 }
-const onChange = async(pageNum:number) => {
+/**
+ * 改变页码
+ */
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+const handleSizeChange = async (size:number) => {
   try {
     const queryParams = {
-      pageNum:pageNum,
-      pageSize:queryForm.pageSize,
+      pageNum: queryForm.pageNum,
+      pageSize: size,
       data:queryForm.data
     }
     await getAllArticle(queryParams).then((res) => {
-      tableData.value = res.data;
+      tableData.value = res.data
     })
   } catch (e) {
-    ElMessage.error(e)
+    ElMessage.error("改变每页大小错误，错误信息："+e)
+  }
+}
+const handleCurrentChange = async (num:number) => {
+  try {
+    const queryParams = {
+      pageNum: num,
+      pageSize: queryForm.pageSize,
+      data:queryForm.data
+    }
+    await getAllArticle(queryParams).then((res) => {
+      tableData.value = res.data
+    })
+  } catch (e) {
+    ElMessage.error("改变页数错误，错误信息："+e)
   }
 }
 /**

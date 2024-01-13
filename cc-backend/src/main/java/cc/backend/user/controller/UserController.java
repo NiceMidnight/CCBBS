@@ -100,4 +100,9 @@ public class UserController {
     public Result logout() {
         return Result.successCM("登出...");
     }
+    @GetMapping("/getUserHead")
+    public Result getUserHead(@RequestParam("userId") int userId) {
+        String userHead = userService.getUserHead(userId);
+        return Result.successCDM(userHead,"获取头像成功");
+    }
 }

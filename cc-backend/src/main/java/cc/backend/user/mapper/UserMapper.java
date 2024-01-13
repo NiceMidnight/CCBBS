@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -18,5 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     int updateUser(@RequestBody User user);
+
+    String getUserHeadById(@RequestParam("userId") int userId);
 
 }

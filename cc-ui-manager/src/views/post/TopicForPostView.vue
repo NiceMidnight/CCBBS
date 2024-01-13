@@ -43,6 +43,7 @@
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
         background layout="prev, pager, next" :total="tableData['total']"
+
         @size-change="(pageSize) => getTFPApi({
           pageSize:pageSize,
           pageNum: 1,
@@ -50,6 +51,7 @@
             topicName:queryForm.data.topicName
           }}).then((res) => { tableData['value'] = res.data })"
         @current-change="(pageNum) => { onChange(pageNum)}"
+        style="margin-top: 20px"
     />
   </el-card>
 

@@ -64,9 +64,12 @@
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        background layout="prev, pager, next" :total="tableData['total']"
-
+        :page-sizes="[4, 10, 15, 20]"
+        background layout="total, sizes, prev, pager, next, jumper"
+        :total="tableData['total']"
+        @size-change="handleSizeChange"
         @current-change="(pageNum) => { onChange(pageNum)}"
+        style="margin-top: 20px"
     />
   </el-card>
 <!--添加系统管理图片-->
@@ -257,7 +260,7 @@ const handleClose = () => {
 const tableData = ref([])
 const queryForm = reactive({
   pageNum:1,
-  pageSize:10,
+  pageSize:4,
   total:1,
   data:{
     type:'',
@@ -334,10 +337,24 @@ const addSysImage = async () => {
  * 改变页码查询数据
  * @param pageNum
  */
-const onChange = async(pageNum:number) => {
+const handleSizeChange = async(size:number) => {
   try {
     const queryParams = {
-      pageNum:pageNum,
+      pageNum:queryForm.pageNum,
+      pageSize:size,
+      data:queryForm.data
+    }
+    await getAllImages(queryParams).then((res) => {
+      tableData.value = res.data;
+    })
+  } catch (e) {
+    ElMessage.error(e)
+  }
+}
+const onChange = async(num:number) => {
+  try {
+    const queryParams = {
+      pageNum:num,
       pageSize:queryForm.pageSize,
       data:queryForm.data
     }

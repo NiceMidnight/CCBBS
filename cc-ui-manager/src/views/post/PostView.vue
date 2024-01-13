@@ -24,7 +24,7 @@
       <el-table-column prop="postId" label="文章id" width="80" align="center"/>
       <el-table-column prop="topicName" label="所属主题"  width="120" align="center"/>
       <el-table-column prop="postTitle" label="文章标题" width="160" align="center"/>
-      <el-table-column prop="postContent" label="文章内容"  width="350" align="center"/>
+      <el-table-column prop="postContent" label="文章内容"  width="350" align="center" :formatter="truncateTextFormatter"/>
       <el-table-column prop="userName" label="上传用户"  width="120" align="center"/>
       <el-table-column prop="nickName" label="用户昵称"  width="120" align="center"/>
       <el-table-column prop="createdAt" label="上传时间"  width="150" align="center" :formatter="timeHandler"/>
@@ -47,13 +47,15 @@
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        :background="background"
+        :page-sizes="[1,10, 20, 30]"
         :small="small"
+        :background="background"
         :disabled="disabled"
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="tableData['total']"
-        @size-change=""
-        @current-change="(pageNum) => { onChange(pageNum)}"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        style="margin-top: 20px"
     />
     <el-drawer v-model="drawer" :title="post['postTitle']" :direction="'ltr'">
       <span>{{ post['postContent'] }}</span>
@@ -68,10 +70,17 @@ import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {compliancePostApi, getAllPostApi, irregularityPostApi, postViewApi} from "@/api/post";
 import {timeHandler} from "@/utils/timeHandler";
-const small = ref(false)
-const background = ref(false)
-const disabled = ref(false)
+import {truncateText} from "@/utils/textHandler";
+
 const drawer = ref(false)
+/**
+ * 文本截断
+ * @param row
+ */
+const truncateTextFormatter = (row: any) => {
+  return truncateText(row.postContent, 20);
+};
+
 /**
  * 表单数据---查询数据
  */
@@ -109,10 +118,28 @@ const onQuery = async() => {
     ElMessage.error(e)
   }
 }
-const onChange = async(pageNum:number) => {
+// 分页
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+const handleSizeChange = async (size:number) => {
   try {
     const queryParams = {
-      pageNum:pageNum,
+      pageNum:queryForm.pageNum,
+      pageSize:size,
+      data:queryForm.data
+    }
+    await getAllPostApi(queryParams).then((res) => {
+      tableData.value = res.data
+    })
+  } catch (e) {
+    ElMessage.error("改变每页数量错误："+e)
+  }
+}
+const handleCurrentChange = async(num:number) => {
+  try {
+    const queryParams = {
+      pageNum:num,
       pageSize:queryForm.pageSize,
       data:queryForm.data
     }
@@ -120,7 +147,7 @@ const onChange = async(pageNum:number) => {
       tableData.value = res.data;
     })
   } catch (e) {
-    ElMessage.error(e)
+    ElMessage.error("改变页码错误："+e)
   }
 }
 /**

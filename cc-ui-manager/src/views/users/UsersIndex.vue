@@ -61,9 +61,14 @@
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        background layout="prev, pager, next"
+        :page-sizes="[5,10]"
+        :small="small"
+        :disabled="disabled"
+        :background="background"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="tableData['total']"
         @current-change="(pageNum) => { onChange(pageNum)}"
+        style="margin-top: 20px"
     />
   </el-card>
 </template>
@@ -75,6 +80,9 @@ import {ElMessage} from "element-plus";
 import {reactive, ref} from "vue";
 import {timeHandler} from "../../utils/timeHandler";
 import {baseUrl} from "../../utils/request";
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
 
 /**
  * 表格数据---查询条件

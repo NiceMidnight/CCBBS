@@ -15,6 +15,11 @@ export type Post = {
     postTitle: string,
     postContent: string
 }
+/**
+ * 获取帖子数据
+ * @param queryCondition
+ * @param postMsg
+ */
 export const getAllPostApi = (queryCondition:QueryCondition,postMsg:string) => {
     return request({
         method:"POST",
@@ -25,11 +30,22 @@ export const getAllPostApi = (queryCondition:QueryCondition,postMsg:string) => {
         }
     })
 }
-
+/**
+ * 获取帖子主题
+ */
 export const getPostTopicApi = () => {
     return request({
         method:"GET",
         url:"/user/tfp/getPostTopic",
+    })
+}
 
+export const getUserHeadApi = (userId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/getUserHead',
+        params:{
+            userId:userId
+        }
     })
 }

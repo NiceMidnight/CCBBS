@@ -6,6 +6,7 @@ import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -63,5 +64,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUserInfo(User user) {
         return userMapper.updateUser(user) > 0;
+    }
+
+    /**
+     * TODO 获取用户头像
+     */
+    @Override
+    public String getUserHead(int userId) {
+        String userHead = userMapper.getUserHeadById(userId);
+        System.out.println(userHead);
+        return userHead;
     }
 }

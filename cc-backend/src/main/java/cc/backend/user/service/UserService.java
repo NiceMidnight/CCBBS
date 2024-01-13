@@ -13,4 +13,5 @@ public interface UserService {
     String login(User user);
     User getUserInfo(String token);
     boolean updateUserInfo(User user);
+    String getUserHead(int userId);
 }

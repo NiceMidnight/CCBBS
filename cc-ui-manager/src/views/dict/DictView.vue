@@ -49,6 +49,7 @@
             dictTypeName:queryForm.data.dictTypeName
           }}).then((res) => { tableData['value'] = res.data })"
         @current-change="(pageNum) => { onChange(pageNum)}"
+        style="margin-top: 20px"
     />
   </el-card>
 

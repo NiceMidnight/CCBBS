@@ -157,19 +157,19 @@ const onLoad = async () => {
         imageData[i] = `${baseUrl}/`+imageData[i]
       }
       arr.value = imageData
-      console.log(arr.value)
+
     })
     //  文章
     await getAllArticle(queryForm).then((res) => {
       queryForm.total = res.data.total
       tableData.value = res.data.data
-      console.log(res)
+
     })
     //  用户信息
     if (localStorage.getItem("TokenInfo")) {
       await getUserInfo().then((res) => {
         userInfo.value = res.data
-        console.log(res)
+
       })
     }
   } catch (e) {
