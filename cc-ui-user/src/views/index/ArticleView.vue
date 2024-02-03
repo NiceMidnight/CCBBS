@@ -37,7 +37,7 @@ const article = ref();
 onMounted(async () => {
   await getArticle(articleId).then((res) => {
     article.value = res.data;
-    console.log(res.data);
+
   });
 });
 </script>

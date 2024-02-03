@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 21/12/2023 15:32:36
+ Date: 27/01/2024 17:27:51
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `article`  (
   `view_count` int(11) NULL DEFAULT 0 COMMENT '阅读量',
   `topic_id` int(11) NULL DEFAULT NULL COMMENT '主题id',
   PRIMARY KEY (`article_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '公告文章' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of article
@@ -43,7 +43,7 @@ INSERT INTO `article` VALUES (3, '测试33', '三生三世十里桃花33333345',
 INSERT INTO `article` VALUES (7, '水水水水水水水水', '少时诵诗书', 1, '2023-11-24 16:55:46.000000', NULL, NULL, 0, 1);
 INSERT INTO `article` VALUES (8, '生生世世', '生生世世', 1, '2023-11-26 16:55:53.000000', NULL, NULL, 0, 1);
 INSERT INTO `article` VALUES (9, '测试4', '这是一段内容，\\n可以在这里添加多行文本。\\n\\n  这是新的一行，开头空两格。\\n  这也是新的一行，同样开头空两格。\\n\\n再来一段新的内容。这是一段内容，\r\n可以在这里添加多行文本。\r\n\r\n  这是新的一行，开头空两格。\r\n  这也是新的一行，同样开头空两格。\r\n\r\n再来一段新的内容。', 1, '2023-11-30 16:55:59.000000', NULL, NULL, 0, 1);
-INSERT INTO `article` VALUES (10, '测试7', '少时诵诗书是', 1, '2023-12-02 17:54:46.891000', NULL, NULL, 10, 1);
+INSERT INTO `article` VALUES (11, '重构', '123132132', 1, '2023-12-26 00:14:32.341000', NULL, NULL, 0, NULL);
 
 -- ----------------------------
 -- Table structure for comments
@@ -138,6 +138,24 @@ CREATE TABLE `folder_for_post`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for follow
+-- ----------------------------
+DROP TABLE IF EXISTS `follow`;
+CREATE TABLE `follow`  (
+  `follower_id` bigint(20) NOT NULL COMMENT '关注者id',
+  `following_id` bigint(20) NOT NULL COMMENT '被关注者id',
+  `follow_date` datetime(0) NULL DEFAULT NULL COMMENT '关注时间',
+  `follow_status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Follow' COMMENT '状态',
+  PRIMARY KEY (`follower_id`, `following_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of follow
+-- ----------------------------
+INSERT INTO `follow` VALUES (2, 1, '2024-01-22 23:41:10', 'Follow');
+INSERT INTO `follow` VALUES (2, 2, '2024-01-22 23:40:41', 'Follow');
+
+-- ----------------------------
 -- Table structure for likes_for_post
 -- ----------------------------
 DROP TABLE IF EXISTS `likes_for_post`;
@@ -224,7 +242,7 @@ CREATE TABLE `sys_images`  (
   `type` int(11) NULL DEFAULT NULL COMMENT '用的地方',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `img_user`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统图片表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统图片表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_images
@@ -234,6 +252,7 @@ INSERT INTO `sys_images` VALUES (2, 'index2', 'static/sys_img/2023.jpg', 1, '202
 INSERT INTO `sys_images` VALUES (3, '金克丝 泳池派对 4K壁纸_彼岸图网.jpg', 'static/sys_img/金克丝 泳池派对 4K壁纸_彼岸图网.jpg', 1, '2023-12-07 11:01:01.907000', 'VISIBLE', 0);
 INSERT INTO `sys_images` VALUES (4, '咒术回战 五条悟4k壁纸_彼岸图网.jpg', 'static/sys_img/咒术回战 五条悟4k壁纸_彼岸图网.jpg', 1, '2023-12-07 11:05:38.008000', 'VISIBLE', 0);
 INSERT INTO `sys_images` VALUES (5, '动漫美女 鲜花 帽子 唯美 好看 4K壁纸_彼岸图网.jpg', 'static/sys_img/动漫美女 鲜花 帽子 唯美 好看 4K壁纸_彼岸图网.jpg', 1, '2023-12-07 11:26:18.464000', 'VISIBLE', 1);
+INSERT INTO `sys_images` VALUES (6, '宣纸国画 紫罗兰永恒花园 赛博color 4k壁纸_彼岸图网.jpg', 'static/sys_img/宣纸国画 紫罗兰永恒花园 赛博color 4k壁纸_彼岸图网.jpg', 1, '2023-12-26 00:18:55.407000', 'VISIBLE', 0);
 
 -- ----------------------------
 -- Table structure for topic_for_article
@@ -268,13 +287,17 @@ CREATE TABLE `topic_for_post`  (
   `updated_time` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
   `topic_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '帖子状态Enabled/Disabled',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子主题' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子主题' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of topic_for_post
 -- ----------------------------
-INSERT INTO `topic_for_post` VALUES (1, '测试', 1, '2023-12-17 01:26:03.000000', 1, '2023-12-19 02:16:42.193000', 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (1, '测试', 1, '2023-12-17 01:26:03.000000', 1, '2024-01-08 23:03:39.983000', 'ENABLE');
 INSERT INTO `topic_for_post` VALUES (2, '失物招领', 1, '2023-12-17 01:26:03.000000', NULL, NULL, 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (3, '寻物启事', 1, '2024-01-09 00:11:36.117000', NULL, NULL, 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (4, '表白墙', 1, '2024-01-09 00:15:09.480000', NULL, NULL, 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (5, '生活趣事', 1, '2024-01-09 00:16:41.275000', NULL, NULL, 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (6, '考研交流', 1, '2024-01-09 00:17:22.665000', NULL, NULL, 'DISABLE');
 
 -- ----------------------------
 -- Table structure for user
@@ -283,7 +306,8 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `user_head` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户头像',
-  `user_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `user_name` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `nick_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户昵称',
   `password` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
   `user_sex` int(11) NULL DEFAULT NULL COMMENT '性别（0女/1男）',
   `user_age` int(11) NULL DEFAULT NULL COMMENT '年龄',
@@ -295,13 +319,14 @@ CREATE TABLE `user`  (
   `user_status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '状态，查看是否被禁用违规用户',
   `user_deleted` int(11) NOT NULL DEFAULT 1 COMMENT '逻辑删除（1存在/0删除）',
   `user_version` int(11) NOT NULL DEFAULT 1 COMMENT '乐观锁',
+  `fans` int(11) NULL DEFAULT NULL COMMENT '粉丝',
   PRIMARY KEY (`id`, `user_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'static/sys_img/adminHead/head.jpg', 'root', 'root', 1, 18, '16616649102', '广东省佛山市高明区xx镇xx街道xx栋', NULL, '2023-08-07 13:10:17.000000', 1, 'ENABLE', 1, 1);
-INSERT INTO `user` VALUES (2, 'static/sys_img/adminHead/2023.jpg', 'zhangsan', 'root', 0, 20, '16616649103', '广西省桂林市1', '123随便', '2023-12-18 02:47:08.066561', 0, 'ENABLE', 1, 1);
+INSERT INTO `user` VALUES (1, 'static/sys_img/adminHead/head.jpg', 'root', 'root1', 'root', 1, 18, '16616649102', '广东省佛山市高明区xx镇xx街道xx栋', NULL, '2023-12-22 01:33:12.248327', 1, 'ENABLE', 1, 1, NULL);
+INSERT INTO `user` VALUES (2, 'static/sys_img/adminHead/2023.jpg', 'zhangsan', 'zhangsan1', 'root', 1, 20, '16616649103', '广西省桂林市1', '123随便', '2023-12-26 01:55:50.699064', 0, 'ENABLE', 1, 1, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

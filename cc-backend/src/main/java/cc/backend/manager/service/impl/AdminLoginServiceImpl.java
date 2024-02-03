@@ -1,6 +1,6 @@
 package cc.backend.manager.service.impl;
 
-import cc.backend.commom.Token;
+import cc.backend.common.Token;
 import cc.backend.entity.User;
 import cc.backend.manager.mapper.UsersMapper;
 import cc.backend.manager.service.AdminLoginService;

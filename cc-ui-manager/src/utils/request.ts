@@ -26,6 +26,7 @@ request.interceptors.request.use(config => {
 
 //返回结果拦截处理
 request.interceptors.response.use(response => {
+    // ElLoading.service().close();
     // res.code
     return response.data
 }, error => {

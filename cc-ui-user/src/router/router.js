@@ -64,9 +64,16 @@ const routes = [
             {
                 path: '/forum',   //定义带有参数的路由
                 name: 'Forum',
-                component: () => import("@/views/forum/Forum.vue"),
-                meta:{title:"文章信息"}
-            }
+                component: () => import("@/views/forum/PostView.vue"),
+                meta:{title:"帖子"},
+
+            },
+            {
+                path: '/forum/:id/:title',
+                name: 'Post',
+                component: () => import("@/views/forum/PostMessageView.vue"),
+                meta: { title: "帖子信息", requiresAuth: true }  // 需要验证权限
+            },
         ]
     },
 ];

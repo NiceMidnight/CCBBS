@@ -1,6 +1,6 @@
 package cc.backend.manager.controller;
 
-import cc.backend.commom.Result;
+import cc.backend.common.Result;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.forpost.TopicForPost;
 import cc.backend.enums.TopicStatus;

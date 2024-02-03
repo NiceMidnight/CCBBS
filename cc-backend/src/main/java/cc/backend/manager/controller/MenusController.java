@@ -1,7 +1,7 @@
 package cc.backend.manager.controller;
 
 
-import cc.backend.commom.Result;
+import cc.backend.common.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

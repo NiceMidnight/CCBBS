@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.user.mapper.FollowMapper">
+
+
+    <insert id="insertFollow" parameterType="follow">
+        INSERT INTO follow (follower_id, following_id, follow_date)
+        VALUES ( #{followerId}, #{followingId}, #{followDate})
+    </insert>
+
+    <update id="updateFollowStatus" parameterType="follow">
+        UPDATE follow
+        SET follow_status = #{followStatus} , follow_date = #{followDate}
+        WHERE follower_id = #{followerId} and following_id = #{followingId}
+    </update>
+
+</mapper>

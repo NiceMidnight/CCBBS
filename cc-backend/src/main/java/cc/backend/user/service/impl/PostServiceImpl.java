@@ -24,7 +24,10 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostMapper postMapper;
     /**
-     * TODO 获取所有帖子
+     * @description TODO 获取所有帖子
+     * @param queryCondition
+     * @param postMsg
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Post>
      */
     @Override
     public SearchData<Post> getAllPost(SearchData<Post> queryCondition,String postMsg) {
@@ -38,7 +41,9 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * TODO 通过主题获取帖子
+     * @description TODO 通过主题获取帖子
+     * @param queryCondition
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Post>
      */
     @Override
     public SearchData<Post> getPostByTopic(SearchData<Post> queryCondition) {
@@ -47,6 +52,17 @@ public class PostServiceImpl implements PostService {
         queryCondition.getData().setPostVisibility(PostVisibility.PUBLIC);
         postMapper.getAllPostByTopicId(iPageForPost,queryCondition.getData());
         return null;
+    }
+
+    /**
+     * @description TODO 通过帖子id获取帖子内容
+     * @param postId
+     * @return: cc.backend.entity.Post
+     */
+    @Override
+    public Post getPostByPostId(Integer postId) {
+//        return postMapper.selectById(postId);
+        return postMapper.getPostByPostId(postId);
     }
 
 }

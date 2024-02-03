@@ -23,4 +23,5 @@ public interface PostMapper extends BaseMapper<Post> {
 
     IPage<Post> getAllPostByTopicId(IPage<Post> iPage,Post post);
 //    @Param("topicId") Integer topicId,@Param("postTitle") String postName
+    Post getPostByPostId(@Param("postId") Integer postId);
 }

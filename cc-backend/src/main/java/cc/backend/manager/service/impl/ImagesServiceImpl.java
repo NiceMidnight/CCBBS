@@ -1,7 +1,7 @@
 package cc.backend.manager.service.impl;
 
 
-import cc.backend.commom.Token;
+import cc.backend.common.Token;
 import cc.backend.entity.Dict;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.SysImageResource;
@@ -10,7 +10,6 @@ import cc.backend.manager.mapper.DictMapper;
 import cc.backend.manager.mapper.ImagesMapper;
 import cc.backend.manager.service.ImagesService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

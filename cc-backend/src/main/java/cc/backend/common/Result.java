@@ -1,4 +1,4 @@
-package cc.backend.commom;
+package cc.backend.common;
 
 import lombok.Data;
 

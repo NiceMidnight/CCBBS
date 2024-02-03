@@ -39,13 +39,29 @@ export const getPostTopicApi = () => {
         url:"/user/tfp/getPostTopic",
     })
 }
-
+/**
+ * 获取头像
+ * @param userId
+ */
 export const getUserHeadApi = (userId:number) => {
     return request({
         method:'GET',
         url:'/user/getUserHead',
         params:{
             userId:userId
+        }
+    })
+}
+/**
+ * 通过帖子id获取内容
+ * @param postId
+ */
+export const getPostByPostIdApi = (postId:number) => {
+    return request({
+        method:"GET",
+        url:"/user/post/getPostByPostId",
+        params:{
+            postId:postId
         }
     })
 }

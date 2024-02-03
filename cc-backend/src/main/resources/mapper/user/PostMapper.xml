@@ -65,7 +65,29 @@
         </where>
     </select>
 
-<!--返回查询的数据类型-->
+    <select id="getPostByPostId" resultMap="postResultMap">
+        SELECT
+            po.post_id,
+            po.topic_id,
+            tfp.topic_name as topic_name,
+            po.post_title,
+            po.post_content,
+            po.user_id,
+            u.nick_name as nick_name,
+            po.created_at,
+            po.view_count
+        FROM
+            post po
+                LEFT JOIN
+            user u ON po.user_id = u.id
+                LEFT JOIN
+            topic_for_post tfp ON po.topic_id = tfp.topic_id
+        WHERE
+            po.post_id = #{postId}
+    </select>
+
+
+    <!--返回查询的数据类型-->
     <resultMap id="postResultMap" type="Post">
         <id property="postId" column="post_id"/>
         <result property="topicId" column="topic_id"/>

@@ -90,13 +90,15 @@
         <el-upload
             ref="upload"
             class="upload-demo"
-            :action="baseUrl+'/manager/images/uploadSysImg'"
             :limit="1"
+            :action="baseUrl+'/manager/images/uploadSysImg'"
             :on-exceed="handleExceed"
             :auto-upload="false"
             @change="handleFileChange"
             :on-success="handleUploadSuccess"
             :on-error="handleUploadError"
+            :data="{ formData: JSON.stringify(formData) }"
+            :headers="{ Authorization: `Bearer ${tokenInfo}` }"
         >
 <!--          :before-upload="submitSysImg"-->
           <template #trigger>
@@ -138,21 +140,16 @@
 
 <script setup lang="ts">
 import { reactive, ref} from "vue";
-import {inVisible, getAllImages, visible, getSysImgOptionApi, submitSysImgApi} from "../../api/images";
+import {inVisible, getAllImages, visible, getSysImgOptionApi} from "../../api/images";
 import {ElMessage, ElMessageBox, genFileId, UploadInstance, UploadProps, UploadRawFile} from "element-plus";
 import {timeHandler} from "../../utils/timeHandler";
 import {baseUrl} from "../../utils/request";
 import {getUserName} from "@/api/users";
-
+import { v4 as uuidV4 } from 'uuid';
+import { AddSysImgData  } from '../../api/images';
+const tokenInfo = localStorage.getItem("TokenInfo")
 //  表格可见/不可见
 const dialogVisible = ref(false)
-//  添加图片数据
-const formData = reactive({
-  userName:'',
-  type: '',
-  imgName:'',
-  imgPath:''
-})
 //  上传
 const upload = ref<UploadInstance | null>(null)
 /**
@@ -185,39 +182,25 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
  * @param file
  */
 const handleFileChange = (file) => {
-  // file 是上传的文件对象
   // 可以通过 file.name 获取文件名
-  formData.imgPath = file.name
+  formData.imgPath = `${uuidV4()}-${file.name}`;
   formData.imgName = file.name
 };
 
 /**
- * 绑定图片（未用）
+ * 上传图片数据
  */
-// const submitSysImg = async (file) => {
-//   try {
-//     const imgData = new FormData()
-//     imgData.append('file',file)
-//     await submitSysImgApi(imgData).then((res) => {
-//       console.log(res)
-//     })
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
+const formData = reactive<AddSysImgData>({
+  imgName: '',
+  imgPath: '',
+  userName: '',
+  type: '',
+});
 /**
- * 图片及信息提交
+ * 手动提交
  */
 const onSubmitAddSysImages = async () => {
-  console.log(formData)
   await upload.value!.submit()
-  await submitSysImgApi(formData).then((res) => {
-    if (res["code"] === '200') {
-      ElMessage.success(res["msg"])
-      dialogVisible.value = false
-      onLoad()
-    } else ElMessage.error(res["msg"])
-  })
 }
 /**
  * 图片提交成功反馈
@@ -226,6 +209,9 @@ const onSubmitAddSysImages = async () => {
 const handleUploadSuccess = (success) => {
   if (success.code === '200') {
     ElMessage.success(success["msg"])
+    dialogVisible.value = false
+    onLoad()
+    upload.value!.clearFiles();
   } else ElMessage.error(success["msg"])
 }
 /**
@@ -233,8 +219,6 @@ const handleUploadSuccess = (success) => {
  * @param err
  */
 const handleUploadError = (err) => {
-  // 处理上传失败时的后端错误
-  console.error('错误:', err);
   // 根据错误信息执行其他操作
   ElMessage.error("图片上传失败，错误信息："+err)
 };
@@ -245,6 +229,7 @@ const handleClose = () => {
   ElMessageBox.confirm('是否取消添加图片，数据将清空！')
       .then(() => {
         dialogVisible.value = false
+        upload.value!.clearFiles();
         Object.keys(formData).forEach(key => {
           formData[key] = ''
         })

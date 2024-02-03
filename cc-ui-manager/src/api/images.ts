@@ -1,6 +1,5 @@
 
 import request from "../utils/request";
-import {UnwrapNestedRefs} from "vue";
 
 export type QueryCondition = Partial<{
     pageNum: number
@@ -56,18 +55,11 @@ export const getSysImgOptionApi = () => {
     })
 }
 /**
- * 提交图片
+ * 图片提交数据
  */
 export type AddSysImgData = {
     imgName: string;
     imgPath: string;
     userName: string;
     type: string
-}
-export const submitSysImgApi = (addSysImgData: AddSysImgData) => {
-    return request({
-        method:"POST",
-        url:"/manager/images/addSysImgData",
-        data:addSysImgData,
-    })
 }

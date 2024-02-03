@@ -1,4 +1,4 @@
-package cc.backend.commom;
+package cc.backend.common;
 
 
 import cc.backend.entity.User;
@@ -10,7 +10,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.UUID;
 
 /**

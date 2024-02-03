@@ -1,12 +1,15 @@
 package cc.backend.manager.controller;
 
 
-import cc.backend.commom.Result;
+import cc.backend.common.Result;
 import cc.backend.entity.Dict;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.SysImageResource;
+import cc.backend.entity.UploadImgFileData;
 import cc.backend.manager.service.ImagesService;
 import com.alibaba.druid.util.StringUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -77,44 +80,46 @@ public class ImagesController {
     @Value("${upload.path}")
     private String uploadPath;
     /**
-     * TODO 上传图片到本地路径
+     * @description TODO
+     * @param file
+     * @param formData
+     * @return: cc.backend.common.Result
      */
     @PostMapping("/uploadSysImg")
-    public Result uploadSysImg(@RequestParam("file") MultipartFile file){
+    public Result uploadSysImg(@RequestParam("file") MultipartFile file,
+                               @RequestParam("formData") String formData,
+//                               @RequestParam("tokenInfo")  String tokenInfo
+                               @RequestHeader("Authorization") String tokenInfo) {
         try {
             // 构建上传目录的绝对路径
             String absolutePath = new File(uploadPath).getAbsolutePath();
-
             // 确保目录存在，如果不存在，则创建
-            if (!StringUtils.isEmpty(absolutePath)) {
+            if (!StringUtils.isEmpty(absolutePath))
+            {
                 File uploadDir = new File(absolutePath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
+                if (!uploadDir.exists())
+                {
+                    System.out.println("上传目录不存在");
+                    return Result.error("无法获取上传目录路径");
                 }
+                SysImageResource sysImageResource = new ObjectMapper().readValue(formData, SysImageResource.class);
                 // 构建文件路径
-                String filePath = absolutePath + File.separator + "sys_img" + File.separator + file.getOriginalFilename();
-
+                String filePath = absolutePath + File.separator + "sys_img" + File.separator + sysImageResource.getImgPath();
                 // 复制文件到目标路径
                 Files.copy(file.getInputStream(), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
-                return Result.successCDM(filePath,"图片上传成功");
+                System.out.println(sysImageResource);
+                boolean isAddSysImg = imagesService.addSysImgData(sysImageResource,tokenInfo);
+                if (isAddSysImg) {
+                    return Result.successCDM(filePath,"图片上传成功");
+                }else return Result.error("图片上传失败");
             } else {
-                System.out.println("无法获取上传目录路径");
+                System.out.println("无法获取上传目录路径，图片上传失败");
                 return Result.error("图片上传失败");
             }
         } catch (IOException e) {
             e.printStackTrace();
             return Result.error("图片上传失败");
         }
-    }
-    /**
-     * TODO 添加系统图片信息
-     */
-    @PostMapping("addSysImgData")
-    public Result addSysImgData(@RequestBody SysImageResource addSysImgData,@RequestHeader("Authorization") String tokenInfo) {
-        boolean isAddSysImg = imagesService.addSysImgData(addSysImgData, tokenInfo);
-        if (isAddSysImg) {
-            return Result.successCM("添加成功");
-        }else return Result.error("添加失败");
-    }
 
+    }
 }

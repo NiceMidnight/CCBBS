@@ -1,12 +1,10 @@
 package cc.backend.user.controller;
 
 
-import cc.backend.commom.Result;
+import cc.backend.common.Result;
 import cc.backend.entity.User;
 import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.impl.UserServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**

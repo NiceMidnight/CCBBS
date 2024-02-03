@@ -1,27 +1,21 @@
 package cc.backend;
 
-import cc.backend.commom.Token;
-import cc.backend.entity.Dict;
+import cc.backend.common.Token;
 import cc.backend.entity.User;
 import cc.backend.manager.mapper.DictMapper;
 import cc.backend.manager.service.impl.ArticlesServiceImpl;
 import cc.backend.manager.service.impl.DictServiceImpl;
 import cc.backend.user.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.io.IOException;
 import java.time.Duration;
-import java.util.Scanner;
 
 @SpringBootTest
 class CcBackendApplicationTests {

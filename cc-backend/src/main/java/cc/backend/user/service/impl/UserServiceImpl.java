@@ -1,12 +1,11 @@
 package cc.backend.user.service.impl;
 
-import cc.backend.commom.Token;
+import cc.backend.common.Token;
 import cc.backend.entity.User;
 import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -72,7 +71,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getUserHead(int userId) {
         String userHead = userMapper.getUserHeadById(userId);
-        System.out.println(userHead);
         return userHead;
     }
 }

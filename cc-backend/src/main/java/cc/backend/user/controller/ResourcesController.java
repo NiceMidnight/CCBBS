@@ -1,12 +1,10 @@
 package cc.backend.user.controller;
 
-import cc.backend.commom.Result;
+import cc.backend.common.Result;
 import cc.backend.entity.Article;
-import cc.backend.entity.Post;
 import cc.backend.entity.SearchData;
 import cc.backend.user.service.impl.IndexArticleServiceImpl;
 import cc.backend.user.service.impl.IndexImgServiceImpl;
-import cc.backend.user.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
@@ -63,7 +61,9 @@ public class ResourcesController {
     private IndexArticleServiceImpl articleService;
 
     /**
-     * TODO 获取首页文章
+     * @description TODO 获取首页文章
+     * @param: @param pageData
+     * @return: cc.backend.common.Result
      */
     @PostMapping("/getIndexArticle")
     public Result getIndexArticle(@RequestBody SearchData<Article> pageData) {

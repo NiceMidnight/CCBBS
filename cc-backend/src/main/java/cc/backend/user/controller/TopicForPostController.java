@@ -1,10 +1,9 @@
 package cc.backend.user.controller;
 
-import cc.backend.commom.Result;
+import cc.backend.common.Result;
 import cc.backend.entity.forpost.TopicForPost;
 import cc.backend.user.service.impl.TopicForPostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

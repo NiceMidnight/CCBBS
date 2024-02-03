@@ -41,6 +41,10 @@ public class Post {
      */
     private String postContent;
     /**
+     * 帖子图片
+     */
+    private String postPicture;
+    /**
      * 管理员ID
      */
     private Integer userId;
@@ -70,4 +74,5 @@ public class Post {
      * 帖子阅读量
      */
     private Integer viewCount;
+
 }
