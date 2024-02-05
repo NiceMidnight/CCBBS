@@ -19,7 +19,9 @@ public class TopicForPostsController {
     @Autowired
     private TopicForPostsServiceImpl topicForPostService;
     /**
-     * TODO 获取主题内容
+     * @description TODO 获取主题内容
+     * @param queryCondition
+     * @return: cc.backend.common.Result
      */
     @PostMapping("/getTFP")
     public Result getTFP(@RequestBody SearchData<TopicForPost> queryCondition) {
@@ -27,14 +29,18 @@ public class TopicForPostsController {
         return Result.successCDM(tfp,"获取帖子主题内容成功");
     }
     /**
-     * TODO 获取主题状态
+     * @description TODO 获取主题状态
+     * @return: cc.backend.common.Result
      */
     @GetMapping("/getTFPStatus")
     public Result getTFPStatus() {
         return Result.successCDM(TopicStatus.values(),"获取主题状态成功");
     }
     /**
-     * TODO 添加主题
+     * @description TODO 添加主题
+     * @param topicForPost
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
      */
     @PostMapping("/addTFP")
     public Result addTFP(@RequestBody TopicForPost topicForPost,@RequestHeader("Authorization") String tokenInfo) {
@@ -43,7 +49,10 @@ public class TopicForPostsController {
     }
 
     /**
-     * TODO 启用主题
+     * @description TODO 启用主题
+     * @param topicId
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
      */
     @GetMapping("/enableTFP")
     public Result enableTFP(@RequestParam Integer topicId,@RequestHeader("Authorization") String tokenInfo) {
@@ -54,7 +63,10 @@ public class TopicForPostsController {
         return Result.error("启用失败");
     }
     /**
-     * TODO 禁用主题
+     * @description TODO 禁用主题
+     * @param topicId
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
      */
     @GetMapping("/disableTFP")
     public Result disableTFP(@RequestParam Integer topicId,@RequestHeader("Authorization") String tokenInfo) {

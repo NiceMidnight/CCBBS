@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import {onMounted} from "@vue/runtime-core";
-import {getUserInfo, updateUserInfoApi} from "../../api/login";
+import {getUserInfoApi, updateUserInfoApi} from "../../api/login";
 import {ref} from "vue";
 import {baseUrl} from "../../utils/request";
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -53,7 +53,7 @@ const squareUrl= 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpn
 //  个人信息
 onMounted(async () => {
   if (token) {
-    await getUserInfo().then((res) => {
+    await getUserInfoApi().then((res) => {
       personalInfo.value = res.data
       console.log(personalInfo.value)
     })

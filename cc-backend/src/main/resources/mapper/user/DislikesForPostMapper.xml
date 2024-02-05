@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.user.mapper.DislikesForPostMapper">
+
+    <select id="getDislikeForPostStatus" resultType="cc.backend.enums.DislikesForPostStatus">
+        SELECT dislike_status
+        FROM dislikes_for_post
+        WHERE user_id = #{userId} AND post_id = #{postId}
+    </select>
+
+    <resultMap type="cc.backend.enums.DislikesForPostStatus" id="dislikesForPostStatusMap">
+        <!-- 枚举类的映射配置 -->
+    </resultMap>
+</mapper>

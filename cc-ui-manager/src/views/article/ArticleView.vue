@@ -105,7 +105,7 @@
         <el-text class="mx-1" type="success">{{editArticleData.updatedBy}}</el-text>
       </el-form-item>
       <el-form-item label="文章id">
-        <el-text class="mx-1" type="success" > {{ editArticleData.articleId}}</el-text>
+        <el-text class="mx-1" type="success" > {{ editArticleData.articleId }}</el-text>
       </el-form-item>
       <el-form-item label="文章标题">
         <el-input v-model="editArticleData.articleTitle" placeholder="请输入文章标题"/>

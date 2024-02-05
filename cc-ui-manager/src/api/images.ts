@@ -58,8 +58,31 @@ export const getSysImgOptionApi = () => {
  * 图片提交数据
  */
 export type AddSysImgData = {
+    id:string;
     imgName: string;
     imgPath: string;
     userName: string;
     type: string
+    uploadTime:string
+}
+/**
+ * 删除图片资源
+ * @param imgId
+ */
+export const deleteSysImageResourceByIdApi = (imgId:number) => {
+    return request({
+        method:'GET',
+        url:'/manager/images/deleteSysImgResourceById',
+        params:{
+            imgId:imgId
+        }
+    })
+}
+
+export const updateSysImageResourceApi = (editSysImgData:AddSysImgData) => {
+    return request({
+        method:'POST',
+        url:'/manager/images/updateSysImageResource',
+        data: editSysImgData
+    })
 }

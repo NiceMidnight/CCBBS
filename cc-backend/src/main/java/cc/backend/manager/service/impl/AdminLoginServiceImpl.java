@@ -77,5 +77,15 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         String userName = usersMapper.findUserNameById(userId);
         return userName;
     }
-
+    /**
+     * @description TODO 退出登录清除token
+     * @param tokenInfo
+     * @return: void
+     */
+    @Override
+    public boolean logout(String tokenInfo) {
+        boolean isDeleted = token.deleteToken(tokenInfo);
+        if (isDeleted) return true;
+        return false;
+    }
 }

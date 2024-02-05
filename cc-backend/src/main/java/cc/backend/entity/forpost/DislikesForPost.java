@@ -18,19 +18,9 @@ import java.util.Date;
 @TableName("dislikes_for_post")
 public class DislikesForPost {
     /**
-     * 踩id
-     */
-    @TableId(value = "like_id",type = IdType.AUTO)
-    private Integer dislikeId;
-    /**
      * 用户id
      */
     private Long userId;
-    /**
-     * 用户名
-     */
-    @TableField(exist = false)
-    private String userName;
     /**
      * 帖子id
      */

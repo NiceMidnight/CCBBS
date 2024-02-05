@@ -12,6 +12,7 @@ import cc.backend.entity.User;
 public interface UserService {
     String login(User user);
     User getUserInfo(String token);
+    User getOtherUserInfoById(Integer userId);
     boolean updateUserInfo(User user);
     String getUserHead(int userId);
 }

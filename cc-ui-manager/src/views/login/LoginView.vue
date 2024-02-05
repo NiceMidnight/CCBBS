@@ -12,7 +12,7 @@
 
     <el-form-item>
       <el-button type="primary" @click="onLogin" :loading="isLoading">登录</el-button>
-      <el-button type="primary" @click="onCancle">Cancel</el-button>
+      <el-button type="primary" @click="onCancel">Cancel</el-button>
     </el-form-item>
   </el-form>
   </div>
@@ -24,6 +24,7 @@ import {ElMessage, FormInstance, FormRules} from "element-plus";
 import {login} from "../../api/login";
 import {useRoute, useRouter} from "vue-router";
 import {useTokenStore} from "../../stores/mytoken";
+import {getUserName} from "@/api/users";
 /**
  * 解构出push方法
  */
@@ -51,19 +52,21 @@ const onLogin = async () => {
   })
   //  再发送请求
   try {
-    const data = await login(form).then((res) => {
-      console.log(res)
+    await login(form).then(async (res) => {
       if (res["code"] === '200') {
         store.saveToken(res["token"])
         ElMessage.success(res["msg"])
         isLoading.value = false
-        push(route.query.redirect as string || '/index')
+        await getUserName().then((res) => {
+          window.localStorage.setItem("userName",res.data)
+          console.log(res.data)
+        })
+        await push(route.query.redirect as string || '/index')
       } else {
         ElMessage.error(res["msg"])
       }
       isLoading.value = false
     })
-    console.log(data)
   }catch (e) {
     ElMessage.error("error+"+e)
     isLoading.value = false
@@ -92,7 +95,7 @@ const rules = reactive<FormRules>({
 
 const formRef = ref<FormInstance | null>(null)
 //取消登录
-const onCancle = () => {
+const onCancel = () => {
   ElMessage.error("NO")
 }
 </script>

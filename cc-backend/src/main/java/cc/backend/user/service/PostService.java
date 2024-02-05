@@ -12,4 +12,5 @@ public interface PostService {
     SearchData<Post> getAllPost(SearchData<Post> queryCondition,String postMsg);
     SearchData<Post> getPostByTopic(SearchData<Post> queryCondition);
     Post getPostByPostId(Integer postId);
+    Post updatePostLikesCount(Integer postId,boolean addOrDel);
 }

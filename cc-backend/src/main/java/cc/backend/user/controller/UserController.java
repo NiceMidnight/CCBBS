@@ -36,7 +36,10 @@ public class UserController {
     private RedisTemplate<String ,Object> redisTemplate;
 
     /**
-     * TODO 登录验证
+     * @description TODO 登录验证
+     * @param user
+     * @param code
+     * @return: cc.backend.common.Result
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user, @RequestParam String code) {
@@ -52,7 +55,10 @@ public class UserController {
         return Result.error("登录失败，用户名或密码错误...");
     }
     /**
-     * TODO 验证码
+     * @description TODO 验证码
+     * @param request
+     * @param response
+     * @return: void
      */
     @GetMapping("/verify")
     public void verify(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -75,16 +81,30 @@ public class UserController {
     }
 
     /**
-     * TODO 通过token获取用户信息
+     * @description TODO 通过token获取个人用户信息
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
      */
     @GetMapping("/getUserInfo")
     public Result getUserInfo(@RequestHeader("Authorization") String tokenInfo) {
         User userInfo = userService.getUserInfo(tokenInfo);
         return Result.successCDT(userInfo,tokenInfo);
     }
+    /**
+     * @description TODO 通过userId获取用户信息
+     * @param userId
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("getOtherUserInfoById")
+    public Result getOtherUserInfoById(@RequestParam("userId") Integer userId) {
+        User otherUserInfoById = userService.getOtherUserInfoById(userId);
+        return Result.successCDM(otherUserInfoById,"获取"+userId+"基础信息成功");
+    }
 
     /**
-     * TODO 修改个人信息
+     * @description TODO 修改个人信息
+     * @param user
+     * @return: cc.backend.common.Result
      */
     @RequestMapping("/updateUserInfo")
     public Result updateUserInfo(@RequestBody User user) {
@@ -93,10 +113,22 @@ public class UserController {
         return Result.successCM("修改成功");
     }
 
+    /**
+     * @description TODO 退出登录
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
     @RequestMapping("/logout")
-    public Result logout() {
+    public Result logout(@RequestHeader("Authorization") String tokenInfo) {
+
         return Result.successCM("登出...");
     }
+
+    /**
+     * @description TODO 获取用户头像
+     * @param userId
+     * @return: cc.backend.common.Result
+     */
     @GetMapping("/getUserHead")
     public Result getUserHead(@RequestParam("userId") int userId) {
         String userHead = userService.getUserHead(userId);

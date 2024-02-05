@@ -6,7 +6,7 @@ import cc.backend.enums.PostStatus;
 import cc.backend.enums.PostVisibility;
 import cc.backend.user.mapper.PostMapper;
 import cc.backend.user.service.PostService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +63,25 @@ public class PostServiceImpl implements PostService {
     public Post getPostByPostId(Integer postId) {
 //        return postMapper.selectById(postId);
         return postMapper.getPostByPostId(postId);
+    }
+
+    @Override
+    public Post updatePostLikesCount(Integer postId,boolean addOrDel) {
+        Post post = postMapper.selectById(postId);
+        if (post != null) {
+            if (addOrDel) {
+                post.setLikeCount(post.getLikeCount() + 1);
+                UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("post_id", postId);
+                postMapper.update(post, updateWrapper);
+            } else {
+                post.setLikeCount(post.getLikeCount() - 1);
+                UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("post_id", postId);
+                postMapper.update(post, updateWrapper);
+            } return post;
+        }
+        return null;
     }
 
 }

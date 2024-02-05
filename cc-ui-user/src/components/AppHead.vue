@@ -18,12 +18,21 @@
         <el-button type="primary" round @click="" class="search-button">
           搜索
         </el-button>
+<!--        <el-switch v-model="isDarkMode" style="margin-left: 20px" @change="toggleBackground">-->
+<!--          <template #active-action>-->
+<!--            <span class="custom-active-action">T</span>-->
+<!--          </template>-->
+<!--          <template #inactive-action>-->
+<!--            <span class="custom-inactive-action">F</span>-->
+<!--          </template>-->
+<!--        </el-switch>-->
       </div>
       <div class="right-model">
         <el-button type="success" round @click="onLogin" v-if="!getLocalStorage" >登录</el-button>
         <el-button type="primary" round v-if="!getLocalStorage">注册</el-button>
         <el-button type="danger" round v-if="getLocalStorage" @click="onLogout">退出登录</el-button>
       </div>
+
       <el-menu-item index="4" >设置</el-menu-item>
     </el-menu>
   </div>
@@ -34,11 +43,15 @@
 
 import {ref, onMounted, onUnmounted} from "vue";
 import {useRouter} from "vue-router";
+import {ElMessage} from "element-plus";
 const getLocalStorage = ref<string | null>(localStorage.getItem("TokenInfo"));
 const router = useRouter();
 const activeIndex = ref("1");
 const isSearchVisible = ref(true);
-
+const isDarkMode = ref(true);
+const toggleBackground = () => {
+  console.log(isDarkMode)
+}
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };

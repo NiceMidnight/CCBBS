@@ -31,18 +31,18 @@
     </template>
     <el-table :data="tableData['data']" border style="width: 100%">
       <!-- 自动递增的行ID列 -->
-      <el-table-column type="index" label="行id"  width="130" align="center"/>
-      <el-table-column prop="id" label="图片Id" width="150" align="center"/>
+      <el-table-column type="index" label="行id"  width="100" align="center"/>
+      <el-table-column prop="id" label="图片Id" width="100" align="center"/>
       <el-table-column label="图片"  width="300" align="center" v-slot="{ row }">
         <el-image
             style="width: 70%; height: 70%"
-            :zoom-rate="1.2"
             :src="getImage(row['imgPath']) || circleUrl"
-            :initial-index="4"
             fit="cover"
+            @click="showImageDialog(row['imgPath'],row.imgName)"
         />
       </el-table-column>
-      <el-table-column prop="userName" label="上传管理员"  width="150" align="center"/>
+      <el-table-column prop="imgName" label="图片名"  width="230" align="center"/>
+      <el-table-column prop="userName" label="上传管理员"  width="130" align="center"/>
       <el-table-column prop="uploadTime" label="上传时间" align="center" width="200" :formatter="timeHandler"/>
       <el-table-column prop="typeName" label="类型" width="150" align="center"/>
       <el-table-column label="可见性" align="center"  width="200" v-slot="{ row }">
@@ -56,9 +56,10 @@
             @change="handleChange($event,row.id)"
         />
       </el-table-column>
-      <el-table-column  label="操作" width="200" align="center">
-        <el-button type="primary" plain>编辑</el-button>
-        <el-button type="danger" plain>删除</el-button>
+      <el-table-column  label="操作" width="240" align="center" v-slot="scope">
+        <el-button type="primary" plain @click="showEditSysImageDialog(scope.row)">编辑</el-button>
+        <el-button type="danger" plain @click="deleteSysImageResourceById(scope.row.id)">删除</el-button>
+        <el-button type="primary" @click="downloadImage(scope.row.imgPath,scope.row.imgName)">下载</el-button>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -74,7 +75,7 @@
   </el-card>
 <!--添加系统管理图片-->
   <el-dialog
-      v-model="dialogVisible"
+      v-model="addSysImageDialogVisible"
       title="添加系统管理图片"
       width="30%"
       draggable
@@ -136,27 +137,160 @@
     </template>
   </el-dialog>
 
+<!--  图片放大-->
+  <el-dialog
+      v-model="imageDialogVisible"
+      :title="`查看大图-${enlargedImgName}`"
+      :visible.sync="imageDialogVisible"
+      width="60%"
+      :before-close="closeImageDialog"
+  >
+    <el-image
+        :src="enlargedImagePath"
+        style="width: 100%; height: 100%"
+        fit="contain"
+    />
+  </el-dialog>
+
+<!--  编辑图片-->
+  <el-dialog
+      v-model="editSysImageDialogVisible"
+      :title="`编辑图片名-${editFormData.imgName}(id:${editFormData.id})`"
+      :visible.sync="editSysImageDialogVisible"
+      width="30%"
+      :before-close="closeEditImageDialog"
+      draggable
+  >
+    <div style="margin: 10px" />
+    <el-form
+        :label-position="'right'"
+        label-width="100px"
+        :model="editFormData"
+        style="max-width: 460px"
+    >
+      <el-form-item label="图片" style="width: 80%;height: 80%">
+        <el-image
+            :src="editFormData.imgPath"
+            fit="contain"
+        />
+      </el-form-item>
+      <el-form-item label="上传者">
+        <el-text class="mx-1" type="success">{{editFormData.userName}}</el-text>
+      </el-form-item>
+      <el-form-item label="上传时间">
+        <el-text class="mx-1" type="success">{{timeHandler(null,null,editFormData.uploadTime)}}</el-text>
+      </el-form-item>
+      <el-form-item label="更改图片名称">
+        <el-input v-model="editFormData.imgName" type="textarea" :rows="1" placeholder="请输入文章内容"/>
+      </el-form-item>
+      <el-form-item label="更改图片类别">
+        <el-select v-model="editFormData.type" clearable placeholder="NULL">
+          <el-option
+              v-for="option in options"
+              :key="option['dictId']"
+              :value="option['dictTypeId']"
+              :label="option['dictItemName']"
+          />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="closeEditImageDialog">取消</el-button>
+        <el-button type="primary" @click="onSubmitEditSysImgResource">提交</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref} from "vue";
-import {inVisible, getAllImages, visible, getSysImgOptionApi} from "../../api/images";
+import {
+  inVisible,
+  getAllImages,
+  visible,
+  getSysImgOptionApi,
+  deleteSysImageResourceByIdApi,
+  updateSysImageResourceApi
+} from "@/api/images";
 import {ElMessage, ElMessageBox, genFileId, UploadInstance, UploadProps, UploadRawFile} from "element-plus";
-import {timeHandler} from "../../utils/timeHandler";
-import {baseUrl} from "../../utils/request";
+import {timeHandler} from "@/utils/timeHandler";
+import {baseUrl} from "@/utils/request";
 import {getUserName} from "@/api/users";
 import { v4 as uuidV4 } from 'uuid';
-import { AddSysImgData  } from '../../api/images';
+import { AddSysImgData  } from '@/api/images';
+const downloadImage = (imgPath, imgName) => {
+  const downloadLink = document.createElement('a');
+  downloadLink.href = getImage(imgPath);
+  downloadLink.download = imgName;
+  downloadLink.click();
+};
+/**
+ * 编辑图片数据
+ */
+const editSysImageDialogVisible = ref(false)
+const editFormData = reactive<AddSysImgData>({
+  id:'',
+  imgName: '',
+  imgPath: '',
+  userName: '',
+  type: '',
+  uploadTime:'',
+});
+const showEditSysImageDialog = (row) => {
+  editFormData.id = row.id
+  editFormData.imgName = row.imgName
+  editFormData.imgPath = getImage(row.imgPath)
+  editFormData.type = row.type
+  editFormData.userName = row.userName
+  editFormData.uploadTime = row.uploadTime
+  editSysImageDialogVisible.value = true
+}
+const onSubmitEditSysImgResource = async () => {
+  try {
+    await updateSysImageResourceApi(editFormData).then((res) => {
+      console.log(editFormData)
+      if (res["code"] === '200') {
+        ElMessage.success(res["msg"])
+        editSysImageDialogVisible.value = false
+        onLoad()
+      } else ElMessage.error(res["msg"])
+    })
+  } catch (e) {
+    ElMessage.error("提交编辑图片数据失败："+e)
+  }
+  console.log(editFormData)
+}
+const closeEditImageDialog = () => {
+  editSysImageDialogVisible.value = false
+}
+/**
+ * 放大图片
+ */
+const imageDialogVisible = ref(false);
+const enlargedImagePath = ref('');
+const enlargedImgName = ref('')
+const showImageDialog = (imgPath,imgName) => {
+  enlargedImagePath.value = getImage(imgPath);
+  enlargedImgName.value = imgName
+  imageDialogVisible.value = true;
+};
+const closeImageDialog = () => {
+  imageDialogVisible.value = false;
+};
+
+
+// 令牌
 const tokenInfo = localStorage.getItem("TokenInfo")
 //  表格可见/不可见
-const dialogVisible = ref(false)
+const addSysImageDialogVisible = ref(false)
 //  上传
 const upload = ref<UploadInstance | null>(null)
 /**
  * 添加图片按钮
  */
 const addSysImages = async () => {
-  dialogVisible.value = true
+  addSysImageDialogVisible.value = true
   await getUserName().then((res) => {
     console.log(res)
     formData.userName = res.data
@@ -190,7 +324,7 @@ const handleFileChange = (file) => {
 /**
  * 上传图片数据
  */
-const formData = reactive<AddSysImgData>({
+const formData = reactive<Omit<AddSysImgData, 'id' | "uploadTime">>({
   imgName: '',
   imgPath: '',
   userName: '',
@@ -209,7 +343,7 @@ const onSubmitAddSysImages = async () => {
 const handleUploadSuccess = (success) => {
   if (success.code === '200') {
     ElMessage.success(success["msg"])
-    dialogVisible.value = false
+    addSysImageDialogVisible.value = false
     onLoad()
     upload.value!.clearFiles();
   } else ElMessage.error(success["msg"])
@@ -228,7 +362,7 @@ const handleUploadError = (err) => {
 const handleClose = () => {
   ElMessageBox.confirm('是否取消添加图片，数据将清空！')
       .then(() => {
-        dialogVisible.value = false
+        addSysImageDialogVisible.value = false
         upload.value!.clearFiles();
         Object.keys(formData).forEach(key => {
           formData[key] = ''
@@ -237,6 +371,19 @@ const handleClose = () => {
       .catch(() => {
         // catch error
       })
+}
+
+const deleteSysImageResourceById = async (imageId) => {
+  try {
+    await deleteSysImageResourceByIdApi(imageId).then((res) => {
+      if (res["code"] === "200") {
+        ElMessage.success(res["msg"])
+        onLoad()
+      } else ElMessage.error(res["msg"])
+    })
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 /**
@@ -314,13 +461,10 @@ const onQuery = async() => {
     ElMessage.error(e)
   }
 }
-//  添加
-const addSysImage = async () => {
 
-}
 /**
  * 改变页码查询数据
- * @param pageNum
+ * @param size
  */
 const handleSizeChange = async(size:number) => {
   try {

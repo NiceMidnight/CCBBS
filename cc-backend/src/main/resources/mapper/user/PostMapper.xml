@@ -12,7 +12,10 @@
         tfp.topic_name as topic_name,
         u.nick_name as nick_name,
         po.created_at,
-        po.view_count
+        po.view_count,
+        po.like_count,
+        po.dislike_count,
+        po.comment_count
         FROM
         post po
         LEFT JOIN
@@ -34,6 +37,7 @@
             </trim>
         </if>
         </where>
+        ORDER BY po.created_at DESC
     </select>
 
     <select id="getAllPostByTopicId" resultType="post">
@@ -46,7 +50,10 @@
         tfp.topic_name as topic_name,
         po.created_at,
         u.nick_name as nick_name,
-        po.view_count
+        po.view_count,
+        po.like_count,
+        po.dislike_count,
+        po.comment_count
         FROM
         post po
         LEFT JOIN
@@ -63,6 +70,7 @@
                 po.topic_id LIKE CONCAT('%', #{topicId}, '%')
             </if>
         </where>
+        ORDER BY po.comment_count DESC, po.created_at DESC
     </select>
 
     <select id="getPostByPostId" resultMap="postResultMap">
@@ -75,7 +83,10 @@
             po.user_id,
             u.nick_name as nick_name,
             po.created_at,
-            po.view_count
+            po.view_count,
+            po.like_count,
+            po.dislike_count,
+            po.comment_count
         FROM
             post po
                 LEFT JOIN
@@ -98,5 +109,8 @@
         <result property="nickName" column="nick_name"/>
         <result property="createdAt" column="created_at"/>
         <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="dislikeCount" column="dislike_count"/>
+        <result property="commentCount" column="comment_count"/>
     </resultMap>
 </mapper>

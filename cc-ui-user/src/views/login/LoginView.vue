@@ -74,10 +74,9 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import {ElMessage, FormInstance, FormRules} from "element-plus";
-import {getUserInfo, loginApi} from "../../api/login";
+import { loginApi} from "../../api/login";
 import {useRoute, useRouter} from "vue-router";
 import {useTokenStore} from "../../stores/mytoken";
-import {baseUrl} from "../../utils/request";
 import {registerApi} from "../../api/register";
 // 解构出push方法
 const { push } = useRouter();

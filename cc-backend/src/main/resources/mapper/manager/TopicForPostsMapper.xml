@@ -25,6 +25,7 @@
                 AND tfp.topic_name LIKE CONCAT('%', #{topicName}, '%')
             </if>
         </where>
+        ORDER BY tfp.topic_id ASC
     </select>
 
     <update id="updateTFPStatus" parameterType="topicForPost">

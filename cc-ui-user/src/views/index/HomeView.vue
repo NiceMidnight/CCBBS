@@ -82,7 +82,7 @@ import {getAllArticle} from "../../api/article";
 import {ElMessage} from "element-plus";
 import {getIndexImage} from "../../api/image";
 import {useRouter} from "vue-router";
-import {getUserInfo} from "../../api/login";
+import {getUserInfoApi} from "../../api/login";
 import {timeHandler} from "../../utils/timeHandler";
 
 const small = ref(false)
@@ -167,7 +167,7 @@ const onLoad = async () => {
     })
     //  用户信息
     if (localStorage.getItem("TokenInfo")) {
-      await getUserInfo().then((res) => {
+      await getUserInfoApi().then((res) => {
         userInfo.value = res.data
 
       })

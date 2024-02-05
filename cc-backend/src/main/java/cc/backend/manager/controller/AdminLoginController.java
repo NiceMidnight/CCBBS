@@ -22,7 +22,8 @@ public class AdminLoginController {
 
     /**
      * @description TODO 登录
-     * @date 2023/8/14 17:20
+     * @param user
+     * @return: cc.backend.common.Result
      */
     @RequestMapping("/login")
     public Result login(@RequestBody User user) {
@@ -34,18 +35,20 @@ public class AdminLoginController {
     }
 
     /**
-     * @description TODO 获取信息
-     * @date 2023/8/14 17:21
+     * @description TODO 获取管理员信息
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
      */
     @RequestMapping("/getInfo") //通过redis获取管理员信息
     public Result getInfo(@RequestHeader("Authorization") String tokenInfo) {
-//        System.out.println(token);
         User managerInfo = adminLoginService.getManagerInfo(tokenInfo);
         return Result.successCDT(managerInfo.getUserName(),tokenInfo);
     }
 
     /**
-     * TODO 获取用户名称
+     * @description TODO 获取管理员名称
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
      */
     @GetMapping("/getUserName")
     public Result getUserName(@RequestHeader("Authorization") String tokenInfo) {
@@ -53,9 +56,18 @@ public class AdminLoginController {
         return Result.successCDM(userName,"获取用户名称成功");
     }
 
-    @RequestMapping("/logout")
-    public Result logout() {
-        return Result.successCM("登出...");
+    /**
+     * @description TODO 后台登出
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("/logout")
+    public Result logout(@RequestHeader("Authorization")String tokenInfo) {
+        boolean isLogout = adminLoginService.logout(tokenInfo);
+        if (isLogout) {
+            return Result.successCM("后台成功登出。。。");
+        }
+        return Result.error("后台登出失败。。。");
     }
 
 }

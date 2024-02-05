@@ -1,5 +1,6 @@
 package cc.backend.entity;
 
+import cc.backend.enums.CommentStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -8,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @Description
+ * @Description 评论
  * @Author Tiamo_null
  * @Date 2023/11/22
  */
@@ -40,4 +41,8 @@ public class Comments {
      * 创建日期
      */
     private Date createdAt;  //日期
+    /**
+     * 状态是否已查看
+     */
+    private CommentStatus commentStatus;
 }

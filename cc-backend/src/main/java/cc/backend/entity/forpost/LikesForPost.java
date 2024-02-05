@@ -18,19 +18,9 @@ import java.util.Date;
 @TableName("likes_for_post")
 public class LikesForPost {
     /**
-     * 点赞id
-     */
-    @TableId(value = "like_id",type = IdType.AUTO)
-    private Integer likeId;
-    /**
      * 用户id
      */
-    private Long userId;
-    /**
-     * 用户名
-     */
-    @TableField(exist = false)
-    private String userName;
+    private Integer userId;
     /**
      * 帖子id
      */
@@ -38,7 +28,7 @@ public class LikesForPost {
     /**
      * 是否点赞状态
      */
-    private LikesForPostStatus like_status;
+    private LikesForPostStatus likeStatus;
     /**
      * 操作时间
      */

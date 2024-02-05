@@ -14,9 +14,12 @@ import java.util.List;
  * @date 2023-08-21
  **/
 public interface ImagesService {
-    SearchData getAllImages(SearchData<SysImageResource> searchData);
+    SearchData<SysImageResource> getAllImages(SearchData<SysImageResource> searchData);
     boolean visible(Integer id);
     boolean disVisible(Integer id);
     List<Dict> getSysImgOption();
     boolean addSysImgData(SysImageResource addSysImgData,String tokenInfo);
+    SysImageResource getSysImgResourceById(Integer imgId);
+    boolean deleteSysImgResourceById(Integer imgId);
+    boolean updateSysImageResource(SysImageResource sysImageResource);
 }

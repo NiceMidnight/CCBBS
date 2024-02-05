@@ -13,4 +13,5 @@ public interface AdminLoginService {
     String login(User user);
     User getManagerInfo(String token);
     String getUserName(String token);
+    boolean logout(String tokenInfo);
 }

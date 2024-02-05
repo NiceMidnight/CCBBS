@@ -37,9 +37,11 @@ public class ImagesServiceImpl implements ImagesService {
     private Token token;
     /**
      * @description TODO 图片资源查询
+     * @param searchData
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.SysImageResource>
      */
     @Override
-    public SearchData getAllImages(SearchData<SysImageResource> searchData) {
+    public SearchData<SysImageResource> getAllImages(SearchData<SysImageResource> searchData) {
         //  分页查询
         IPage<SysImageResource> iPage = new Page<>(searchData.getPageNum(),searchData.getPageSize());
         imagesMapper.selectAllImg(iPage,searchData.getData().getType(),searchData.getData().getUserName());
@@ -49,13 +51,18 @@ public class ImagesServiceImpl implements ImagesService {
 
     /**
      * @description TODO 图片可见
+     * @param id
+     * @return: boolean
      */
     @Override
     public boolean visible(Integer id) {
         return imagesMapper.updateSysImgStatus(id,SysImgStatus.VISIBLE) > 0;
     }
+
     /**
      * @description TODO 图片不可见
+     * @param id
+     * @return: boolean
      */
     @Override
     public boolean disVisible(Integer id) {
@@ -63,7 +70,8 @@ public class ImagesServiceImpl implements ImagesService {
     }
 
     /**
-     * TODO 获取图片类别选择器内容
+     * @description TODO 获取图片类别选择器内容
+     * @return: java.util.List<cc.backend.entity.Dict>
      */
     @Override
     public List<Dict> getSysImgOption() {
@@ -76,8 +84,12 @@ public class ImagesServiceImpl implements ImagesService {
      */
     @Value("${addSysImgToDB.path}")
     private String uploadPath;
+
     /**
-     * TODO 添加系统图片信息
+     * @description TODO 添加系统图片信息
+     * @param addSysImgData
+     * @param tokenInfo
+     * @return: boolean
      */
     @Override
     public boolean addSysImgData(SysImageResource addSysImgData,String tokenInfo) {
@@ -85,5 +97,36 @@ public class ImagesServiceImpl implements ImagesService {
         addSysImgData.setUploadTime(new Date());
         addSysImgData.setImgPath(uploadPath+addSysImgData.getImgPath());
         return imagesMapper.insert(addSysImgData) > 0;
+    }
+
+    /**
+     * @description TODO 通过id获取图片数据
+     * @param imgId
+     * @return: cc.backend.entity.SysImageResource
+     */
+    @Override
+    public SysImageResource getSysImgResourceById(Integer imgId) {
+        return imagesMapper.selectById(imgId);
+    }
+
+    /**
+     * @description TODO 删除系统图片
+     * @param imgId
+     * @return: java.lang.String
+     */
+    @Override
+    public boolean deleteSysImgResourceById(Integer imgId) {
+        return imagesMapper.deleteById(imgId) > 0;
+    }
+
+    /**
+     * @description TODO 更新图片数据
+     * @param sysImageResource
+     * @return: boolean
+     */
+    @Override
+    public boolean updateSysImageResource(SysImageResource sysImageResource) {
+
+        return imagesMapper.updateSysImageResource(sysImageResource) > 0;
     }
 }

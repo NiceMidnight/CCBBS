@@ -8,9 +8,11 @@
             si.id,
             si.img_name,
             si.img_path,
+            si.user_id,
             u.nick_name as user_name,
             si.upload_time,
             si.visible,
+            si.type,
             di.dict_item_name as type_name
         FROM
             sys_images si
@@ -30,6 +32,11 @@
     <update id="updateSysImgStatus" parameterType="sysImageResource">
         UPDATE sys_images
         SET visible = #{visible}
+        WHERE id = #{id}
+    </update>
+    <update id="updateSysImageResource" parameterType="sysImageResource">
+        UPDATE sys_images
+        SET img_name = #{imgName},type = #{type}
         WHERE id = #{id}
     </update>
 </mapper>

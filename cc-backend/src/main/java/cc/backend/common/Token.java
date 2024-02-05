@@ -60,4 +60,15 @@ public class Token {
             return -1;
         }
     }
+    /**
+     * @description TODO redis删除token
+     * @param tokenInfo
+     * @return: boolean
+     */
+    public boolean deleteToken(String tokenInfo) {
+        String token = tokenInfo.substring(7);
+        Boolean isDeleted = redisTemplate.delete(token);
+        if (Boolean.TRUE.equals(isDeleted)) return true;
+        return false;
+    }
 }

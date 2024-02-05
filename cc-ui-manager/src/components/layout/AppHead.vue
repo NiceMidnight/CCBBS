@@ -47,8 +47,6 @@ const username = ref()
 
 getInfo().then((res) => {
   username.value = window.localStorage.getItem("userName") || res.data
-  window.localStorage.setItem("userName",username.value)
-  // console.log(res.data)
 })
 
 //  退出
@@ -63,17 +61,14 @@ const onLogout = async () => {
     return new Promise(()=>{})
   })
   //  2、执行退出
-  logout().then((res) => {
-    // console.log(res)
+  await logout().then((res) => {
     if (res["code"] === "200") {
       router.push('/')
       ElMessage.success(res["msg"])
     } else ElMessage.error("登出失败...")
   })
-  await logout().catch(()=>{})
   //  3、清空token
   useTokenStore().saveToken("")
-
 }
 
 </script>

@@ -55,10 +55,10 @@
                 浏览量：{{ post['viewCount'] }}
               </div>
               <div style="margin-left: 20px" >
-                评论数：{{ getCommentCount(post['postId']) }}
+                评论数：{{ post['commentCount'] }}
               </div>
               <div style="margin-left: 20px">
-                赞：{{ post['viewCount'] }}
+                赞：{{ post['likeCount'] }}
               </div>
             </div>
 
@@ -78,7 +78,6 @@ import {ElMessage, ElNotification} from "element-plus";
 import {ChatDotRound, CirclePlus, Flag, Position, UserFilled } from "@element-plus/icons-vue";
 import {timeHandler} from "../../utils/timeHandler";
 import {baseUrl} from "../../utils/request";
-import {getCommentCountApi} from "../../api/comment";
 import {useRouter} from "vue-router";
 import {cancelFollowApi, followApi, getFollowStatusApi} from "../../api/follow";
 
@@ -99,7 +98,6 @@ const userHeadUrls = ref({}); // 存储用户头像的对象
 const selectOption = (option: number) => {
   const selectedTopic = postTopicData.value.find(topic => topic.topicId === option);
   selectedData.value = selectedTopic ? selectedTopic["topicName"] : '首页'; // 如果找到对应的 topic，就设置为 topicName，否则设置为空字符串
-
 };
 const handleMenuSelect = async (index: string) => {
   queryForm.data.topicId = Number(index)
@@ -144,12 +142,7 @@ onMounted(async () => {
         userHeadUrls.value[post.userId] = `${baseUrl}/${userHead.data}`;
       }
     }));
-    await Promise.all(postData.value["data"].map(async (post) => {
-      if (!commentCount.value[post.postId]) {
-        const count = await getCommentCountApi(post.postId);
-        commentCount.value[post.postId] = count.data
-      }
-    }));
+
     await Promise.all(postData.value["data"].map(async (post) => {
       // 获取关注状态
       post.followStatus = await getFollowStatus(post.userId);
@@ -176,6 +169,7 @@ const getFollowStatus =  async (followingId) => {
 /**
  * 关注按钮
  * @param followingId
+ * @param postIndex
  */
 const onFollowClick = async (followingId,postIndex) => {
   try {
@@ -206,6 +200,7 @@ const onFollowClick = async (followingId,postIndex) => {
 /**
  * 取消关注
  * @param followingId
+ * @param postIndex
  */
 const cancelFollow = async (followingId,postIndex) => {
   try {
@@ -238,9 +233,7 @@ const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1ep
 const getUserHead = (userId: number) => {
   return userHeadUrls.value[userId] || circleUrl;
 };
-const getCommentCount = (postId:number) => {
-  return commentCount.value[postId] || 0
-}
+
 </script>
 
 <style scoped>

@@ -20,4 +20,5 @@ import java.util.List;
 public interface ImagesMapper extends BaseMapper<SysImageResource> {
     IPage<SysImageResource> selectAllImg(IPage<SysImageResource> iPage, @Param("type") Integer type, @Param("userName") String userName);
     int updateSysImgStatus(@Param("id") int id, @Param("visible")SysImgStatus sysImgStatus);
+    int updateSysImageResource(SysImageResource sysImageResource);
 }

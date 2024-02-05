@@ -28,7 +28,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RedisTemplate<String ,Object> redisTemplate;
     /**
-     * TODO 登录验证
+     * @description TODO 登录验证
+     * @param user
+     * @return: java.lang.String
      */
     @SneakyThrows
     @Override
@@ -48,7 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * TODO 获取用户信息
+     * @description TODO 获取用户信息
+     * @param loginToken
+     * @return: cc.backend.entity.User
      */
     @Override
     public User getUserInfo(String loginToken) {
@@ -57,8 +61,15 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User getOtherUserInfoById(Integer userId) {
+        return userMapper.selectById(userId);
+    }
+
     /**
-     * TODO 更新用户信息
+     * @description TODO 更新用户信息
+     * @param user
+     * @return: boolean
      */
     @Override
     public boolean updateUserInfo(User user) {
@@ -66,7 +77,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * TODO 获取用户头像
+     * @description TODO 获取用户头像
+     * @param userId
+     * @return: java.lang.String
      */
     @Override
     public String getUserHead(int userId) {
