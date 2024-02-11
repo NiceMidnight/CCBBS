@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.user.mapper.CommentMapper">
+
+    <select id="getAllCommentByCreatedAt" resultMap="commentResultMap" parameterType="map">
+        SELECT
+            co.comment_id,
+            co.post_id,
+            co.user_id,
+            u.nick_name AS nick_name,
+            u.user_head AS user_head,
+            co.comment_content,
+            co.parent_comment_id,
+            co.created_at,
+            co.status_for_user,
+            co.status_for_compliance
+        FROM
+            comments co
+                LEFT JOIN
+            user u ON co.user_id = u.id
+        WHERE co.post_id = #{postId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="getAllCommentByTop" resultMap="commentResultMap" parameterType="map">
+        SELECT
+            co.comment_id,
+            co.post_id,
+            co.user_id,
+            u.nick_name AS nick_name,
+            u.user_head AS user_head,
+            co.comment_content,
+            co.parent_comment_id,
+            co.created_at,
+            co.status_for_user,
+            co.status_for_compliance,
+            COUNT(reply.parent_comment_id) AS reply_count
+        FROM
+            comments co
+                LEFT JOIN
+            user u ON co.user_id = u.id
+                LEFT JOIN
+            comments reply ON co.comment_id = reply.parent_comment_id
+        WHERE co.post_id = #{postId}
+        GROUP BY co.comment_id
+        ORDER BY reply_count DESC
+    </select>
+
+    <resultMap id="commentResultMap" type="Comments">
+        <id property="commentId" column="comment_id"/>
+        <result property="postId" column="post_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="commentContent" column="comment_content"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="statusForUser" column="status_for_user"/>
+        <result property="statusForCompliance" column="status_for_compliance"/>
+        <result property="userHead" column="user_head"/>
+        <result property="replyCount" column="reply_count"/>
+    </resultMap>
+
+</mapper>

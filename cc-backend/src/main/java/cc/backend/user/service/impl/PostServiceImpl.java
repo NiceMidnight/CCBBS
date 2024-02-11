@@ -61,10 +61,15 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public Post getPostByPostId(Integer postId) {
-//        return postMapper.selectById(postId);
         return postMapper.getPostByPostId(postId);
     }
 
+    /**
+     * @description TODO 更新帖子点赞数量
+     * @param postId
+     * @param addOrDel
+     * @return: cc.backend.entity.Post
+     */
     @Override
     public Post updatePostLikesCount(Integer postId,boolean addOrDel) {
         Post post = postMapper.selectById(postId);
@@ -84,4 +89,82 @@ public class PostServiceImpl implements PostService {
         return null;
     }
 
+    /**
+     * @description TODO 更新帖子踩数量
+     * @param postId
+     * @param addOrDel
+     * @return: cc.backend.entity.Post
+     */
+    @Override
+    public Post updatePostDislikesCount(Integer postId,boolean addOrDel) {
+        Post post = postMapper.selectById(postId);
+        if (post != null) {
+            if (addOrDel) {
+                post.setDislikeCount(post.getDislikeCount() + 1);
+                UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("post_id", postId);
+                postMapper.update(post, updateWrapper);
+            } else {
+                post.setDislikeCount(post.getDislikeCount() - 1);
+                UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("post_id", postId);
+                postMapper.update(post, updateWrapper);
+            } return post;
+        }
+        return null;
+    }
+
+    /**
+     * @description TODO 更新评论数量
+     * @param postId
+     * @param addOrDel
+     * @return: boolean
+     */
+    @Override
+    public boolean updatePostCommentCount(Integer postId, boolean addOrDel) {
+        Post post = postMapper.selectById(postId);
+        if (post != null) {
+            if (addOrDel) {
+                post.setCommentCount(post.getCommentCount() + 1);
+                UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("post_id", postId);
+                return postMapper.update(post, updateWrapper) > 0;
+            } else {
+                post.setCommentCount(post.getCommentCount() - 1);
+                UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("post_id", postId);
+                return postMapper.update(post, updateWrapper) > 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @description TODO 添加阅读量（点击量）
+     * @param postId
+     * @return: boolean
+     */
+    @Override
+    public boolean increaseViewCount(Integer postId)
+    {
+        Post post = postMapper.selectById(postId);
+        if (post != null)
+        {
+            post.setViewCount(post.getViewCount() + 1);
+            UpdateWrapper<Post> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("post_id", postId);
+            return postMapper.update(post, updateWrapper) > 0;
+        }
+        return false;
+    }
+
+    /**
+     * @description TODO 获取最热评论
+     *
+     * @return: java.util.List<cc.backend.entity.Post>
+     */
+    @Override
+    public List<Post> getTopPosts() {
+        return postMapper.getTopPosts();
+    }
 }

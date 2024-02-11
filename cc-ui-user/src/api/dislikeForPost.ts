@@ -17,7 +17,7 @@ export const getDislikesForPostStatusApi = (postId:number) => {
  * 取消踩
  * @param postId
  */
-export const cancelALikeApi = (postId:number) => {
+export const cancelADislikeApi = (postId:number) => {
     return request({
         method:'GET',
         url:'/user/dislikesForPost/cancelADislike',
@@ -27,13 +27,13 @@ export const cancelALikeApi = (postId:number) => {
     })
 }
 /**
- * 赞
+ * 踩
  * @param postId
  */
 export const giveADislikeApi = (postId:number) => {
     return request({
         method:'GET',
-        url:'/user/likesForPost/giveADislike',
+        url:'/user/dislikesForPost/giveADislike',
         params:{
             postId:postId
         }

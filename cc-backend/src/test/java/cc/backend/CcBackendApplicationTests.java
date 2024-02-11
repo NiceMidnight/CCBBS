@@ -1,11 +1,13 @@
 package cc.backend;
 
 import cc.backend.common.Token;
+import cc.backend.entity.Comments;
 import cc.backend.entity.User;
 import cc.backend.manager.mapper.DictMapper;
 import cc.backend.manager.service.impl.ArticlesServiceImpl;
 import cc.backend.manager.service.impl.DictServiceImpl;
 import cc.backend.user.mapper.UserMapper;
+import cc.backend.user.service.impl.CommentServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Duration;
+import java.util.List;
 
 @SpringBootTest
 class CcBackendApplicationTests {
@@ -81,6 +84,12 @@ class CcBackendApplicationTests {
 //        }
 //    }
 
-
-
+    @Autowired
+    private CommentServiceImpl commentService;
+    @Test
+    void getComment()
+    {
+        List<Comments> allComment = commentService.getAllCommentByCreatedAt(1);
+        System.out.println(allComment);
+    }
 }

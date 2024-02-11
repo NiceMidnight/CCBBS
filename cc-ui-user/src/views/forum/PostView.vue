@@ -25,7 +25,7 @@
             <el-avatar :size="50" :src="getUserHead(post['userId']) || circleUrl" />
           </div>
           <div style="margin-left: 20px">
-            <el-link class="post-link" :underline="false" @click="redirectToPost( post.postTitle, post.postId,)">
+            <el-link class="post-link" :underline="false" @click="redirectToPost( post.postTitle, post.postId)">
               {{ post["postTitle"] }}
             </el-link>
             <div style="margin-top: 5px">{{ post['postContent'] }}</div>
@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { onMounted  } from "@vue/runtime-core";
-import {getAllPostApi, getPostTopicApi, getUserHeadApi} from "../../api/post";
+import {getAllPostApi, getPostTopicApi, getUserHeadApi, increaseViewCountApi} from "../../api/post";
 import {ElMessage, ElNotification} from "element-plus";
 import {ChatDotRound, CirclePlus, Flag, Position, UserFilled } from "@element-plus/icons-vue";
 import {timeHandler} from "../../utils/timeHandler";
@@ -87,6 +87,9 @@ const showUnfollow = ref(false);
  */
 const router = useRouter(); // 解析router
 const redirectToPost = (postTitle,postId) => {
+  console.log(postId)
+  console.log(postTitle)
+  increaseViewCountApi(postId);
   router.push({ name: 'Post', params: { title:postTitle,id: postId } });
 };
 const selectedData = ref('首页'); //首页菜单

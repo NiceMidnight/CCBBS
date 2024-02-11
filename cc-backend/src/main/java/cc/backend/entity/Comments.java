@@ -1,12 +1,17 @@
 package cc.backend.entity;
 
-import cc.backend.enums.CommentStatus;
+import cc.backend.enums.CommentStatusForCompliance;
+import cc.backend.enums.CommentStatusForUser;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description 评论
@@ -15,6 +20,8 @@ import java.util.Date;
  */
 @Data
 @TableName("comments")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comments {
     /**
      * 评论ID
@@ -36,13 +43,37 @@ public class Comments {
     /**
      * 用户名
      */
-    private String userName;
+    @TableField(exist = false)
+    private String nickName;
+    /**
+     * 用户头像
+     */
+    @TableField(exist = false)
+    private String userHead;
+    /**
+     * 父评论id
+     */
+    private Integer parentCommentId;
     /**
      * 创建日期
      */
-    private Date createdAt;  //日期
+    private Date createdAt;
     /**
      * 状态是否已查看
      */
-    private CommentStatus commentStatus;
+    private CommentStatusForUser statusForUser;
+    /**
+     * 状态是否合规
+     */
+    private CommentStatusForCompliance statusForCompliance;
+    /**
+     * 子评论集
+     */
+    @TableField(exist = false)
+    private List<Comments> childCommentsList;
+    /**
+     * 回复数
+     */
+    @TableField(exist = false)
+    private int replyCount;
 }

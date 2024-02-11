@@ -3,6 +3,8 @@ package cc.backend.user.service;
 import cc.backend.entity.Post;
 import cc.backend.entity.SearchData;
 
+import java.util.List;
+
 /**
  * @Description
  * @Author Tiamo_null
@@ -13,4 +15,8 @@ public interface PostService {
     SearchData<Post> getPostByTopic(SearchData<Post> queryCondition);
     Post getPostByPostId(Integer postId);
     Post updatePostLikesCount(Integer postId,boolean addOrDel);
+    Post updatePostDislikesCount(Integer postId,boolean addOrDel);
+    boolean updatePostCommentCount(Integer postId,boolean addOrDel);
+    boolean increaseViewCount(Integer postId);
+    List<Post> getTopPosts();
 }

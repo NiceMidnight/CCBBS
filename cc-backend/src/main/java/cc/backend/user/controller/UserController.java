@@ -2,6 +2,7 @@ package cc.backend.user.controller;
 
 
 import cc.backend.common.Result;
+import cc.backend.common.Token;
 import cc.backend.entity.User;
 import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.impl.UserServiceImpl;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserMapper userMapper;
+    private Token token;
     @Autowired
     private UserServiceImpl userService;
     @Autowired
@@ -133,5 +134,17 @@ public class UserController {
     public Result getUserHead(@RequestParam("userId") int userId) {
         String userHead = userService.getUserHead(userId);
         return Result.successCDM(userHead,"获取头像成功");
+    }
+
+    /**
+     * @description TODO 获取用户id渲染组件
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("/getUserId")
+    public Result getUserId(@RequestHeader("Authorization") String tokenInfo)
+    {
+        int userId = token.getUserId(tokenInfo);
+        return Result.successCDM(userId,"获取个人id成功");
     }
 }

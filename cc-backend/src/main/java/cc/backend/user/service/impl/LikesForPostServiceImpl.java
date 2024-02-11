@@ -84,5 +84,4 @@ public class LikesForPostServiceImpl implements LikesForPostService
         likesForPost.setLikeStatus(LikesForPostStatus.Unliked);
         return likesForPostMapper.updateLikeStatus(likesForPost) > 0;
     }
-
 }

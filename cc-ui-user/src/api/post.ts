@@ -65,3 +65,25 @@ export const getPostByPostIdApi = (postId:number) => {
         }
     })
 }
+/**
+ * 增加阅读量（点击量）
+ * @param postId
+ */
+export const increaseViewCountApi = (postId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/post/increaseViewCount',
+        params:{
+            postId:postId
+        }
+    })
+}
+/**
+ * 获取热点帖子
+ */
+export const getTopPostApi = () => {
+    return request({
+        method:'GET',
+        url:'/user/post/getTopPost'
+    })
+}

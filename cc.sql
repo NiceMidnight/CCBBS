@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 06/02/2024 00:23:22
+ Date: 07/02/2024 22:11:26
 */
 
 SET NAMES utf8mb4;
@@ -56,13 +56,18 @@ CREATE TABLE `comments`  (
   `comment_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '评论内容',
   `parent_comment_id` int(11) NULL DEFAULT NULL COMMENT '父评论id指向comment_id',
   `created_at` datetime(6) NULL DEFAULT NULL COMMENT '回复时间',
-  `comment_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'Unread' COMMENT '评论状态已读/未读',
+  `status_for_user` varchar(6) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'Unread' COMMENT '评论状态已读/未读（Unread/Read）',
+  `status_for_compliance` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'COMPLIANCE' COMMENT '评论状态是否合规（COMPLIANCE/IRREGULARITY）',
   PRIMARY KEY (`comment_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '评论' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
+INSERT INTO `comments` VALUES (1, 1, 2, '测试', NULL, '2024-02-06 23:58:46.914000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (2, 2, 2, '找到了', NULL, '2024-02-07 21:29:58.087000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (3, 1, 2, '测试一下啊', 1, '2024-02-07 21:32:33.067000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (4, 1, 2, '测试回复', 3, '2024-02-08 23:58:46.000000', 'Unread', 'COMPLIANCE');
 
 -- ----------------------------
 -- Table structure for dict
@@ -93,14 +98,16 @@ DROP TABLE IF EXISTS `dislikes_for_post`;
 CREATE TABLE `dislikes_for_post`  (
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
   `post_id` int(11) NOT NULL COMMENT '帖子id',
-  `dislike_status` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否踩Disliked/Undisliked',
+  `dislike_status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否踩Disliked/Undisliked',
   `timestamp` datetime(6) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`user_id`, `post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '踩贴' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '踩贴' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dislikes_for_post
 -- ----------------------------
+INSERT INTO `dislikes_for_post` VALUES (2, 1, 'Disliked', '2024-02-06 17:55:02.370000');
+INSERT INTO `dislikes_for_post` VALUES (2, 2, 'Undisliked', '2024-02-06 17:56:50.406000');
 
 -- ----------------------------
 -- Table structure for favorite_for_post
@@ -200,12 +207,13 @@ CREATE TABLE `likes_for_post`  (
   `like_status` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否点赞Liked/Unliked',
   `timestamp` datetime(6) NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`user_id`, `post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '点赞贴' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '点赞贴' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of likes_for_post
 -- ----------------------------
-INSERT INTO `likes_for_post` VALUES (2, 2, 'Unliked', '2024-02-06 00:22:29.340000');
+INSERT INTO `likes_for_post` VALUES (2, 1, 'Liked', '2024-02-06 17:56:54.810000');
+INSERT INTO `likes_for_post` VALUES (2, 2, 'Liked', '2024-02-06 18:06:14.199000');
 
 -- ----------------------------
 -- Table structure for post
@@ -219,8 +227,8 @@ CREATE TABLE `post`  (
   `post_picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '帖子图片',
   `user_id` bigint(20) NOT NULL COMMENT '发布用户id',
   `created_at` datetime(6) NOT NULL COMMENT '发布时间',
-  `post_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '是否合规（COMPLIANCE/IRREGULARITY）',
-  `post_visibility` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '是否可见（PUBLIC/PRIVATE）',
+  `post_status` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'COMPLIANCE' COMMENT '是否合规（COMPLIANCE/IRREGULARITY）',
+  `post_visibility` varchar(7) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'PUBLIC' COMMENT '是否可见（PUBLIC/PRIVATE）',
   `view_count` int(11) NULL DEFAULT 0 COMMENT '阅读量',
   `like_count` int(11) NULL DEFAULT 0 COMMENT '点赞数量',
   `dislike_count` int(11) NULL DEFAULT 0 COMMENT '踩贴数量',
@@ -231,8 +239,8 @@ CREATE TABLE `post`  (
 -- ----------------------------
 -- Records of post
 -- ----------------------------
-INSERT INTO `post` VALUES (1, 1, '测试', '测试', NULL, 2, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 0, 0, 0, 0);
-INSERT INTO `post` VALUES (2, 2, '失物手表', '测试啊2', NULL, 1, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 0, 0, 0, 0);
+INSERT INTO `post` VALUES (1, 1, '测试', '测试', NULL, 2, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 4, 1, 1, 0);
+INSERT INTO `post` VALUES (2, 2, '失物手表', '测试啊2', NULL, 1, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 4, 1, 0, 0);
 
 -- ----------------------------
 -- Table structure for replies

@@ -12,4 +12,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface DislikesForPostMapper extends BaseMapper<DislikesForPost> {
     DislikesForPostStatus getDislikeForPostStatus(@Param("userId") Integer userId, @Param("postId") Integer postId);
+    int updateDislikeStatus(DislikesForPost dislikesForPost);
 }

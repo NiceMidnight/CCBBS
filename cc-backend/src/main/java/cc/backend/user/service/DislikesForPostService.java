@@ -7,4 +7,6 @@ package cc.backend.user.service;
  */
 public interface DislikesForPostService {
     boolean getDislikeForPostStatus(String tokenInfo,Integer postId);
+    boolean giveADislike(String tokenInfo,Integer postId);
+    boolean cancelADislike(String tokenInfo,Integer postId);
 }

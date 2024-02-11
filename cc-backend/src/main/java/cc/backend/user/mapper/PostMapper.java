@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @Description
  * @Author Tiamo_null
@@ -22,6 +24,6 @@ public interface PostMapper extends BaseMapper<Post> {
                               @Param("postStatus")PostStatus postStatus);
 
     IPage<Post> getAllPostByTopicId(IPage<Post> iPage,Post post);
-//    @Param("topicId") Integer topicId,@Param("postTitle") String postName
     Post getPostByPostId(@Param("postId") Integer postId);
+    List<Post> getTopPosts();
 }

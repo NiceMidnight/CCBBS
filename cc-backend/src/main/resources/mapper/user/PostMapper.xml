@@ -96,7 +96,29 @@
         WHERE
             po.post_id = #{postId}
     </select>
-
+    <select id="getTopPosts" resultMap="postResultMap">
+        SELECT
+            po.post_id,
+            po.topic_id,
+            tfp.topic_name as topic_name,
+            po.post_title,
+            po.post_content,
+            po.user_id,
+            u.nick_name as nick_name,
+            po.created_at,
+            po.view_count,
+            po.like_count,
+            po.dislike_count,
+            po.comment_count
+        FROM
+            post po
+                LEFT JOIN
+            user u ON po.user_id = u.id
+                LEFT JOIN
+            topic_for_post tfp ON po.topic_id = tfp.topic_id
+        ORDER BY (po.like_count + po.view_count + po.comment_count) DESC
+            LIMIT 5;
+    </select>
 
     <!--返回查询的数据类型-->
     <resultMap id="postResultMap" type="Post">

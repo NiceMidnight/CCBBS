@@ -10,6 +10,12 @@
         WHERE user_id = #{userId} AND post_id = #{postId}
     </select>
 
+    <update id="updateDislikeStatus" parameterType="dislikesForPost">
+        UPDATE dislikes_for_post
+        SET dislike_status = #{dislikeStatus} , timestamp = #{timestamp}
+        WHERE user_id = #{userId} AND post_id = #{postId}
+    </update>
+
     <resultMap type="cc.backend.enums.DislikesForPostStatus" id="dislikesForPostStatusMap">
         <!-- 枚举类的映射配置 -->
     </resultMap>

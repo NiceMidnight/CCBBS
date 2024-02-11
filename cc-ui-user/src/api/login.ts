@@ -81,6 +81,11 @@ export const updateUserInfoApi = (user:userInfo) => {
     })
 }
 
-
+export const getUserIdApi = () => {
+    return request({
+        method:'GET',
+        url:'user/getUserId'
+    })
+}
 
 
