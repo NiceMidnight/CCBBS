@@ -26,6 +26,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/user/verify")
                 .excludePathPatterns("/user/getUserInfo")
                 .excludePathPatterns("/user/logout")
-                .excludePathPatterns("/user/resources/**"); // 拦截？放行
+                .excludePathPatterns("/user/register","/user/resources/**","/user/images/upload"); // 拦截？放行
     }
 }

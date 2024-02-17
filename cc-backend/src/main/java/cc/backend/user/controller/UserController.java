@@ -110,8 +110,12 @@ public class UserController {
     @RequestMapping("/updateUserInfo")
     public Result updateUserInfo(@RequestBody User user) {
         System.out.println(user);
-        userService.updateUserInfo(user);
-        return Result.successCM("修改成功");
+        boolean isUpdateUserInfo = userService.updateUserInfo(user);
+        if (isUpdateUserInfo)
+        {
+            return Result.successCM("修改个人信息成功");
+        }
+        return Result.error("修改个人信息失败");
     }
 
     /**
@@ -121,8 +125,11 @@ public class UserController {
      */
     @RequestMapping("/logout")
     public Result logout(@RequestHeader("Authorization") String tokenInfo) {
-
-        return Result.successCM("登出...");
+        boolean isLogout = userService.logout(tokenInfo);
+        if (isLogout) {
+            return Result.successCM("后台成功登出。。。");
+        }
+        return Result.error("后台登出失败。。。");
     }
 
     /**
@@ -146,5 +153,22 @@ public class UserController {
     {
         int userId = token.getUserId(tokenInfo);
         return Result.successCDM(userId,"获取个人id成功");
+    }
+
+    /**
+     * @description TODO 注册用户
+     * @param user
+     * @return: cc.backend.common.Result
+     */
+    @RequestMapping("/register")
+    public Result register(@RequestBody User user)
+    {
+        System.out.println(user);
+        boolean isRegister = userService.register(user);
+        if (isRegister)
+        {
+            return Result.successCM("注册用户成功");
+        }
+        return Result.error("注册用户失败");
     }
 }

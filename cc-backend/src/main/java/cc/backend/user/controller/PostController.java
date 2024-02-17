@@ -88,6 +88,22 @@ public class PostController {
             return Result.successCDM(topPosts,"获取到最热帖子");
         }
         return Result.successCM("没有最热评论");
+    }
 
+    /**
+     * @description TODO 提交帖子
+     * @param post
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
+    @PostMapping("/postAPost")
+    public Result postAPost(@RequestBody Post post,@RequestHeader("Authorization")String tokenInfo)
+    {
+        boolean isInsert = postService.insertAPost(post, tokenInfo);
+        if (isInsert)
+        {
+            return Result.successCM("提交帖子成功");
+        }
+        return Result.error("提交帖子失败");
     }
 }

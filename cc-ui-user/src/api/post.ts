@@ -87,3 +87,17 @@ export const getTopPostApi = () => {
         url:'/user/post/getTopPost'
     })
 }
+
+export type postData = Partial<{
+    topicId:number,
+    postTitle:string,
+    postContent:string,
+}>
+export const postAPostApi = (postData:postData) => {
+    return request({
+        method:'POST',
+        url:'user/post/postAPost',
+        data:postData
+    })
+}
+

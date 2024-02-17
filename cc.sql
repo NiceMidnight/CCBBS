@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 07/02/2024 22:11:26
+ Date: 17/02/2024 18:34:20
 */
 
 SET NAMES utf8mb4;
@@ -59,15 +59,30 @@ CREATE TABLE `comments`  (
   `status_for_user` varchar(6) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'Unread' COMMENT '评论状态已读/未读（Unread/Read）',
   `status_for_compliance` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'COMPLIANCE' COMMENT '评论状态是否合规（COMPLIANCE/IRREGULARITY）',
   PRIMARY KEY (`comment_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '评论' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '评论' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
-INSERT INTO `comments` VALUES (1, 1, 2, '测试', NULL, '2024-02-06 23:58:46.914000', 'Unread', 'COMPLIANCE');
-INSERT INTO `comments` VALUES (2, 2, 2, '找到了', NULL, '2024-02-07 21:29:58.087000', 'Unread', 'COMPLIANCE');
-INSERT INTO `comments` VALUES (3, 1, 2, '测试一下啊', 1, '2024-02-07 21:32:33.067000', 'Unread', 'COMPLIANCE');
-INSERT INTO `comments` VALUES (4, 1, 2, '测试回复', 3, '2024-02-08 23:58:46.000000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (24, 1, 2, '测试', NULL, '2024-02-08 18:13:10.000000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (25, 1, 2, '测试1', 24, '2024-02-08 18:13:10.000000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (26, 1, 2, '测试2', 25, '2024-02-08 18:13:10.000000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (27, 1, 2, '测试3', 26, '2024-02-10 18:13:22.695000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (28, 1, 2, '测试3', 26, '2024-02-10 18:13:30.129000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (29, 1, 2, '测试4', 27, '2024-02-10 18:13:22.695000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (30, 1, 2, '测试4', 27, '2024-02-10 18:13:22.695000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (31, 1, 2, '测试5', 29, '2024-02-10 18:45:35.158000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (32, 1, 2, '测试5', 29, '2024-02-10 18:45:35.158000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (33, 1, 2, '测试6', 31, '2024-02-10 18:45:35.158000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (34, 1, 2, '测试6', 31, '2024-02-10 18:45:35.158000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (35, 1, 2, 'hhhhhhhhhhhhh', 24, '2024-02-11 16:02:38.180000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (36, 1, 2, '哈哈哈很好', NULL, '2024-02-11 16:15:47.051000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (37, 1, 2, '牛的', 36, '2024-02-11 16:15:54.431000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (38, 1, 2, '牛的牛', 37, '2024-02-11 16:15:59.188000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (39, 1, 2, '牛的牛的牛', 38, '2024-02-11 16:16:11.442000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (40, 1, 2, '牛的牛的牛', 38, '2024-02-11 16:16:18.466000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (41, 1, 2, 'veryGood', NULL, '2024-02-11 19:43:11.692000', 'Unread', 'COMPLIANCE');
+INSERT INTO `comments` VALUES (42, 1, 2, '123', 41, '2024-02-11 19:43:17.181000', 'Unread', 'COMPLIANCE');
 
 -- ----------------------------
 -- Table structure for dict
@@ -107,7 +122,7 @@ CREATE TABLE `dislikes_for_post`  (
 -- Records of dislikes_for_post
 -- ----------------------------
 INSERT INTO `dislikes_for_post` VALUES (2, 1, 'Disliked', '2024-02-06 17:55:02.370000');
-INSERT INTO `dislikes_for_post` VALUES (2, 2, 'Undisliked', '2024-02-06 17:56:50.406000');
+INSERT INTO `dislikes_for_post` VALUES (2, 2, 'Undisliked', '2024-02-11 19:46:57.605000');
 
 -- ----------------------------
 -- Table structure for favorite_for_post
@@ -177,25 +192,8 @@ CREATE TABLE `follow`  (
 -- ----------------------------
 -- Records of follow
 -- ----------------------------
-INSERT INTO `follow` VALUES (2, 1, '2024-02-05 21:02:17', 'Follow');
-INSERT INTO `follow` VALUES (2, 2, '2024-02-05 17:57:29', 'Unfollowed');
-
--- ----------------------------
--- Table structure for img_for_post
--- ----------------------------
-DROP TABLE IF EXISTS `img_for_post`;
-CREATE TABLE `img_for_post`  (
-  `img_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片id',
-  `img_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片名称',
-  `img_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片路径',
-  `created_time` datetime(6) NULL DEFAULT NULL COMMENT '创建时间',
-  `post_id` int(11) NULL DEFAULT NULL COMMENT '帖子id',
-  PRIMARY KEY (`img_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子附件图片' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of img_for_post
--- ----------------------------
+INSERT INTO `follow` VALUES (2, 1, '2024-02-15 18:32:21', 'Unfollowed');
+INSERT INTO `follow` VALUES (2, 2, '2024-02-15 18:32:19', 'Unfollowed');
 
 -- ----------------------------
 -- Table structure for likes_for_post
@@ -213,7 +211,7 @@ CREATE TABLE `likes_for_post`  (
 -- Records of likes_for_post
 -- ----------------------------
 INSERT INTO `likes_for_post` VALUES (2, 1, 'Liked', '2024-02-06 17:56:54.810000');
-INSERT INTO `likes_for_post` VALUES (2, 2, 'Liked', '2024-02-06 18:06:14.199000');
+INSERT INTO `likes_for_post` VALUES (2, 2, 'Liked', '2024-02-11 19:46:56.198000');
 
 -- ----------------------------
 -- Table structure for post
@@ -224,7 +222,6 @@ CREATE TABLE `post`  (
   `topic_id` int(5) NOT NULL COMMENT '所属主题id',
   `post_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '帖子标题',
   `post_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '帖子内容',
-  `post_picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '帖子图片',
   `user_id` bigint(20) NOT NULL COMMENT '发布用户id',
   `created_at` datetime(6) NOT NULL COMMENT '发布时间',
   `post_status` varchar(12) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'COMPLIANCE' COMMENT '是否合规（COMPLIANCE/IRREGULARITY）',
@@ -234,13 +231,14 @@ CREATE TABLE `post`  (
   `dislike_count` int(11) NULL DEFAULT 0 COMMENT '踩贴数量',
   `comment_count` int(11) NULL DEFAULT 0 COMMENT '评论数量',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '帖子' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '帖子' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of post
 -- ----------------------------
-INSERT INTO `post` VALUES (1, 1, '测试', '测试', NULL, 2, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 4, 1, 1, 0);
-INSERT INTO `post` VALUES (2, 2, '失物手表', '测试啊2', NULL, 1, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 4, 1, 0, 0);
+INSERT INTO `post` VALUES (1, 1, '测试', '测试', 2, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 48, 1, 1, 19);
+INSERT INTO `post` VALUES (2, 2, '失物手表', '测试啊2', 1, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 59, 1, 0, 0);
+INSERT INTO `post` VALUES (3, 1, '测试提交', '<h1>查看提交</h1><p style=\"text-align: left;\">1231231231<img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/mmexport1639369490349.jpg\" alt=\"\" data-href=\"\" style=\"width: 30%;\"></p>', 2, '2024-02-16 14:51:58.222000', 'COMPLIANCE', 'PUBLIC', 4, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for replies
@@ -294,7 +292,7 @@ CREATE TABLE `sys_images`  (
 -- ----------------------------
 -- Records of sys_images
 -- ----------------------------
-INSERT INTO `sys_images` VALUES (1, 'index', 'static/sys_img/2023.jpg', 1, '2023-08-21 14:24:16.000000', 'VISIBLE', 0);
+INSERT INTO `sys_images` VALUES (1, 'index', 'static/sys_img/725a25d6-d433-49fb-bf14-fa41a336693a-动漫女孩 水花 海浪 海洋之女 4k壁纸_彼岸图网.jpg', 1, '2023-08-21 14:24:16.000000', 'VISIBLE', 0);
 INSERT INTO `sys_images` VALUES (3, '金克丝 泳池派对 4K壁纸_彼岸图网.jpg', 'static/sys_img/金克丝 泳池派对 4K壁纸_彼岸图网.jpg', 1, '2023-12-07 11:01:01.907000', 'VISIBLE', 0);
 INSERT INTO `sys_images` VALUES (4, '咒术回战 五条悟4k壁纸_彼岸图网.jpg', 'static/sys_img/咒术回战 五条悟4k壁纸_彼岸图网.jpg', 1, '2023-12-07 11:05:38.008000', 'VISIBLE', 0);
 INSERT INTO `sys_images` VALUES (5, '动漫美女 鲜花 帽子 唯美 好看 4K壁纸_彼岸图网.jpg', 'static/sys_img/动漫美女 鲜花 帽子 唯美 好看 4K壁纸_彼岸图网.jpg', 1, '2023-12-07 11:26:18.464000', 'VISIBLE', 1);
@@ -362,19 +360,20 @@ CREATE TABLE `user`  (
   `user_phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
   `user_address` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '住址',
   `user_personality` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '个性签名',
-  `user_date` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '注册时间',
+  `user_date` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '注册时间',
   `user_role` int(11) NOT NULL DEFAULT 0 COMMENT '角色（0用户/1管理员）',
-  `user_status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '状态，查看是否被禁用违规用户',
+  `user_status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'ENABLE' COMMENT '状态，查看是否被禁用违规用户(ENABLE/DISABLE)',
   `user_deleted` int(11) NOT NULL DEFAULT 1 COMMENT '逻辑删除（1存在/0删除）',
   `user_version` int(11) NOT NULL DEFAULT 1 COMMENT '乐观锁',
   `fans` int(11) NULL DEFAULT 0 COMMENT '粉丝',
   PRIMARY KEY (`id`, `user_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'static/sys_img/adminHead/head.jpg', 'root', 'root1', 'root', 1, 18, '16616649102', '广东省佛山市高明区xx镇xx街道xx栋', NULL, '2024-02-04 13:13:39.424166', 1, 'ENABLE', 1, 1, 0);
-INSERT INTO `user` VALUES (2, 'static/sys_img/adminHead/2023.jpg', 'zhangsan', 'zhangsan1', 'root', 1, 20, '16616649103', '广西省桂林市1', '123随便', '2024-02-04 13:13:40.880153', 0, 'ENABLE', 1, 1, 0);
+INSERT INTO `user` VALUES (1, 'static/sys_img/adminHead/head.jpg', 'root', '管理员', 'root', 1, 18, '16616649102', '广东省佛山市高明区xx镇xx街道xx栋', NULL, '2024-02-14 15:26:15.410000', 1, 'ENABLE', 1, 3, 0);
+INSERT INTO `user` VALUES (2, 'static/sys_img/adminHead/2023.jpg', 'zhangsan', '小宜', 'zhangsan', 1, 20, '16616649103', '广西省桂林市1', '123随便', '2024-02-14 15:26:18.207000', 0, 'ENABLE', 1, 3, 0);
+INSERT INTO `user` VALUES (3, NULL, '123123123', '', '123123123', NULL, NULL, '12341234123', NULL, NULL, '2024-02-14 16:40:41.175000', 0, 'ENABLE', 1, 1, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

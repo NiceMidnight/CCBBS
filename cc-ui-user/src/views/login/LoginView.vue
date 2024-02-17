@@ -1,106 +1,37 @@
-<template>
-  <div class="login-register">
-    <div class="background-image">
-      <img src="@/assets/img/mainBgImg.jpg" alt="Background"/>
-      <div class="form-container" id="login-register">
-        <!-- 登录图片 -->
-        <div v-if="isRegister" class="component-background">
-          <div class="image-container">
-            <!-- 图片容器 -->
-            <img src="@/assets/img/login.jpg" alt="Left Image" />
-          </div>
-          <div class="text-container">
-            <!-- 添加文本内容 -->
-            <p>你正在登录哦。。。</p>
-          </div>
-        </div>
-        <!-- 登录组件 -->
-        <el-form v-if="isRegister" ref="formRef" :model="form.user" :rules="rules" label-width="120px" label-position="top" style="padding: 140px">
-          <h2>Login</h2>
-          <el-form-item label="账号" prop="userName" @keyup.enter="onLogin">
-            <el-input v-model="form.user.userName" placeholder="请输入用户名"  />
-          </el-form-item>
-          <el-form-item label="密码" prop="password" @keyup.enter="onLogin">
-            <el-input v-model="form.user.password"  placeholder="请输入密码"/>
-          </el-form-item>
-          <el-form-item  label="验证码"  prop="code" @keyup.enter="onLogin">
-            <el-input v-model="form.code" style="flex: 1" placeholder="请输入验证码"/>
-            <el-image style="width: 110px;height: 36px;margin-left: 10px;border-radius: 5px" :src="verifyApi" alt="图片无法加载" @click="getNewVerify()" />
-          </el-form-item>
-          <el-form-item style="margin-top: 30px">
-            <el-button type="primary" @click="onLogin" :loading="isLoading">登录</el-button>
-            <el-button type="success" @click="registerLogin">去注册</el-button>
-            <el-button type="danger" @click="onCancle" >取消登录</el-button>
-          </el-form-item>
-        </el-form>
-        <!-- 注册组件 -->
-        <el-form v-if="!isRegister" label-width="120px" label-position="top" style="margin-left: 120px;margin-top: 80px;margin-bottom: 80px">
-          <h2>Register</h2>
-          <el-form-item label="账号" prop="userName" @keyup.enter="onRegister">
-            <el-input v-model="user.userName" placeholder="请输入用户名"  />
-          </el-form-item>
-          <el-form-item label="密码" prop="password1" @keyup.enter="onRegister">
-            <el-input v-model="user.password" placeholder="请设置密码"  />
-          </el-form-item>
-          <el-form-item label="密码" prop="password2" @keyup.enter="onRegister">
-            <el-input v-model="passwords" placeholder="请再次输入密码"  />
-          </el-form-item>
-          <el-form-item label="电话" prop="phone" @keyup.enter="onRegister">
-            <el-input v-model="user.userPhone" placeholder="请输入电话"  />
-          </el-form-item>
-          <el-form-item label="邮箱" prop="email" @keyup.enter="onRegister">
-            <el-input v-model="user.userEmail" placeholder="请输入邮箱"  />
-          </el-form-item>
-          <el-button type="danger" @click="onRegister" >注册</el-button>
-          <el-button type="success" @click="registerLogin">去登录</el-button>
-          <el-button type="danger" @click="onCancle" >取消注册</el-button>
-        </el-form>
-        <!-- 注册图片 -->
-        <div v-if="!isRegister" class="component-background" style="margin-left: 148px">
-          <div class="image-container">
-            <!-- 图片容器 -->
-            <img src="@/assets/img/register.jpeg" alt="Left Image" />
-          </div>
-          <div class="text-container">
-            <!-- 添加文本内容 -->
-            <p>你正在注册哦。。。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {reactive, ref,onMounted} from "vue";
 import {ElMessage, FormInstance, FormRules} from "element-plus";
 import { loginApi} from "../../api/login";
-import {useRoute, useRouter} from "vue-router";
+import { useRoute, useRouter} from "vue-router";
 import {useTokenStore} from "../../stores/mytoken";
 import {registerApi} from "../../api/register";
+import {baseUrl} from "../../utils/request";
 // 解构出push方法
 const { push } = useRouter();
 const route = useRoute()
+
 //  左右切换
-const isRegister = ref(true); // 用于切换登录和注册界面
-const passwords = ref()
+const isRegister = ref<boolean>(); // 用于切换登录和注册界面
+// 监听路由变化，更新参数
 const registerLogin = () => {
   isRegister.value = !isRegister.value
 }
+onMounted( () => {
+  isRegister.value = localStorage.getItem("loginOrRegister") === null ? true : localStorage.getItem("loginOrRegister") === 'true';
+
+})
 /**
  * 登录数据
  */
 const form = reactive({
-  user:{
-    userName:'zhangsan',
-    password:'root',
-  },
+  userName:'zhangsan',
+  password:'zhangsan',
   code:''
 })
 /**
  * 验证码
  */
-const verifyApi=ref("http://localhost:8081/user/verify");
+const verifyApi=ref(`${baseUrl}/user/verify`);
 function getNewVerify(){
   verifyApi.value=verifyApi.value+"?"+(new Date()).getTime()
 }
@@ -118,7 +49,11 @@ const onLogin = async () => {
   })
   //  再发送请求error+TypeError: Cannot read properties of null (reading 'userName')
   try {
-    await loginApi(form.user,form.code).then((res) => {
+    const user = ({
+      userName:form.userName,
+      password:form.password,
+    })
+    await loginApi(user,form.code).then((res) => {
       console.log(res)
       if (res["code"] === '200') {
         store.saveToken(res["token"])
@@ -135,55 +70,195 @@ const onLogin = async () => {
     isLoading.value = false
   }
 }
+
+const isLoading = ref(false)// 定义是否登录加载中防止多次点击
+/**
+ * 定义登录的表单校验（TS提供）
+ */
+const rules = reactive<FormRules>({
+  userName: [
+    { required: true, message: "用户名不能为空",trigger: "blur"},
+    { min: 8, max: 18, message: "用户名在8-18位之间", trigger: "blur"}
+    // {pattern:}
+  ],
+  password: [
+    { required: true, message: "密码不能为空", trigger: "blur"},
+    { min: 8, max: 18, message: "密码在8-18位之间", trigger: "blur"}
+  ],
+  code: [
+    { required:true, message: "验证码不能为空", trigger:"blur"},
+    { min: 4, max: 4, message: "验证码为4位", trigger: "blur"}
+  ]
+})
+const formRef = ref<FormInstance | null>(null)
+/**
+ * 取消
+ */
+const onCancel = () => {
+  push('/')
+}
 /**
  * 注册
  */
-const user = reactive({
+const registerData = reactive({
   userName:'',
   password:'',
+  passwords:'',
   userPhone:'',
-  userEmail:''
+  nickName:''
 })
+const registerRules = reactive<FormRules>({
+  userName: [
+    { required: true, message: "用户名不能为空",trigger: "blur"},
+    { min: 8, max: 18, message: "用户名在8-18位之间", trigger: "blur"},
+    { validator: (rule, value, callback) => {
+        if (/\s/.test(value)) {
+          callback(new Error("用户名不能包含空格"));
+        } else {
+          callback();
+        }
+      }
+    }
+  ],
+  password: [
+    { required: true, message: "密码不能为空", trigger: "blur"},
+    { min: 8, max: 18, message: "密码在8-18位之间", trigger: "blur"},
+    { validator: (rule, value, callback) => {
+        if (/\s/.test(value)) {
+          callback(new Error("密码不能包含空格"));
+        } else {
+          callback();
+        }
+      }
+    }
+  ],
+  passwords: [
+    { required: true, message: "请再次输入密码", trigger: "blur" },
+    { validator: (rule, value, callback) => {
+        if (value !== registerData.password) {
+          callback(new Error("两次输入的密码不一致"));
+        } else {
+          callback();
+        }
+      }
+    }
+  ],
+  userPhone: [
+    { required: true, message: "电话号码不能为空", trigger: "blur" },
+    { pattern: /^\d{11}$/, message: "电话号码必须是11位数字", trigger: "blur" }
+  ],
+})
+const registerRef = ref<FormInstance | null>(null)
+const isRegistering = ref(false)  // 点击登录设置不可点击为true
 const onRegister = async () => {
+  isRegistering.value = true
+  await registerRef.value?.validate().catch(err => {
+    ElMessage.error('注册失败...')
+    isRegistering.value = false
+    throw err
+  })
   try {
-    await registerApi(user).then((res) => {
-      ElMessage.success(res["msg"])
+    await registerApi(registerData).then((res) => {
+      if (res["code"] === '200')
+      {
+        ElMessage.success(res["msg"])
+        setTimeout(() => {
+          isRegister.value = true
+        }, 2000); // 3000 毫秒 = 3 秒
+      } else ElMessage.info(res["msg"])
     })
   }catch (e) {
     ElMessage.error(e)
   }
 }
-
-// 定义是否登录加载中防止多次点击
-const isLoading = ref(false)
-/**
- * 定义表单校验（TS提供）
- */
-const rules = reactive<FormRules>({
-  userName: [
-    { required: true, message: "用户名不能为空",trigger: "blur"},
-    { min: 4, max: 18, message: "用户名在4-18位之间", trigger: "blur"}
-    // {pattern:}
-  ],
-  password: [
-    { required: true, message: "密码不能为空", trigger: "blur"},
-    { min: 4, max: 18, message: "密码在4-18位之间", trigger: "blur"}
-  ],
-  // code: [
-  //   { required:true, message: "验证码不能为空", trigger:"blur"},
-  //   { min: 4, max: 4, message: "验证码为4位", trigger: "blur"}
-  // ]
-})
-const formRef = ref<FormInstance | null>(null)
-//取消登录
-const onCancle = () => {
-  push('/')
-}
 </script>
 
+<template>
+  <div class="login-register">
+    <div class="background-image">
+      <img src="@/assets/img/mainBgImg.jpg" alt="Background"/>
+      <div class="form-container" id="login-register" >
+        <!-- 登录图片 -->
+        <div v-if="isRegister" class="component-background">
+          <div class="image-container">
+            <!-- 图片容器 -->
+            <img src="@/assets/img/login.jpg" alt="Left Image" />
+          </div>
+          <div class="text-container">
+            <!-- 添加文本内容 -->
+            <p>你正在登录哦。。。</p>
+          </div>
+        </div>
+        <!-- 登录组件 -->
+        <el-form v-if="isRegister"
+                 ref="formRef"
+                 :model="form"
+                 :rules="rules"
+                 label-width="120px"
+                 label-position="top" style="padding: 140px">
+          <h2>Login</h2>
+          <el-form-item label="账号" prop="userName" @keyup.enter="onLogin">
+            <el-input v-model="form.userName" placeholder="请输入用户名"  />
+          </el-form-item>
+          <el-form-item label="密码" prop="password" @keyup.enter="onLogin" >
+            <el-input v-model="form.password"  placeholder="请输入密码" show-password/>
+          </el-form-item>
+          <el-form-item  label="验证码"  prop="code" @keyup.enter="onLogin">
+            <el-input v-model="form.code" style="flex: 1" placeholder="请输入验证码"/>
+            <el-image style="width: 110px;height: 36px;margin-left: 10px;border-radius: 5px" :src="verifyApi" alt="图片无法加载" @click="getNewVerify()" />
+          </el-form-item>
+          <el-form-item style="margin-top: 30px">
+            <el-button type="primary" @click="onLogin" :loading="isLoading">登录</el-button>
+            <el-button type="success" @click="registerLogin">去注册</el-button>
+            <el-button type="danger" @click="onCancel" >取消登录</el-button>
+          </el-form-item>
+        </el-form>
+
+        <!-- 注册组件 -->
+        <el-form v-if="!isRegister"
+                 ref="registerRef"
+                 :model="registerData"
+                 :rules="registerRules"
+                 label-width="120px"
+                 label-position="top"
+                 style="margin-left: 120px;margin-top: 80px;margin-bottom: 80px">
+          <h2>Register</h2>
+          <el-form-item label="账号" prop="userName" @keyup.enter="onRegister">
+            <el-input v-model="registerData.userName" placeholder="请输入用户名"  />
+          </el-form-item>
+          <el-form-item label="密码" prop="password" @keyup.enter="onRegister">
+            <el-input v-model="registerData.password" placeholder="请设置密码"  show-password/>
+          </el-form-item>
+          <el-form-item label="再次输入密码" prop="passwords" @keyup.enter="onRegister">
+            <el-input v-model="registerData.passwords" placeholder="请再次输入密码"  show-password/>
+          </el-form-item>
+          <el-form-item label="电话" prop="userPhone" @keyup.enter="onRegister">
+            <el-input v-model="registerData.userPhone" placeholder="请输入电话"  />
+          </el-form-item>
+          <el-form-item label="昵称" prop="email" @keyup.enter="onRegister">
+            <el-input v-model="registerData.nickName" placeholder="请输入昵称选填"  />
+          </el-form-item>
+          <el-button type="primary" @click="onRegister" >注册</el-button>
+          <el-button type="success" @click="registerLogin">去登录</el-button>
+          <el-button type="danger" @click="onCancel" >取消注册</el-button>
+        </el-form>
+        <!-- 注册图片 -->
+        <div v-if="!isRegister" class="component-background" style="margin-left: 148px">
+          <div class="image-container">
+            <!-- 图片容器 -->
+            <img src="@/assets/img/register.jpeg" alt="Left Image" />
+          </div>
+          <div class="text-container">
+            <!-- 添加文本内容 -->
+            <p>你正在注册哦。。。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
-
-
 .login-register {
   height: 100vh;
   display: flex;

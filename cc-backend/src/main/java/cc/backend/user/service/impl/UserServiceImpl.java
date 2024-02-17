@@ -6,10 +6,15 @@ import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -85,5 +90,63 @@ public class UserServiceImpl implements UserService {
     public String getUserHead(int userId) {
         String userHead = userMapper.getUserHeadById(userId);
         return userHead;
+    }
+
+    /**
+     * @description TODO 更新用户粉丝数
+     * @param userId
+     * @param addOrDel
+     * @return: boolean
+     */
+    @Override
+    public boolean updateUserFans(Integer userId, boolean addOrDel) {
+        User user = userMapper.selectById(userId);
+        if (user != null)
+        {
+            if (addOrDel)
+            {
+                user.setFans(user.getFans() + 1);
+                UpdateWrapper<User> userUpdateWrapper = new UpdateWrapper<>();
+                userUpdateWrapper.eq("id",userId);
+                return userMapper.update(user,userUpdateWrapper) > 0;
+            }
+            else
+            {
+            user.setFans(user.getFans() - 1);
+            UpdateWrapper<User> userUpdateWrapper = new UpdateWrapper<>();
+            userUpdateWrapper.eq("id",userId);
+            return userMapper.update(user,userUpdateWrapper) > 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @description TODO 注册
+     * @param user
+     * @return: boolean
+     */
+    @Override
+    public boolean register(User user) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_name",user.getUserName());
+        User users = userMapper.selectOne(queryWrapper);
+        System.out.println(users);
+        if (users != null)
+        {
+            return false;
+        }
+        user.setUserDate(new Date());
+        return userMapper.insert(user) > 0;
+    }
+
+    /**
+     * @description TODO 退出登录清除token
+     * @param tokenInfo
+     * @return: void
+     */
+    @Override
+    public boolean logout(String tokenInfo) {
+        return token.deleteToken(tokenInfo);
     }
 }

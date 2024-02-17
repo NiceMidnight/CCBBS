@@ -1,12 +1,12 @@
 import request from "../utils/request";
 
 
-type RegisterInfo = {
+type RegisterInfo = Partial<{
     userName:string,
     password:string,
     userPhone:string,
-    userEmail:string
-}
+    nickName:string
+}>
 
 /**
  * 注册api

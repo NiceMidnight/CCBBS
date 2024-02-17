@@ -1,75 +1,3 @@
-<template>
-  <div>
-    <el-container class="post-container">
-      <el-aside class="left-menu">
-        <div class="menu-bar"><el-icon><ChatDotRound /></el-icon>讨论区</div>
-        <el-menu :default-active="postTopicData['topicId']" class="el-menu-vertical-demo" @select="handleMenuSelect">
-          <el-menu-item :index="`0`"><el-icon><Flag /></el-icon>首页</el-menu-item>
-          <el-menu-item
-              v-for="postTopicData in postTopicData"
-              :key="`${postTopicData['topicId']}`"
-              :index="`${postTopicData['topicId']}`"
-          >
-            <el-icon><Flag /></el-icon>{{ postTopicData['topicName'] }}
-          </el-menu-item>
-        </el-menu>
-      </el-aside>
-      <!-- 右侧部分 -->
-      <el-main class="right-content">
-        <div class="post-title" >
-          <el-icon><Position /></el-icon>标题：{{ selectedData }}
-        </div>
-        <div v-for="(post, index) in postData['data']" :key="index">
-          <div class="content-block">
-          <div>
-            <el-avatar :size="50" :src="getUserHead(post['userId']) || circleUrl" />
-          </div>
-          <div style="margin-left: 20px">
-            <el-link class="post-link" :underline="false" @click="redirectToPost( post.postTitle, post.postId)">
-              {{ post["postTitle"] }}
-            </el-link>
-            <div style="margin-top: 5px">{{ post['postContent'] }}</div>
-
-            <div style="display: flex;align-items: center;">
-              <el-icon><UserFilled /></el-icon>{{ post['nickName'] }}
-              <div style="margin-left: 20px">
-                <template v-if="post.followStatus">
-                  <el-button class="follow-button" type="success" size="small" plain
-                             @mouseover="showUnfollow = true"
-                             @mouseleave="showUnfollow = false"
-                             @click="cancelFollow(post.userId,index)"
-                  >
-                    {{ showUnfollow ? '取消关注' : '已关注' }}
-                  </el-button>
-                </template>
-                <template v-else>
-                  <el-button class="follow-button" type="primary" size="small" plain @click="onFollowClick(post.userId,index)">
-                    关注<el-icon style="margin-left: 4px"><CirclePlus /></el-icon>
-                  </el-button>
-                </template>
-              </div>
-              <div style="margin-left: 20px">
-                发布时间：{{ timeHandler(null,null,post['createdAt']) }}
-              </div>
-              <div style="margin-left: 20px">
-                浏览量：{{ post['viewCount'] }}
-              </div>
-              <div style="margin-left: 20px" >
-                评论数：{{ post['commentCount'] }}
-              </div>
-              <div style="margin-left: 20px">
-                赞：{{ post['likeCount'] }}
-              </div>
-            </div>
-
-          </div>
-          </div>
-        </div>
-      </el-main>
-    </el-container>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { onMounted  } from "@vue/runtime-core";
@@ -81,14 +9,23 @@ import {baseUrl} from "../../utils/request";
 import {useRouter} from "vue-router";
 import {cancelFollowApi, followApi, getFollowStatusApi} from "../../api/follow";
 
+const onQuery = async () => {
+  await getAllPostApi(queryForm, postMsg.value).then(async (res) => {
+    queryForm.total = res.data.total
+    postData.value = res.data;
+  });
+}
+const addPost = () => {
+  router.push("/postAMessage");
+}
 const showUnfollow = ref(false);
 /**
  * 链接跳转
  */
 const router = useRouter(); // 解析router
 const redirectToPost = (postTitle,postId) => {
-  console.log(postId)
-  console.log(postTitle)
+  // console.log(postId)
+  // console.log(postTitle)
   increaseViewCountApi(postId);
   router.push({ name: 'Post', params: { title:postTitle,id: postId } });
 };
@@ -105,13 +42,12 @@ const selectOption = (option: number) => {
 const handleMenuSelect = async (index: string) => {
   queryForm.data.topicId = Number(index)
   await getAllPostApi(queryForm, postMsg.value).then(async (res) => {
+    queryForm.total = res.data.total
     postData.value = res.data;
   });
   await Promise.all(postData.value["data"].map(async (post) => {
     // 获取关注状态
     post.followStatus = await getFollowStatus(post.userId);
-    // ... 省略其他逻辑
-    console.log(postData)
   }));
   selectOption(Number(index));
 };
@@ -121,7 +57,7 @@ const handleMenuSelect = async (index: string) => {
 const postMsg = ref('');
 const queryForm = reactive({
   pageNum: 1,
-  pageSize: 10,
+  pageSize: 5,
   total: 1,
   data: {
     topicId: 0
@@ -137,7 +73,9 @@ onMounted(async () => {
       postTopicData.value = res.data;
     });
     await getAllPostApi(queryForm, postMsg.value).then((res) => {
+      queryForm.total = res.data.total
       postData.value = res.data;
+
     });
     await Promise.all(postData.value["data"].map(async (post) => {
       if (!userHeadUrls.value[post.userId]) {
@@ -149,11 +87,9 @@ onMounted(async () => {
     await Promise.all(postData.value["data"].map(async (post) => {
       // 获取关注状态
       post.followStatus = await getFollowStatus(post.userId);
-      // ... 省略其他逻辑
-      console.log(postData)
     }));
   } catch (e) {
-    ElMessage.error(e);
+    console.log(e)
   }
 });
 /**
@@ -236,8 +172,163 @@ const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1ep
 const getUserHead = (userId: number) => {
   return userHeadUrls.value[userId] || circleUrl;
 };
-
+/**
+ * 改变页码
+ * @param val
+ */
+const handleSizeChange = async (val: number) => {
+  try {
+    const queryParams = {
+      pageNum:queryForm.pageNum,
+      pageSize:val,
+      data:queryForm.data
+    }
+    await getAllPostApi(queryParams,postMsg.value).then((res) => {
+      queryForm.total = res.data.total
+      postData.value = res.data;
+      // 更新用户头像链接
+      updateHeadUrls();
+    })
+  } catch (e) {
+    ElMessage.error(e)
+  }
+}
+const handleCurrentChange = async (val: number) => {
+  try {
+    const queryParams = {
+      pageNum:val,
+      pageSize:queryForm.pageSize,
+      data:queryForm.data
+    }
+    await getAllPostApi(queryParams,postMsg.value).then((res) => {
+      queryForm.total = res.data.total
+      postData.value = res.data;
+      // 更新用户头像链接
+      updateHeadUrls();
+    })
+  } catch (e) {
+    ElMessage.error(e)
+  }
+}
+/**
+ * 更新用户头像链接
+ */
+const updateHeadUrls = async () => {
+  await Promise.all(postData.value["data"].map(async (post) => {
+    if (!userHeadUrls.value[post.userId]) {
+      const userHead = await getUserHeadApi(post.userId);
+      userHeadUrls.value[post.userId] = `${baseUrl}/${userHead.data}`;
+    }
+  }));
+}
+const formattedPostContent = (postContent) =>{
+  // 将获取到的数据中的图片标签的宽度设置为10%
+  const truncatedContent = postContent.replace(/<img/g, '<img style="width: 5%;"');
+  if (postContent.length > 20) {
+    return truncatedContent.slice(0,20) + '...';
+  } else {
+    return truncatedContent;
+  }
+}
 </script>
+
+
+<template>
+  <div>
+    <el-container class="post-container">
+      <el-aside class="left-menu">
+        <div class="menu-bar"><el-icon><ChatDotRound /></el-icon>讨论区</div>
+        <el-menu :default-active="postTopicData['topicId']" class="el-menu-vertical-demo" @select="handleMenuSelect">
+          <el-menu-item :index="`0`"><el-icon><Flag /></el-icon>首页</el-menu-item>
+          <el-menu-item
+              v-for="postTopicData in postTopicData"
+              :key="`${postTopicData['topicId']}`"
+              :index="`${postTopicData['topicId']}`"
+          >
+            <el-icon><Flag /></el-icon>{{ postTopicData['topicName'] }}
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <!-- 右侧部分 -->
+      <el-main class="right-content">
+        <div class="post-title" >
+          <div>
+            <el-icon><Position /></el-icon>标题：{{ selectedData }}
+          </div>
+          <div style="justify-content: center;align-items: center;margin-top: 1rem;margin-left: 1rem;">
+            <el-form :inline="true" @submit.prevent>
+              <el-form-item style="justify-content: center;align-items: center;">
+                <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
+              </el-form-item>
+              <el-form-item style="margin-left: -1.5rem">
+                <el-input v-model="postMsg" placeholder="请输入帖子信息" clearable @keyup.enter="onQuery"/>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="success" @click="onQuery">查询</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="addPost">发布帖子</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </div>
+        <div v-for="(post, index) in postData['data']" :key="index">
+          <div class="content-block">
+            <div>
+              <el-avatar :size="50" :src="getUserHead(post['userId']) || circleUrl" />
+            </div>
+            <div style="margin-left: 20px">
+              <el-link class="post-link" :underline="false" @click="redirectToPost( post.postTitle, post.postId)">
+                {{ post["postTitle"] }}
+              </el-link>
+              <div style="margin-top: 5px" v-html="formattedPostContent(post.postContent)"></div>
+              <div style="display: flex;align-items: center;">
+                <el-icon><UserFilled /></el-icon>{{ post['nickName'] }}
+                <div style="margin-left: 20px">
+                  <template v-if="post.followStatus">
+                    <el-button class="follow-button" type="success" size="small" plain
+                               @mouseover="showUnfollow = true"
+                               @mouseleave="showUnfollow = false"
+                               @click="cancelFollow(post.userId,index)"
+                    >
+                      {{ showUnfollow ? '取消关注' : '已关注' }}
+                    </el-button>
+                  </template>
+                  <template v-else>
+                    <el-button class="follow-button" type="primary" size="small" plain @click="onFollowClick(post.userId,index)">
+                      关注<el-icon style="margin-left: 4px"><CirclePlus /></el-icon>
+                    </el-button>
+                  </template>
+                </div>
+                <div style="margin-left: 20px">
+                  发布时间：{{ timeHandler(null,null,post['createdAt']) }}
+                </div>
+                <div style="margin-left: 20px">
+                  浏览量：{{ post['viewCount'] }}
+                </div>
+                <div style="margin-left: 20px" >
+                  评论数：{{ post['commentCount'] }}
+                </div>
+                <div style="margin-left: 20px">
+                  赞：{{ post['likeCount'] }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <el-pagination
+            v-model:current-page="queryForm.pageNum"
+            v-model:page-size="queryForm.pageSize"
+            background
+            layout="prev, pager, next"
+            :total="queryForm.total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"/>
+      </el-main>
+    </el-container>
+  </div>
+</template>
+
 
 <style scoped>
 .post-container {

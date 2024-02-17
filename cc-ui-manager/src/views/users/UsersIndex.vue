@@ -168,7 +168,11 @@ const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1ep
 const getImage = (userHead) => {
   return `${baseUrl}/${userHead}`
 }
-//  切换用户状态时间处理函数
+/**
+ * 切换用户状态时间处理函数
+ * @param act
+ * @param userId
+ */
 const handleChange = async (act: "ENABLE" | "DISABLE",userId: number) => {
   let actions = {
     ENABLE: {msg: '启用', fn: enableUser},

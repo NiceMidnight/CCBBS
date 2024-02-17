@@ -8,11 +8,10 @@
     >
       <el-menu-item index="/" style="margin-left: 20px">首页</el-menu-item>
       <el-menu-item index="/community">招聘信息</el-menu-item>
-      <el-menu-item index="/post">帖子</el-menu-item>
       <el-menu-item index="personalInfo">个人信息</el-menu-item>
       <el-menu-item index="/reservation">联系我们</el-menu-item>
-      <div><el-menu-item index="/forum">论坛</el-menu-item></div>
-
+      <el-menu-item index="/forum">论坛</el-menu-item>
+      <el-menu-item index="/postAMessage">发帖</el-menu-item>
       <div class="search-container" v-if="isSearchVisible">
         <el-input placeholder="搜索" class="search-input" />
         <el-button type="primary" round @click="" class="search-button">
@@ -28,8 +27,8 @@
 <!--        </el-switch>-->
       </div>
       <div class="right-model">
-        <el-button type="success" round @click="onLogin" v-if="!getLocalStorage" >登录</el-button>
-        <el-button type="primary" round v-if="!getLocalStorage">注册</el-button>
+        <el-button type="success" round @click="onLoginOrRegister(true)" v-if="!getLocalStorage" >登录</el-button>
+        <el-button type="primary" round @click="onLoginOrRegister(false)" v-if="!getLocalStorage">注册</el-button>
         <el-button type="danger" round v-if="getLocalStorage" @click="onLogout">退出登录</el-button>
       </div>
 
@@ -53,10 +52,11 @@ const toggleBackground = () => {
   console.log(isDarkMode)
 }
 const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+  // console.log(key, keyPath);
 };
 
-const onLogin = () => {
+const onLoginOrRegister = (loginOrRegister:boolean) => {
+  localStorage.setItem('loginOrRegister', JSON.stringify(loginOrRegister));
   router.push("/login");
 };
 

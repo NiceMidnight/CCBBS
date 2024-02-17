@@ -1,5 +1,6 @@
 package cc.backend.user.service.impl;
 
+import cc.backend.common.Token;
 import cc.backend.entity.Post;
 import cc.backend.entity.SearchData;
 import cc.backend.enums.PostStatus;
@@ -12,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +25,8 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private Token token;
     /**
      * @description TODO 获取所有帖子
      * @param queryCondition
@@ -164,7 +168,18 @@ public class PostServiceImpl implements PostService {
      * @return: java.util.List<cc.backend.entity.Post>
      */
     @Override
-    public List<Post> getTopPosts() {
+    public List<Post> getTopPosts()
+    {
         return postMapper.getTopPosts();
+    }
+
+
+    @Override
+    public boolean insertAPost(Post post,String tokenInfo) {
+        int userId = token.getUserId(tokenInfo);
+        post.setCreatedAt(new Date());
+        post.setUserId(userId);
+        postMapper.insert(post);
+        return false;
     }
 }

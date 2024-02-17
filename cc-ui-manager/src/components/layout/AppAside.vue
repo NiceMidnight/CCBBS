@@ -33,6 +33,9 @@
         <el-menu-item index="/topicForPost">
           <el-icon><IEpSetting/></el-icon> <span> 帖子主题管理 </span>
         </el-menu-item>
+        <el-menu-item index="/allPostComments">
+          <el-icon><IEpSetting/></el-icon> <span> 帖子评论管理 </span>
+        </el-menu-item>
       </el-sub-menu>
 
       <el-menu-item index="/users">

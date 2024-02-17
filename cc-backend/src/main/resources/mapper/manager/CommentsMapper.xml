@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.CommentsMapper">
+
+    <select id="selectAllBySearchData" resultMap="commentResultMap" parameterType="map">
+        SELECT
+            co.comment_id,
+            co.post_id,
+            co.user_id,
+            u.nick_name AS nick_name,
+            u.user_head AS user_head,
+            co.comment_content,
+            co.parent_comment_id,
+            co.created_at,
+            co.status_for_user,
+            co.status_for_compliance
+        FROM
+            comments co
+                LEFT JOIN
+            user u ON co.user_id = u.id
+        <where>
+            <if test="comments.postId != null and comments.postId != ''">
+                AND co.post_id = #{comments.postId}
+            </if>
+            <if test="comments.commentContent != null and comments.commentContent != ''">
+                AND co.comment_content = #{comments.commentContent}
+            </if>
+            <if test="comments.nickName != null and comments.nickName != ''">
+                AND u.nick_name LIKE CONCAT('%', #{comments.nickName}, '%')
+            </if>
+            <if test="comments.statusForCompliance != null and comments.statusForCompliance != ''">
+                AND co.status_for_compliance = #{comments.statusForCompliance}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND co.created_at BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+    </select>
+
+    <update id="updateCommentStatusForComplianceById" parameterType="comments">
+        UPDATE comments
+        SET status_for_compliance = #{commentStatusForCompliance}
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <resultMap id="commentResultMap" type="Comments">
+        <id property="commentId" column="comment_id"/>
+        <result property="postId" column="post_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="commentContent" column="comment_content"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="statusForUser" column="status_for_user"/>
+        <result property="statusForCompliance" column="status_for_compliance"/>
+        <result property="userHead" column="user_head"/>
+        <result property="replyCount" column="reply_count"/>
+    </resultMap>
+
+</mapper>

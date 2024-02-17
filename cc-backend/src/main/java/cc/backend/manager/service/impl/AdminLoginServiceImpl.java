@@ -84,8 +84,6 @@ public class AdminLoginServiceImpl implements AdminLoginService {
      */
     @Override
     public boolean logout(String tokenInfo) {
-        boolean isDeleted = token.deleteToken(tokenInfo);
-        if (isDeleted) return true;
-        return false;
+        return token.deleteToken(tokenInfo);
     }
 }

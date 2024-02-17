@@ -49,6 +49,19 @@ spring:
       static-locations: classpath:/static/
   config:
     location: classpath:/application.yml
+aliyun:
+  oss:
+    # oss对外服务的访问域名
+    endpoint: oss-cn-guangzhou.aliyuncs.com
+    # 访问身份验证中用到用户标识
+    accessKeyId: LTAI5tH5TkkaxYDWBxu1KhSn
+    # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    accessKeySecret: ufWbTLe7VlihWYfU1gop6wL1Hr2c2U
+    # oss的存储空间
+    bucketName: postfiles
+    # 上传文件大小(M)
+
+
 ## 自定义用户凭证---
 #  security:
 #    user:

@@ -33,8 +33,8 @@ const userId = ref() //本人用户id
 const topPost = ref()
 const router = useRouter(); // 解析router
 const redirectToPost =  (postTitle,postId) => {
-  console.log(postId)
-  console.log(postTitle)
+  // console.log(postId)
+  // console.log(postTitle)
   increaseViewCountApi(postId);
   router.push({ name: 'Post', params: { title:postTitle,id: postId } });
 }
@@ -390,7 +390,20 @@ const deleteComment = async (commentId) => {
         })
       })
 }
-
+/**
+ * 优化文本显示
+ * @param postContent
+ * @returns {*|string}
+ */
+const formattedPostContent = (postContent) =>{
+  // 将获取到的数据中的图片标签的宽度设置为10%
+  const truncatedContent = postContent.replace(/<img/g, '<img style="width: 5%;"');
+  if (postContent.length > 20) {
+    return truncatedContent.slice(0,20) + '...';
+  } else {
+    return truncatedContent;
+  }
+}
 </script>
 
 
@@ -428,7 +441,7 @@ const deleteComment = async (commentId) => {
         </div>
         <el-divider style="margin: 0.6rem"/>
         <div class="title">{{ post.postTitle }}</div>
-        <div class="content">{{ post.postContent }}</div>
+        <div class="content" v-html="post.postContent"></div>
 
         <div>
           <!-- 赞贴-->
@@ -572,10 +585,10 @@ const deleteComment = async (commentId) => {
         </div>
                 <div v-else style="
                 justify-content: center;
-                display: flex;-webkit-text-stroke: 1px black;
+                display: flex;-webkit-text-stroke: 1px #2f8bc9;
                 -webkit-text-fill-color : transparent;
                 font-size: 1.5rem;
-                color:#fff;">
+                color:#c03232;">
                   还没有评论呢，快来一起畅所欲言吧......
                 </div>
       </div>
@@ -588,7 +601,7 @@ const deleteComment = async (commentId) => {
         <div class="title"><font-awesome-icon :icon="['fas', 'fire']" style="margin-right: 1rem;justify-content: center;"/>实时热点</div>
         <div v-for="post in topPost" :key="post.postId" @click="redirectToPost( post.postTitle, post.postId)" class="top-post" >
           <div class="font3">{{post.postTitle}}</div>
-          <div class="font1">{{post.postContent}}</div>
+          <div class="font1" v-html="formattedPostContent(post.postContent)"></div>
           <div >{{post.viewCount}}次浏览</div>
         </div>
       </div>

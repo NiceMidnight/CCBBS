@@ -21,14 +21,17 @@ import java.util.stream.Collectors;
 public class IndexImgServiceImpl implements IndexImgService {
     @Autowired
     private IndexImgMapper indexImgMapper;
-    private List<SysImageResource> setIndexImg() {
-        List<SysImageResource> sysImageResources = indexImgMapper.selectList(null);
-        return sysImageResources;
-    }
 
+    /**
+     * @description TODO 获取走马灯图片路径
+     *
+     * @return: java.util.List<java.lang.String>
+     */
     @Override
     public List<String> getIndexImage() {
-        List<SysImageResource> sysImageResources = indexImgMapper.selectList(null);
+        QueryWrapper<SysImageResource> sysImageResourceQueryWrapper = new QueryWrapper<>();
+        sysImageResourceQueryWrapper.eq("type",0);
+        List<SysImageResource> sysImageResources = indexImgMapper.selectList(sysImageResourceQueryWrapper);
         List<String> imgPaths = sysImageResources.stream()
                 .map(SysImageResource::getImgPath)
                 .collect(Collectors.toList());

@@ -19,4 +19,5 @@ public interface PostService {
     boolean updatePostCommentCount(Integer postId,boolean addOrDel);
     boolean increaseViewCount(Integer postId);
     List<Post> getTopPosts();
+    boolean insertAPost(Post post,String tokenInfo);
 }

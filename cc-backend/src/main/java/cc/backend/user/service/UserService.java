@@ -15,4 +15,7 @@ public interface UserService {
     User getOtherUserInfoById(Integer userId);
     boolean updateUserInfo(User user);
     String getUserHead(int userId);
+    boolean updateUserFans(Integer userId,boolean addOrDel);
+    boolean register(User user);
+    boolean logout(String tokenInfo);
 }

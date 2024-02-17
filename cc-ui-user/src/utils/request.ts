@@ -35,7 +35,7 @@ request.interceptors.response.use(response => {
     if (error.response && error.response.status === 401 && !axios.isCancel(error)) {
         const errorMessage = error.response.data && error.response.data.error
             ? error.response.data.error
-            : '身份令牌丢失或验证无效，无法查看内容...'; // 使用默认错误消息
+            : '身份令牌丢失或验证无效，请登陆后查看...'; // 使用默认错误消息
         ElMessage.error(errorMessage); // 在实际应用中，你可以使用更合适的方式来显示错误提示
     }
 

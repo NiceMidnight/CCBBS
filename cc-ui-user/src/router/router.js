@@ -36,11 +36,6 @@ const routes = [
                 meta: {title:"社区"}
             },
             {
-                path:'/post',
-                name:'/post',
-                component:() => import("@/views/post/PostView.vue")
-            },
-            {
                 path: '/personalInfo',
                 name:'personalInfo',
                 component: () => import("@/views/personalInfo/PersonalInfo.vue"),
@@ -74,6 +69,13 @@ const routes = [
                 component: () => import("@/views/forum/PostMessageView.vue"),
                 meta: { title: "帖子信息", requiresAuth: true }  // 需要验证权限
             },
+            {
+                path: '/postAMessage',
+                name: 'PostAMessage',
+                component: () => import("@/views/addAPost/PostAMessage.vue"),
+                meta: { title: "发帖", requiresAuth: true }  // 需要验证权限
+            },
+
         ]
     },
 ];

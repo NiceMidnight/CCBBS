@@ -54,10 +54,22 @@ const routes = [
                 meta: {title:"帖子管理"}
             },
             {
+                path:'/posts/comments/:id/:title',
+                name:'signalPostComments',
+                component: () => import("@/views/post/SignalPostCommentsView.vue"),
+                meta: {title:"单帖子评论管理"}
+            },
+            {
                 path: '/topicForPost',
                 name:'topicForPost',
                 component: () => import("@/views/post/TopicForPostView.vue"),
                 meta: { title: "帖子主题管理" }
+            },
+            {
+                path:'/allPostComments',
+                name:'allPostComments',
+                component: () => import("@/views/post/AllPostCommentsView.vue"),
+                meta: {title:"所有帖子评论管理"}
             },
             {
                 path: '/personalInformation',

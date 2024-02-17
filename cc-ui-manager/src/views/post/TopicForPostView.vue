@@ -42,7 +42,8 @@
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        background layout="prev, pager, next" :total="tableData['total']"
+        background layout="prev, pager, next"
+        :total="tableData['total']"
 
         @size-change="(pageSize) => getTFPApi({
           pageSize:pageSize,

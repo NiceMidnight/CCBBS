@@ -411,7 +411,7 @@ const onLoad = async() => {
   try {
     await getSysImgOptionApi().then((res) => {
       options.value = res.data
-      console.log(options.value)
+      // console.log(options.value)
     })
     await getAllImages(queryForm).then((res) => {
       tableData.value = res.data
