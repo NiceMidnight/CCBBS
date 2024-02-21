@@ -39,6 +39,17 @@
             topic_id = #{topicId}
     </update>
 
+    <update id="updateTopicNameById" parameterType="topicForPost">
+        UPDATE
+            topic_for_post
+        SET
+            topic_name = #{topicName},
+            updated_id = #{updatedId},
+            updated_time = #{updatedTime}
+        WHERE
+            topic_id = #{topicId}
+    </update>
+
     <resultMap id="postResultMap" type="TopicForPost">
         <id property="topicId" column="topicId"/>
         <result property="topicName" column="topic_name"/>

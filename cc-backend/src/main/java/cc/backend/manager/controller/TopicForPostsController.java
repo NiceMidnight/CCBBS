@@ -76,4 +76,39 @@ public class TopicForPostsController {
         }
         return Result.error("禁用失败");
     }
+    /**
+     * @description TODO 通过id获取主题内容
+     * @param topicId
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("/getTopicById")
+    public Result getTopicById(@RequestParam("topicId")Integer topicId)
+    {
+        TopicForPost topic = topicForPostService.getTopicById(topicId);
+        if (topic != null)
+        {
+            return Result.successCDM(topic,"获取主题内容成功");
+        }
+        return  Result.error("获取主题内容失败");
+    }
+
+    /**
+     * @description TODO 更新主题
+     * @param topicName
+     * @param topicId
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("/editTopic")
+    public Result editTopic(@RequestParam("topicName")String topicName,
+                            @RequestParam("topicId")Integer topicId,
+                            @RequestHeader("Authorization")String tokenInfo)
+    {
+        boolean isEdit = topicForPostService.editTopic(topicName, topicId, tokenInfo);
+        if (isEdit)
+        {
+            return Result.successCM("编辑主题id:"+topicId+"成功");
+        }
+        return Result.error("编辑主题id:"+topicId+"失败");
+    }
 }

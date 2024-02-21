@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
  * @Date 2024/2/17
  */
 public interface CommentsService {
-    IPage<Comments> getComments(SearchData<Comments> commentsSearchData, LocalDateTime startTime, LocalDateTime endTime);
+    IPage<Comments> getOnePostComments(SearchData<Comments> commentsSearchData, LocalDateTime startTime, LocalDateTime endTime);
+    IPage<Comments> getAllPostComments(SearchData<Comments> commentsSearchData, LocalDateTime startTime, LocalDateTime endTime);
     boolean updateCommentStatusForCompliance(Integer commentId,CommentStatusForCompliance statusForCompliance);
     Comments getOneComment(Integer commentId);
 }

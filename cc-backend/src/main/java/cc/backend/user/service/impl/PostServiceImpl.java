@@ -1,6 +1,6 @@
 package cc.backend.user.service.impl;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.Post;
 import cc.backend.entity.SearchData;
 import cc.backend.enums.PostStatus;

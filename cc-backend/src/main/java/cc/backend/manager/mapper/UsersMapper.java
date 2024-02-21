@@ -21,7 +21,13 @@ public interface UsersMapper extends BaseMapper<User> {
     @Select("select * from user where user_name like concat('%',#{name},'%')")
     List<User> selectByName(String name);
 
+    int updateUserVersion(@Param("id")Integer id,@Param("userName")String userName,@Param("version")Integer version);
+    int updateUserVersionById(@Param("id")Integer id,@Param("version")Integer version);
     int updateUserStatus(@Param("user_id") int id, @Param("user_status")UserStatus userStatus);
+
     @Select("SELECT user_name FROM user WHERE id = #{id}")
     String findUserNameById(@Param("id") int id);
+
+    User selectUserDateById(@Param("Id") Integer id);
+
 }

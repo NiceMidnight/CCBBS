@@ -1,6 +1,6 @@
 package cc.backend;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.Comments;
 import cc.backend.entity.User;
 import cc.backend.manager.mapper.DictMapper;

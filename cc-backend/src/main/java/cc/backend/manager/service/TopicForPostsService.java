@@ -13,4 +13,6 @@ public interface TopicForPostsService {
     boolean addTFP(TopicForPost topicForPost,String tokenInfo);
     boolean enableTFP(Integer topicId,String tokenInfo);
     boolean disableTFP(Integer topicId,String tokenInfo);
+    TopicForPost getTopicById(Integer topicId);
+    boolean editTopic(String topicName,Integer topicId,String tokenInfo);
 }

@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 17/02/2024 18:34:20
+ Date: 21/02/2024 17:25:53
 */
 
 SET NAMES utf8mb4;
@@ -196,6 +196,23 @@ INSERT INTO `follow` VALUES (2, 1, '2024-02-15 18:32:21', 'Unfollowed');
 INSERT INTO `follow` VALUES (2, 2, '2024-02-15 18:32:19', 'Unfollowed');
 
 -- ----------------------------
+-- Table structure for images
+-- ----------------------------
+DROP TABLE IF EXISTS `images`;
+CREATE TABLE `images`  (
+  `img_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '图片id',
+  `img_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片名',
+  `img_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片地址',
+  `upload_time` datetime(6) NULL DEFAULT NULL COMMENT '上传时间',
+  `img_status` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'legitimate' COMMENT '是否合法违规删除(legitimate/illegality)',
+  PRIMARY KEY (`img_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of images
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for likes_for_post
 -- ----------------------------
 DROP TABLE IF EXISTS `likes_for_post`;
@@ -211,7 +228,7 @@ CREATE TABLE `likes_for_post`  (
 -- Records of likes_for_post
 -- ----------------------------
 INSERT INTO `likes_for_post` VALUES (2, 1, 'Liked', '2024-02-06 17:56:54.810000');
-INSERT INTO `likes_for_post` VALUES (2, 2, 'Liked', '2024-02-11 19:46:56.198000');
+INSERT INTO `likes_for_post` VALUES (2, 2, 'Liked', '2024-02-18 08:32:51.475000');
 
 -- ----------------------------
 -- Table structure for post
@@ -236,9 +253,9 @@ CREATE TABLE `post`  (
 -- ----------------------------
 -- Records of post
 -- ----------------------------
-INSERT INTO `post` VALUES (1, 1, '测试', '测试', 2, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 48, 1, 1, 19);
-INSERT INTO `post` VALUES (2, 2, '失物手表', '测试啊2', 1, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 59, 1, 0, 0);
-INSERT INTO `post` VALUES (3, 1, '测试提交', '<h1>查看提交</h1><p style=\"text-align: left;\">1231231231<img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/mmexport1639369490349.jpg\" alt=\"\" data-href=\"\" style=\"width: 30%;\"></p>', 2, '2024-02-16 14:51:58.222000', 'COMPLIANCE', 'PUBLIC', 4, 0, 0, 0);
+INSERT INTO `post` VALUES (1, 1, '测试', '测试', 2, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 49, 1, 1, 19);
+INSERT INTO `post` VALUES (2, 2, '失物手表', '测试啊2', 1, '2023-11-24 10:22:54.000000', 'COMPLIANCE', 'PUBLIC', 63, 1, 0, 0);
+INSERT INTO `post` VALUES (3, 1, '测试提交', '<h1>查看提交</h1><p style=\"text-align: left;\">1231231231<img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/mmexport1639369490349.jpg\" alt=\"\" data-href=\"\" style=\"width: 30%;\"></p>', 2, '2024-02-16 14:51:58.222000', 'COMPLIANCE', 'PUBLIC', 14, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for replies
@@ -301,6 +318,32 @@ INSERT INTO `sys_images` VALUES (16, '动漫女孩 水花 海浪 海洋之女 4k
 INSERT INTO `sys_images` VALUES (19, '1703957554963.jpg', 'static/sys_img/65ecdf7b-bf71-479d-978e-cc8e38493b99-1703957554963.jpg', 1, '2024-02-03 16:44:21.323000', 'VISIBLE', 4);
 
 -- ----------------------------
+-- Table structure for token
+-- ----------------------------
+DROP TABLE IF EXISTS `token`;
+CREATE TABLE `token`  (
+  `token_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '令牌id',
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
+  `redis_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '键',
+  `redis_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '值',
+  `token_status` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'EFFECTIVE' COMMENT '是否删除(EFFECTIVE/INVALID)',
+  PRIMARY KEY (`token_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of token
+-- ----------------------------
+INSERT INTO `token` VALUES (37, 2, 'zhangsan', '45076059-c159-4f97-9176-55529e378f0a', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (38, 2, 'zhangsan', '45c8bc85-4301-424c-a779-9c8ddd8911b4', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (39, 2, 'zhangsan', '69c09c38-e4c6-41f5-8436-557728eabdd8', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (40, 2, 'zhangsan', 'ca2b9e2b-6508-4b81-9f60-a26cdae2fc6f', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (41, 2, 'zhangsan', '8a9865e5-4bae-4328-8e16-85cc97e7f997', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (42, 2, 'zhangsan', '8cbc8b76-f1fc-422f-9e79-d50dbe76dd01', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (43, 2, 'zhangsan', '44db9a02-87fb-45ed-8cec-cef8d350d02f', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (44, 2, 'zhangsan', '040b80b0-d719-44c9-9eeb-dbfd953a638c', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市1\",\"userDate\":1707895578207,\"userRole\":0,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":0}', 'INVALID');
+
+-- ----------------------------
 -- Table structure for topic_for_article
 -- ----------------------------
 DROP TABLE IF EXISTS `topic_for_article`;
@@ -342,7 +385,7 @@ INSERT INTO `topic_for_post` VALUES (1, '测试', 1, '2023-12-17 01:26:03.000000
 INSERT INTO `topic_for_post` VALUES (2, '失物招领', 1, '2023-12-17 01:26:03.000000', NULL, NULL, 'ENABLE');
 INSERT INTO `topic_for_post` VALUES (3, '寻物启事', 1, '2024-01-09 00:11:36.117000', NULL, NULL, 'ENABLE');
 INSERT INTO `topic_for_post` VALUES (4, '表白墙', 1, '2024-01-09 00:15:09.480000', NULL, NULL, 'ENABLE');
-INSERT INTO `topic_for_post` VALUES (5, '生活趣事', 1, '2024-01-09 00:16:41.275000', 1, '2024-02-03 18:59:39.881000', 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (5, '生活趣事', 1, '2024-01-09 00:16:41.275000', 1, '2024-02-20 11:45:45.509000', 'ENABLE');
 INSERT INTO `topic_for_post` VALUES (6, '考研交流', 1, '2024-01-09 00:17:22.665000', 1, '2024-02-03 18:59:21.172000', 'ENABLE');
 
 -- ----------------------------
@@ -372,8 +415,8 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'static/sys_img/adminHead/head.jpg', 'root', '管理员', 'root', 1, 18, '16616649102', '广东省佛山市高明区xx镇xx街道xx栋', NULL, '2024-02-14 15:26:15.410000', 1, 'ENABLE', 1, 3, 0);
-INSERT INTO `user` VALUES (2, 'static/sys_img/adminHead/2023.jpg', 'zhangsan', '小宜', 'zhangsan', 1, 20, '16616649103', '广西省桂林市1', '123随便', '2024-02-14 15:26:18.207000', 0, 'ENABLE', 1, 3, 0);
+INSERT INTO `user` VALUES (1, 'static/sys_img/adminHead/head.jpg', 'root', '管理员', 'root', 1, 18, '16616649102', '广东省佛山市高明区xx镇xx街道xx栋', NULL, '2024-02-14 15:26:15.410000', 1, 'ENABLE', 1, 1, 0);
+INSERT INTO `user` VALUES (2, 'static/sys_img/adminHead/2023.jpg', 'zhangsan', '小宜', 'zhangsan', 1, 20, '16616649103', '广西省桂林市1', '123随便', '2024-02-14 15:26:18.207000', 0, 'ENABLE', 1, 1, 0);
 INSERT INTO `user` VALUES (3, NULL, '123123123', '', '123123123', NULL, NULL, '12341234123', NULL, NULL, '2024-02-14 16:40:41.175000', 0, 'ENABLE', 1, 1, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

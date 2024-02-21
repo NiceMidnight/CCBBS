@@ -109,7 +109,7 @@ const handleSizeChange = async (val: number) => {
       tableData.value = res.data.data;
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.error(e)
   }
 }
 const handleCurrentChange = async (val: number) => {
@@ -123,7 +123,7 @@ const handleCurrentChange = async (val: number) => {
       tableData.value = res.data.data;
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.error(e)
   }
 }
 
@@ -173,7 +173,7 @@ const onLoad = async () => {
       })
     }
   } catch (e) {
-    ElMessage.error(e)
+    console.error(e)
   }
 }
 onLoad()
@@ -184,7 +184,7 @@ const onQuery = async () => {
       tableData.value = res.data.data
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.error(e)
   }
 }
 /**

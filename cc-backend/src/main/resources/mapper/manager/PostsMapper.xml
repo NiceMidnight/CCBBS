@@ -27,14 +27,23 @@
         LEFT JOIN
             topic_for_post tfp ON po.topic_id = tfp.topic_id
         <where>
-            <if test="postTitle != null and postTitle != ''">
-                AND po.post_title LIKE CONCAT('%', #{postTitle}, '%')
+            <if test="post.postTitle != null and post.postTitle != ''">
+                AND po.post_title LIKE CONCAT('%', #{post.postTitle}, '%')
             </if>
-            <if test="postContent != null and postContent != ''">
-                AND po.post_content LIKE CONCAT('%', #{postContent}, '%')
+            <if test="post.postContent != null and post.postContent != ''">
+                AND po.post_content LIKE CONCAT('%', #{post.postContent}, '%')
             </if>
-            <if test="userName != null and userName != ''">
-                AND u.user_name LIKE CONCAT('%', #{userName}, '%')
+            <if test="post.userName != null and post.userName != ''">
+                AND u.user_name LIKE CONCAT('%', #{post.userName}, '%')
+            </if>
+            <if test="post.nickName != null and post.nickName != ''">
+                AND u.nick_name LIKE CONCAT('%', #{post.nickName}, '%')
+            </if>
+            <if test="post.postStatus != null">
+                AND po.post_status = #{post.postStatus}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND po.created_at BETWEEN #{startTime} AND #{endTime}
             </if>
         </where>
         ORDER BY po.post_id DESC
@@ -45,6 +54,12 @@
         SET post_status = #{post_status}
         WHERE post_id = #{post_id}
     </update>
+
+    <select id="selectPostTitleById" parameterType="integer" resultType="string">
+        SELECT post_title
+        FROM post
+        WHERE post_id = #{postId}
+    </select>
 
     <resultMap id="postResultMap" type="Post">
         <id property="postId" column="post_id"/>

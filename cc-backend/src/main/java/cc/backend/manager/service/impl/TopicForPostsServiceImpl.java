@@ -1,6 +1,6 @@
 package cc.backend.manager.service.impl;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.forpost.TopicForPost;
 import cc.backend.enums.TopicStatus;
@@ -26,7 +26,9 @@ public class TopicForPostsServiceImpl implements TopicForPostsService {
     @Autowired
     private Token token;
     /**
-     * TODO 获取帖子主题内容
+     * @description TODO 获取帖子主题内容
+     * @param queryCondition
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.forpost.TopicForPost>
      */
     @Override
     public SearchData<TopicForPost> getTFP(SearchData<TopicForPost> queryCondition) {
@@ -36,11 +38,14 @@ public class TopicForPostsServiceImpl implements TopicForPostsService {
     }
 
     /**
-     * TODO 添加主题
+     * @description TODO 添加主题
+     * @param topicForPost
+     * @param tokenInfo
+     * @return: boolean
      */
     @Override
     public boolean addTFP(TopicForPost topicForPost,String tokenInfo) {
-        topicForPost.setCreatedId((long) token.getUserId(tokenInfo));
+        topicForPost.setCreatedId(token.getUserId(tokenInfo));
         topicForPost.setCreatedTime(new Date());
         return topicForPostsMapper.insert(topicForPost) > 0;
     }
@@ -61,6 +66,34 @@ public class TopicForPostsServiceImpl implements TopicForPostsService {
     public boolean disableTFP(Integer topicId,String tokenInfo) {
         Long updatedId = (long) token.getUserId(tokenInfo);
         return topicForPostsMapper.updateTFPStatus(topicId, TopicStatus.DISABLE,updatedId,new Date()) > 0;
+    }
+
+    /**
+     * @description TODO 通过id获取主题内容
+     * @param topicId
+     * @return: cc.backend.entity.forpost.TopicForPost
+     */
+    @Override
+    public TopicForPost getTopicById(Integer topicId) {
+        return topicForPostsMapper.selectById(topicId);
+    }
+
+    /**
+     * @description TODO 编辑主题信息
+     * @param topicName
+     * @param topicId
+     * @param tokenInfo
+     * @return: boolean
+     */
+    @Override
+    public boolean editTopic(String topicName, Integer topicId, String tokenInfo) {
+        int userId = token.getUserId(tokenInfo);
+        TopicForPost topicForPost = new TopicForPost();
+        topicForPost.setTopicId(topicId);
+        topicForPost.setTopicName(topicName);
+        topicForPost.setUpdatedId(userId);
+        topicForPost.setUpdatedTime(new Date());
+        return topicForPostsMapper.updateTopicNameById(topicForPost) > 0;
     }
 
 }

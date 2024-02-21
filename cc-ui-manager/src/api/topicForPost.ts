@@ -78,3 +78,30 @@ export const deleteTopicApi = ( topicId:number ) => {
         }
     })
 }
+/**
+ * 获取主题
+ * @param topicId
+ */
+export const getTopicByIdApi = (topicId:number) => {
+    return request({
+        method:'GET',
+        url:`/manager/tfp/getTopicById`,
+        params:{
+            topicId:topicId
+        }
+    })
+}
+/**
+ * 提交编辑主题
+ * @param topicName
+ */
+export const editTopicApi = (topicName:string,topicId:number) => {
+    return request({
+        method:'GET',
+        url:'/manager/tfp/editTopic',
+        params:{
+            topicName:topicName,
+            topicId:topicId
+        }
+    })
+}

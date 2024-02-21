@@ -23,7 +23,9 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersMapper usersMapper;
     /**
-     * TODO 查所有用户
+     * @description TODO 根据条件查询所有用户
+     * @param userSearchData
+     * @return: cc.backend.entity.SearchData
      */
     @Override
     public SearchData getAllUsers(SearchData<User> userSearchData) {
@@ -53,12 +55,24 @@ public class UsersServiceImpl implements UsersService {
     }
 
     /**
-     * TODO 获取注册用户数量
+     * @description TODO 获取注册用户数量
+     *
+     * @return: java.lang.Long
      */
     @Override
     public Long getUserNumber() {
         Long count = usersMapper.selectCount(null);
         return count;
+    }
+
+    /**
+     * @description TODO 获取用户信息
+     * @param id
+     * @return: cc.backend.entity.User
+     */
+    @Override
+    public User getUserInfo(Integer id) {
+        return usersMapper.selectUserDateById(id);
     }
 
 }

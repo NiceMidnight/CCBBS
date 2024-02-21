@@ -62,7 +62,7 @@ public class User {
      */
     private Date userDate;
     /**
-     * 角色  管理员/用户
+     * 角色  管理员1/用户0
      */
     private Integer userRole;
     /**

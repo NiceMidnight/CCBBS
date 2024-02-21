@@ -65,8 +65,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             // 去掉 Bearer 前缀
             String token = authorizationHeader.substring(7);
             // 在这里检查 token 是否存在于 Redis 中
-            boolean tokenExists = redisTemplate.hasKey(token);
-            return tokenExists; // 如果存在则返回 true，否则返回 false。
+            return Boolean.TRUE.equals(redisTemplate.hasKey(token)); // 如果存在则返回 true，否则返回 false。
         }
         return false;
     }

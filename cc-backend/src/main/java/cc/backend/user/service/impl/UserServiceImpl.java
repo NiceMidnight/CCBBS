@@ -1,6 +1,6 @@
 package cc.backend.user.service.impl;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.User;
 import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.UserService;
@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**

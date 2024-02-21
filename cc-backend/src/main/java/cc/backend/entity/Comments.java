@@ -37,11 +37,21 @@ public class Comments {
      */
     private Integer postId;
     /**
+     * 帖子标题
+     */
+    @TableField(exist = false)
+    private String postTitle;
+    /**
      * 用户ID
      */
     private Integer userId;
     /**
      * 用户名
+     */
+    @TableField(exist = false)
+    private String userName;
+    /**
+     * 用户昵称
      */
     @TableField(exist = false)
     private String nickName;

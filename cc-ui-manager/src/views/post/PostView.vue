@@ -1,8 +1,14 @@
 <script setup lang="ts">
 
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 import {ElMessage} from "element-plus";
-import {compliancePostApi, getAllPostApi, irregularityPostApi, postViewApi} from "@/api/post";
+import {
+  compliancePostApi,
+  getAllPostApi,
+  getPostStatusForComplianceOptionApi,
+  irregularityPostApi,
+  postViewApi
+} from "@/api/post";
 import {timeHandler} from "@/utils/timeHandler";
 import {truncateText} from "@/utils/textHandler";
 import {useRouter} from "vue-router";
@@ -20,6 +26,7 @@ const truncateTextFormatter = (row: any) => {
  * 表单数据---查询数据
  */
 const tableData = ref([])
+const postStatusForComplianceOptions = ref([]) //帖子状态选择器
 const queryForm = reactive({
   pageNum:1,
   pageSize:10,
@@ -27,26 +34,52 @@ const queryForm = reactive({
   data:{
     userName:'',
     postTitle:'',
-    postContent:''
+    postContent:'',
+    nickName:'',
+    postStatus:null
   }
 })
 const onLoad = async() => {
   try {
-    await getAllPostApi(queryForm).then((res) => {
+    await getAllPostApi(queryForm,null,null).then((res) => {
       tableData.value = res.data
       console.log(res.data)
+    })
+    await getPostStatusForComplianceOptionApi().then((res) => {
+      postStatusForComplianceOptions.value = res.data.map(option => {
+        return {
+          label: translateStatus(option),
+          value: option
+        }
+      })
     })
   } catch (e) {
     ElMessage.error(e)
   }
 }
+const translateStatus = (status) => {
+  switch (status) {
+    case 'COMPLIANCE':
+      return '合规';
+    case 'IRREGULARITY':
+      return '不合规';
+    default:
+      return status;
+  }
+}
 onLoad()
+const handleStatusChange = (value) => {
+  // 如果选项的值为空字符串，则将其设置为 null
+  if (value === '') {
+    queryForm.data.postStatus = null;
+  }
+}
 /**
  * 查找
  */
 const onQuery = async() => {
   try {
-    await getAllPostApi(queryForm).then((res) => {
+    await getAllPostApi(queryForm,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -64,7 +97,7 @@ const handleSizeChange = async (size:number) => {
       pageSize:size,
       data:queryForm.data
     }
-    await getAllPostApi(queryParams).then((res) => {
+    await getAllPostApi(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -78,7 +111,7 @@ const handleCurrentChange = async(num:number) => {
       pageSize:queryForm.pageSize,
       data:queryForm.data
     }
-    await getAllPostApi(queryParams).then((res) => {
+    await getAllPostApi(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data;
     })
   } catch (e) {
@@ -125,6 +158,60 @@ const router = useRouter(); // 解析router
 const redirectToPostComment = (postId,postTitle) => {
   router.push({ name: 'signalPostComments', params: { title:postTitle,id: postId } });
 }
+/**
+ * 时间范围
+ */
+const timeRange = ref("") //时间
+const startTime =  ref() ;
+const endTime =  ref();
+watch(timeRange,(newTime) => {
+  if (Array.isArray(newTime))
+  {
+    const start = new Date(newTime[0]);
+    start.setHours(start.getHours() + 8);
+    startTime.value = start.toISOString();
+    const end = new Date(newTime[1]);
+    end.setHours(end.getHours() + 8);
+    endTime.value = end.toISOString();
+  }
+  else {
+    startTime.value = ""
+    endTime.value = ""
+  }
+})
+/**
+ * 快速时间选择器
+ * @type {[{text: string, value: (function(): [Date,Date])},{text: string, value: (function(): [Date,Date])},{text: string, value: (function(): [Date,Date])}]}
+ */
+const shortcuts = [
+  {
+    text: '上周',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: '上个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: '过去三个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
 </script>
 
 <template>
@@ -132,8 +219,11 @@ const redirectToPostComment = (postId,postTitle) => {
     <template #header>
       <div class="card-header" style="margin-top: 10px;width: 1800px">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
-          <el-form-item label="用户名称">
+          <el-form-item label="用户名">
             <el-input v-model="queryForm.data.userName" placeholder="请输入上传用户名称" clearable @keyup.enter="onQuery"/>
+          </el-form-item>
+          <el-form-item label="昵称">
+            <el-input v-model="queryForm.data.nickName" placeholder="请输入上传用户昵称" clearable @keyup.enter="onQuery"/>
           </el-form-item>
           <el-form-item label="标题">
             <el-input v-model="queryForm.data.postTitle" placeholder="请输入帖子标题" clearable @keyup.enter="onQuery"/>
@@ -141,9 +231,40 @@ const redirectToPostComment = (postId,postTitle) => {
           <el-form-item label="内容">
             <el-input v-model="queryForm.data.postContent" placeholder="请输入帖子内容" clearable @keyup.enter="onQuery"/>
           </el-form-item>
-          <el-form-item>
-            <el-button type="success" @click="onQuery">查询</el-button>
-          </el-form-item>
+          <div style="display: flex">
+            <el-form-item label="帖子状态" @keyup.enter="onQuery">
+              <el-select
+                  v-model="queryForm.data.postStatus"
+                  placeholder="NULL"
+                  clearable
+                  @change="handleStatusChange"
+              >
+                <el-option
+                    v-for="option in postStatusForComplianceOptions"
+                    :key="option.value"
+                    :value="option.value"
+                    :label="option.label"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <div >
+                <span >时间</span>
+                <el-date-picker
+                    v-model="timeRange"
+                    type="datetimerange"
+                    :shortcuts="shortcuts"
+                    range-separator="至"
+                    start-placeholder="起始时间"
+                    end-placeholder="结束时间"
+                    style="margin-left: 1rem"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" @click="onQuery">查询</el-button>
+            </el-form-item>
+          </div>
         </el-form>
       </div>
     </template>
@@ -189,7 +310,7 @@ const redirectToPostComment = (postId,postTitle) => {
     />
 
     <el-drawer v-model="drawer" :title="post['postTitle']" :direction="'ltr'">
-      <span>{{ post['postContent'] }}</span>
+      <span v-html="post['postContent']"></span>
     </el-drawer>
 
   </el-card>

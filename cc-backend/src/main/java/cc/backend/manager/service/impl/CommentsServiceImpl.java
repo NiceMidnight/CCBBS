@@ -24,18 +24,29 @@ public class CommentsServiceImpl implements CommentsService {
     @Autowired
     private CommentsMapper commentsMapper;
     /**
-     * @description TODO 通过查询条件获取帖子数据
+     * @description TODO 通过查询条件获取d单个帖子评论数据
      * @param commentsSearchData
      * @param startTime
      * @param endTime
      * @return: cc.backend.entity.SearchData<cc.backend.entity.Comments>
      */
     @Override
-    public IPage<Comments> getComments(SearchData<Comments> commentsSearchData, LocalDateTime startTime, LocalDateTime endTime)
+    public IPage<Comments> getOnePostComments(SearchData<Comments> commentsSearchData, LocalDateTime startTime, LocalDateTime endTime)
     {
         IPage<Comments> iPage = new Page<>(commentsSearchData.getPageNum(),commentsSearchData.getPageSize());
-        IPage<Comments> commentsIPage = commentsMapper.selectAllBySearchData(iPage, commentsSearchData.getData(), startTime, endTime);
-        return commentsIPage;
+        return commentsMapper.selectOnePostCommentsBySearchData(iPage, commentsSearchData.getData(), startTime, endTime);
+    }
+    /**
+     * @description TODO 通过查询条件获取帖子评论数据
+     * @param commentsSearchData
+     * @param startTime
+     * @param endTime
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Comments>
+     */
+    @Override
+    public IPage<Comments> getAllPostComments(SearchData<Comments> commentsSearchData, LocalDateTime startTime, LocalDateTime endTime) {
+        IPage<Comments> iPage = new Page<>(commentsSearchData.getPageNum(),commentsSearchData.getPageSize());
+        return commentsMapper.selectAllCommentsBySearchData(iPage, commentsSearchData.getData(), startTime, endTime);
     }
 
     /**

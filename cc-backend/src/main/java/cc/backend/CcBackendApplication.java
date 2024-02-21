@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan({"cc.backend.user.mapper","cc.backend.manager.mapper"})
+@MapperScan({"cc.backend.user.mapper","cc.backend.manager.mapper","cc.backend.common.token"})
 public class CcBackendApplication {
 
     public static void main(String[] args) {

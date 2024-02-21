@@ -201,7 +201,7 @@ const editArticle = async(articleId:number) => {
   try {
     editArticleDialogVisible.value = true
     await getOneArticleApi(articleId).then((res) => {
-      console.log(res)
+      // console.log(res)
       editArticleData.createdBy = res.data.createdBy
       if (res.data.updatedBy) {
         editArticleData.updatedBy = res.data.updatedBy
@@ -218,8 +218,8 @@ const editHandleClose = () => {
   ElMessageBox.confirm('是否取消编辑文章，数据将清空！')
       .then(() => {
         editArticleDialogVisible.value = false
-        Object.keys(articleData).forEach(key => {
-          articleData[key] = ''
+        Object.keys(editArticleData).forEach(key => {
+          editArticleData[key] = ''
         })
       })
       .catch(() => {

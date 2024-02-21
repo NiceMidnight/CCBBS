@@ -1,7 +1,7 @@
 package cc.backend.manager.service.impl;
 
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.Dict;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.SysImageResource;

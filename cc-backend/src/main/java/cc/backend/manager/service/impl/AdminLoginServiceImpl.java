@@ -1,6 +1,6 @@
 package cc.backend.manager.service.impl;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.User;
 import cc.backend.manager.mapper.UsersMapper;
 import cc.backend.manager.service.AdminLoginService;
@@ -47,7 +47,13 @@ public class AdminLoginServiceImpl implements AdminLoginService {
                 .eq(true,User::getPassword,user.getPassword())
                 .eq(User::getUserDeleted, 1)    //  逻辑删除
                 .eq(User::getUserRole,1)    //  用户角色--管理员
-                .select(User::getId,User::getUserName,User::getUserRole,User::getUserDeleted,User::getUserStatus,User::getNickName);
+                .select(User::getId,
+                        User::getUserName,
+                        User::getUserRole,
+                        User::getUserDeleted,
+                        User::getUserStatus,
+                        User::getNickName,
+                        User::getUserVersion);
         User isExist = usersMapper.selectOne(lambdaQueryWrapper);
         if (isExist != null) {
             // 用户存在，并且密码匹配，登录成功
@@ -58,7 +64,8 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     /**
      * @description TODO 根据token获取管理员信息
-     * @date 2023/8/14 17:26
+     * @param tokenInfo
+     * @return: cc.backend.entity.User
      */
     @SneakyThrows
     @Override
@@ -69,7 +76,9 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     }
 
     /**
-     * TODO 获取用户名称
+     * @description TODO 获取用户名称
+     * @param tokenInfo
+     * @return: java.lang.String
      */
     @Override
     public String getUserName(String tokenInfo) {

@@ -21,4 +21,5 @@ public interface TopicForPostsMapper extends BaseMapper<TopicForPost> {
                         @Param("topicStatus") TopicStatus topicStatus,
                         @Param("updatedId")Long updatedId,
                         @Param("updatedTime")Date updatedTime);
+    int updateTopicNameById(TopicForPost topicForPost);
 }

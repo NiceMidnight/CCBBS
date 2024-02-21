@@ -1,6 +1,6 @@
 package cc.backend.user.service.impl;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.Comments;
 import cc.backend.user.mapper.CommentMapper;
 import cc.backend.user.service.CommentService;

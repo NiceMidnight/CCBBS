@@ -80,7 +80,9 @@ export const updateUserInfoApi = (user:userInfo) => {
         data:user
     })
 }
-
+/**
+ * 获取id
+ */
 export const getUserIdApi = () => {
     return request({
         method:'GET',
@@ -88,4 +90,17 @@ export const getUserIdApi = () => {
     })
 }
 
+/**
+ * 令牌验证
+ * @param token
+ */
+export const tokenVerificationApi = (token:string) =>{
+    return request({
+        method:'GET',
+        url:'/user/token/tokenVerification',
+        params:{
+            token:token
+        }
+    })
+}
 

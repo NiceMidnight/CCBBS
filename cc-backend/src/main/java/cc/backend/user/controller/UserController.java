@@ -2,9 +2,8 @@ package cc.backend.user.controller;
 
 
 import cc.backend.common.Result;
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.User;
-import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.impl.UserServiceImpl;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import jakarta.servlet.ServletOutputStream;

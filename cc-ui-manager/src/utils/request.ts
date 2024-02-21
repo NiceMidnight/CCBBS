@@ -1,5 +1,6 @@
 import axios from "axios";
 import {ElMessage, ElNotification} from "element-plus";
+import {useTokenStore} from "../stores/mytoken";
 
 export const baseUrl = 'http://localhost:8081';
 // 创建一个取消请求的 CancelToken

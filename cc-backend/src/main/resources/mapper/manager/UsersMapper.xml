@@ -3,9 +3,25 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.backend.manager.mapper.UsersMapper">
+    <update id="updateUserVersion" >
+        UPDATE user
+        SET user_version = #{version}
+        WHERE id = #{id} AND user_name = #{userName}
+    </update>
+    <update id="updateUserVersionById" >
+        UPDATE user
+        SET user_version = #{version}
+        WHERE id = #{id}
+    </update>
     <update id="updateUserStatus" parameterType="user">
         UPDATE user
         SET user_status = #{user_status}
         WHERE id = #{user_id}
     </update>
+
+    <select id="selectUserDateById" resultType="user">
+        SELECT user_name,nick_name
+        FROM user
+        WHERE id = #{Id}
+    </select>
 </mapper>

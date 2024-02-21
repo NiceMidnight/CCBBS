@@ -17,5 +17,6 @@ public interface UsersService {
     boolean enableUser(Integer id);
     boolean forbidUser(Integer id);
     Long getUserNumber();
+    User getUserInfo(Integer id);
 
 }

@@ -29,7 +29,7 @@ public class TopicForPost {
     /**
      * 创建者id
      */
-    private Long createdId;
+    private Integer createdId;
     /**
      * 创建者名称
      */
@@ -42,7 +42,7 @@ public class TopicForPost {
     /**
      * 更新者id
      */
-    private Long updatedId;
+    private Integer updatedId;
     /**
      * 更新者名称
      */

@@ -63,4 +63,19 @@ export const getUserName = () => {
     })
 }
 
+/**
+ * 获取用户信息
+ * @param id
+ */
+export const getUserInfo = (id:number) => {
+    return request({
+        method:"GET",
+        url:'/manager/user/getUserInfo',
+        params:{
+            id:id
+        }
+    })
+}
+
+
 

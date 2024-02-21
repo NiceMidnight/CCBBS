@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
+
 /**
  * @Description
  * @Author Tiamo_null
@@ -14,9 +16,10 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface PostsMapper extends BaseMapper<Post> {
-    IPage<Post> selectAllPost(IPage<Post> iPage,
-                              @Param("userName") String userName,
-                              @Param("postTitle") String postTitle,
-                              @Param("postContent") String postContent);
+    IPage<Post> selectAllPost(IPage<Post> iPage, Post post,
+                              @Param("startTime") LocalDateTime startTime,
+                              @Param("endTime")LocalDateTime endTime);
     int updatePostStatus(@Param("post_id")int postId,@Param("post_status") PostStatus postStatus);
+
+    String selectPostTitleById(@Param("postId")Integer postId);
 }

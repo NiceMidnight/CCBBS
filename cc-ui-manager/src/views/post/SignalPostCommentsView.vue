@@ -1,22 +1,22 @@
 <script setup lang="ts">
 
 import {timeHandler} from "@/utils/timeHandler";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {reactive, ref,watch} from "vue";
 import {ElMessage} from "element-plus";
 import {
   commentViewApi,
   complianceCommentApi,
   getCommentsApi,
-  getCommentStatusForComplianceOptionApi,
+  getCommentStatusForComplianceOptionApi, getOnePostCommentsApi,
   irregularityCommentApi
 } from "@/api/commen";
 import {baseUrl} from "@/utils/request";
-import {getAllPostApi, postViewApi} from "@/api/post";
 import {truncateText} from "@/utils/textHandler";
 
 const route = useRoute(); //解析路由
 const postId = Number(route.params.id);//帖子id
+const postTitle = route.params.title
 /**
  * 表单数据---查询数据
  */
@@ -27,11 +27,12 @@ const tableData = ref([])
 const commentStatusForComplianceOptions = ref([])
 const queryForm = reactive({
   pageNum:1,
-  pageSize:8,
+  pageSize:6,
   total:1,
   data:{
     postId:Number(route.params.id),
     userName:'',
+    nickName:'',
     commentContent:'',
     statusForCompliance:null,
   }
@@ -48,7 +49,7 @@ const onLoad = async() => {
         value: option
       };
     });
-    await getCommentsApi(queryForm).then((res) => {
+    await getOnePostCommentsApi(queryForm,null,null).then((res) => {
       tableData.value = res.data
       console.log(res.data)
     })
@@ -77,7 +78,7 @@ const handleSizeChange = async (size:number) => {
       pageSize:size,
       data:queryForm.data
     }
-    await getCommentsApi(queryParams,startTime.value,endTime.value).then((res) => {
+    await getOnePostCommentsApi(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -95,7 +96,7 @@ const handleCurrentChange = async(num:number) => {
       pageSize:queryForm.pageSize,
       data:queryForm.data
     }
-    await getCommentsApi(queryParams,startTime.value,endTime.value).then((res) => {
+    await getOnePostCommentsApi(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data;
     })
   } catch (e) {
@@ -123,7 +124,7 @@ const translateStatus = (status) => {
  * @returns {Promise<void>}
  */
 const onQuery = async() => {
-  await getCommentsApi(queryForm,startTime.value,endTime.value).then((res) => {
+  await getOnePostCommentsApi(queryForm,startTime.value,endTime.value).then((res) => {
     tableData.value = res.data
     console.log(tableData.value)
   })
@@ -179,7 +180,13 @@ const shortcuts = [
     },
   },
 ]
-
+const router = useRouter(); //路由跳转
+/**
+ * 返回上层页面
+ */
+const goBack = () => {
+  router.go(-1)
+}
 /**
  * 帖子的合规不合规操作
  * @param act
@@ -229,50 +236,72 @@ const commentView = async (commentId: number) => {
 const truncateTextFormatter = (row: any) => {
   return truncateText(row.commentContent, 20);
 };
+const handleStatusChange = (value) => {
+  // 如果选项的值为空字符串，则将其设置为 null
+  if (value === '') {
+    queryForm.data.statusForCompliance = null;
+  }
+}
 </script>
 
 <template>
   <el-card class="box-card">
     <template #header>
+      <div style="display: flex;align-items: center;padding: 1rem">
+        <font-awesome-icon :icon="['fas', 'location-dot']" />
+        <div style="margin-left: 1rem">帖子ID:{{postId}}&nbsp;&nbsp;&nbsp;&nbsp;帖子标题：{{postTitle}}</div>
+      </div>
+
       <div class="card-header" style="margin-top: 10px;width: 1800px">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
-          <el-form-item label="用户名称">
-            <el-input v-model="queryForm.data.userName" placeholder="请输入用户名称" clearable @keyup.enter="onQuery"/>
-          </el-form-item>
-          <el-form-item label="内容">
-            <el-input v-model="queryForm.data.commentContent" placeholder="请输入帖子内容" clearable @keyup.enter="onQuery"/>
-          </el-form-item>
-          <el-form-item label="帖子状态" @keyup.enter="onQuery">
-            <el-select
-                v-model="queryForm.data.statusForCompliance"
-                placeholder="NULL"
-                clearable
-            >
-              <el-option
-                  v-for="option in commentStatusForComplianceOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <div >
-              <span >时间</span>
-              <el-date-picker
-                  v-model="timeRange"
-                  type="datetimerange"
-                  :shortcuts="shortcuts"
-                  range-separator="To"
-                  start-placeholder="Start date"
-                  end-placeholder="End date"
-                  style="margin-left: 1rem"
-              />
-            </div>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="success" @click="onQuery">查询</el-button>
-          </el-form-item>
+          <div>
+            <el-form-item label="用户名">
+              <el-input v-model="queryForm.data.userName" placeholder="请输入用户名" clearable @keyup.enter="onQuery"/>
+            </el-form-item>
+            <el-form-item label="昵称">
+              <el-input v-model="queryForm.data.nickName" placeholder="请输入用户昵称" clearable @keyup.enter="onQuery"/>
+            </el-form-item>
+            <el-form-item label="内容">
+              <el-input v-model="queryForm.data.commentContent" placeholder="请输入帖子内容" clearable @keyup.enter="onQuery"/>
+            </el-form-item>
+
+          </div>
+          <div>
+            <el-form-item label="帖子状态" @keyup.enter="onQuery">
+              <el-select
+                  v-model="queryForm.data.statusForCompliance"
+                  placeholder="NULL"
+                  clearable
+                  @change="handleStatusChange"
+              >
+                <el-option
+                    v-for="option in commentStatusForComplianceOptions"
+                    :key="option.value"
+                    :value="option.value"
+                    :label="option.label"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <div >
+                <span >时间</span>
+                <el-date-picker
+                    v-model="timeRange"
+                    type="datetimerange"
+                    :shortcuts="shortcuts"
+                    range-separator="至"
+                    start-placeholder="起始时间"
+                    end-placeholder="结束时间"
+                    style="margin-left: 1rem"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" @click="onQuery">查询</el-button>
+              <el-button type="info" @click="goBack">返回</el-button>
+            </el-form-item>
+          </div>
+
         </el-form>
       </div>
     </template>
@@ -284,11 +313,12 @@ const truncateTextFormatter = (row: any) => {
       <el-table-column label="头像"  width="100" align="center" v-slot="{ row }">
         <el-avatar :size="50" :src="getImage(row['userHead']) || circleUrl" />
       </el-table-column>
-      <el-table-column prop="userId" label="用户Id"  width="230" align="center"/>
+      <el-table-column prop="userId" label="用户Id"  width="100" align="center"/>
+      <el-table-column prop="userName" label="用户名"  width="130" align="center" v-slot="{ row }"/>
       <el-table-column prop="nickName" label="用户昵称"  width="130" align="center"/>
       <el-table-column prop="createdAt" label="上传时间" align="center" width="200" :formatter="timeHandler"/>
       <el-table-column prop="commentContent" label="帖子内容" width="150" align="center"/>
-      <el-table-column prop="parentCommentId" label="父评论Id" width="150" align="center"/>
+      <el-table-column prop="parentCommentId" label="父评论Id" width="100" align="center"/>
       <!--      status_for_user-->
       <el-table-column  label="操作" width="240" align="center" v-slot="scope">
         <el-button type="default" @click="commentView(scope.row['commentId'])" plain>查看</el-button>
@@ -304,17 +334,13 @@ const truncateTextFormatter = (row: any) => {
             @change="handleChange($event,row['commentId'])"
         />
       </el-table-column>
-      <el-table-column  label="操作" width="240" align="center" v-slot="scope">
-<!--        <el-button type="primary" plain @click="showEditSysImageDialog(scope.row)">编辑</el-button>-->
-<!--        <el-button type="danger" plain @click="deleteSysImageResourceById(scope.row.id)">删除</el-button>-->
-<!--        <el-button type="primary" @click="downloadImage(scope.row.imgPath,scope.row.imgName)">下载</el-button>-->
-      </el-table-column>
+
     </el-table>
 
     <el-pagination
         v-model:current-page="queryForm.pageNum"
         v-model:page-size="queryForm.pageSize"
-        :page-sizes="[5, 8, 10, 20]"
+        :page-sizes="[5, 6, 10, 20]"
         layout="total, sizes, prev, pager, next, jumper"
         :total="tableData['total']"
         @size-change="handleSizeChange"
@@ -323,7 +349,7 @@ const truncateTextFormatter = (row: any) => {
     />
 
     <el-drawer v-model="drawer" :title="comment['commentId']" :direction="'ltr'">
-      <span>{{ comment['commentContent'] }}</span>
+      <span >{{comment['commentContent']}}</span>
     </el-drawer>
 
   </el-card>

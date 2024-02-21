@@ -42,6 +42,15 @@ export const getInfo = () => {
     })
 }
 
+export const tokenVerificationApi = (token:string) =>{
+    return request({
+        method:'GET',
+        url:'/manager/token/tokenVerification',
+        params:{
+            token:token
+        }
+    })
+}
 
 
 

@@ -18,9 +18,27 @@ export type QueryCondition = Partial<{
         postId:number,
         userName:string,
         postTitle:string,
-        postContent:null
+        postContent:string
     }
 }>
+
+/**
+ * 获取单个帖子评论
+ * @param queryCondition
+ * @param startTime
+ * @param endTime
+ */
+export const getOnePostCommentsApi = (queryCondition:QueryCondition,startTime:any,endTime:any) => {
+    return request({
+        method:'POST',
+        url:'/manager/comment/getOnePostComments',
+        data: queryCondition,
+        params:{
+            startTime:startTime,
+            endTime:endTime
+        }
+    })
+}
 
 /**
  * 获取帖子评论
@@ -28,10 +46,10 @@ export type QueryCondition = Partial<{
  * @param startTime
  * @param endTime
  */
-export const getCommentsApi = (queryCondition:QueryCondition,startTime:any,endTime:any) => {
+export const getAllPostCommentsApi = (queryCondition:QueryCondition,startTime:any,endTime:any) => {
     return request({
         method:'POST',
-        url:'/manager/comment/getComments',
+        url:'/manager/comment/getAllPostComments',
         data: queryCondition,
         params:{
             startTime:startTime,

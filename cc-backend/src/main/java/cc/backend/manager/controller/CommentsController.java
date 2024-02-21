@@ -40,21 +40,36 @@ public class CommentsController {
     }
 
     /**
-     * @description TODO 通过条件查询帖子数据
+     * @description TODO 通过条件查询单个帖子评论数据
      * @param commentsSearchData
      * @param startTime
      * @param endTime
      * @return: cc.backend.common.Result
      */
-    @PostMapping("/getComments")
-    public Result getComments(@RequestBody SearchData<Comments> commentsSearchData,
+    @PostMapping("/getOnePostComments")
+    public Result getOnePostComments(@RequestBody SearchData<Comments> commentsSearchData,
                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime)
     {
-        IPage<Comments> comments = commentsService.getComments(commentsSearchData, startTime, endTime);
+        IPage<Comments> comments = commentsService.getOnePostComments(commentsSearchData, startTime, endTime);
         return Result.successCDM(comments,"获取帖子评论成功");
     }
 
+    /**
+     * @description TODO 通过条件查询帖子评论数据
+     * @param commentsSearchData
+     * @param startTime
+     * @param endTime
+     * @return: cc.backend.common.Result
+     */
+    @PostMapping("/getAllPostComments")
+    public Result getAllPostComments(@RequestBody SearchData<Comments> commentsSearchData,
+                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime)
+    {
+        IPage<Comments> comments = commentsService.getAllPostComments(commentsSearchData, startTime, endTime);
+        return Result.successCDM(comments,"获取帖子评论成功");
+    }
 
     /**
      * @description TODO 使评论合规操作

@@ -5,53 +5,54 @@ import { ref } from "vue";
 // 创建一个存储token的store
 export const useTokenStore = defineStore('mytoken', () => {
     const token = ref<string | null>(window.localStorage.getItem("TokenInfo") || '');
-    const expirationTime = ref<number | null>(parseInt(window.localStorage.getItem("TokenExpiration") || '0'));
-
-    const EXPIRATION_TIME_MINUTES = 1; // 固定的过期时间为30分钟
+    // const expirationTime = ref<number | null>(parseInt(window.localStorage.getItem("TokenExpiration") || '0'));
+    //
+    // const EXPIRATION_TIME_MINUTES = 1; // 固定的过期时间为30分钟
 
     // 用于保存传递的字符串
     function saveToken(data: string) {
-        const currentTime = Date.now();
-        // @ts-ignore
-        const expirationTimeMillis = currentTime + EXPIRATION_TIME_MINUTES * 60 * 1000;
+        // const currentTime = Date.now();
+        // // @ts-ignore
+        // const expirationTimeMillis = currentTime + EXPIRATION_TIME_MINUTES * 60 * 1000;
 
         token.value = data;
         // @ts-ignore
-        expirationTime.value = expirationTimeMillis
+        // expirationTime.value = expirationTimeMillis
 
-        updateLocalStorage(data,expirationTimeMillis); // 更新本地存储
+        updateLocalStorage(data); // 更新本地存储
     }
 
     // 用于更新本地存储的数据
-    function updateLocalStorage(data: string,expirationTimeMillis:number) {
+    function updateLocalStorage(data: string,) {
         window.localStorage.setItem("TokenInfo", data);
-        window.localStorage.setItem("TokenExpiration",expirationTimeMillis.toString())
+        // window.localStorage.setItem("TokenExpiration",expirationTimeMillis.toString())
     }
 
     // 用于获取已保存的字符串
     function getToken(): string | null {
-        const currentTime = Date.now()
-        const expirationTimeMillis = expirationTime.value || 0;
+        // const currentTime = Date.now()
+        // const expirationTimeMillis = expirationTime.value || 0;
 
-        if (currentTime < expirationTimeMillis) {
-            // Token 未过期，返回token值
-            return token.value;
-        } else {
-            // Token 已过期，清除token和过期时间，并返回null
-            clearToken();
-            return null;
-        }
+        // if (currentTime < expirationTimeMillis) {
+        //     // Token 未过期，返回token值
+        //     return token.value;
+        // } else {
+        //     // Token 已过期，清除token和过期时间，并返回null
+        //     clearToken();
+        //     return null;
+        // }
+        return token.value;
     }
     //  清空本地token
     function clearToken() {
         token.value = null;
-        expirationTime.value = null;
+        // expirationTime.value = null;
         window.localStorage.removeItem("TokenInfo");
-        window.localStorage.removeItem("TokenExpiration");
+        // window.localStorage.removeItem("TokenExpiration");
     }
 
     // 向外暴露
-    return { token, saveToken, getToken };
+    return { token, saveToken, getToken,clearToken };
 });
 
 

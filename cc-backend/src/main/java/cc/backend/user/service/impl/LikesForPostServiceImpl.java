@@ -1,6 +1,6 @@
 package cc.backend.user.service.impl;
 
-import cc.backend.common.Token;
+import cc.backend.common.token.Token;
 import cc.backend.entity.forpost.LikesForPost;
 import cc.backend.enums.LikesForPostStatus;
 import cc.backend.user.mapper.LikesForPostMapper;
