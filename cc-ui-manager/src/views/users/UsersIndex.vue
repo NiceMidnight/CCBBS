@@ -6,7 +6,7 @@
           <el-form-item label="用户名">
             <el-input v-model="queryForm.data.userName" placeholder="请输入用户名" clearable @keyup.enter="onQuery"/>
           </el-form-item>
-          <el-form-item label="性别" @keyup.enter="onQuery">
+          <el-form-item label="性别" @keyup.enter="onQuery"  style="width: 150px">
             <el-select
                 v-model="queryForm.data.userSex"
                 placeholder="NULL"

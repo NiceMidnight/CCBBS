@@ -203,7 +203,7 @@ const truncateText = (text, maxLength) => {
 <style lang="scss" scoped>
 .el-carousel {
   width: 100%;
-  max-width: 800px;
+  max-width: 50rem;
   margin: 0 auto;
 }
 
@@ -293,6 +293,11 @@ const truncateText = (text, maxLength) => {
 }
 
 @media screen and (max-width: 768px) {
+  .el-carousel {
+    width: 100%;
+    max-width: 90%;
+    margin: 0 auto;
+  }
   .side-container,
   .side-right-content,
   .container {

@@ -3,6 +3,7 @@ package cc.backend.manager.service.impl;
 import cc.backend.common.token.Token;
 import cc.backend.entity.Article;
 import cc.backend.entity.SearchData;
+import cc.backend.enums.ArticleStatus;
 import cc.backend.manager.mapper.ArticlesMapper;
 import cc.backend.manager.service.ArticlesService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -28,15 +29,17 @@ public class ArticlesServiceImpl implements ArticlesService {
      * TODO 获取文章
      */
     @Override
-    public SearchData getAllArticle(SearchData<Article> searchData) {
-
+    public SearchData<Article> getAllArticle(SearchData<Article> searchData) {
         IPage<Article> iPage = new Page<>(searchData.getPageNum(),searchData.getPageSize());
         articlesMapper.selectAllArticle(iPage, searchData.getData().getCreatedBy(), searchData.getData().getArticleTitle(), searchData.getData().getArticleContent());
         return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(),iPage.getRecords());
     }
 
     /**
-     * TODO 添加文章
+     * @description TODO 添加文章
+     * @param articleData
+     * @param tokenInfo
+     * @return: boolean
      */
     @Override
     public boolean addArticle(Article articleData, String tokenInfo) {
@@ -47,19 +50,23 @@ public class ArticlesServiceImpl implements ArticlesService {
         return articlesMapper.insert(articleData) > 0;
     }
     /**
-     * TODO 编辑文章
+     * @description TODO 编辑文章
+     * @param article
+     * @param tokenInfo
+     * @return: boolean
      */
     @Override
     public boolean editArticle(Article article, String tokenInfo) {
         int userId = token.getUserId(tokenInfo);
         article.setUpdatedId(userId);
         article.setUpdatedTime(new Date());
-        System.out.println(article);
         return articlesMapper.updateArticle(article) > 0;
     }
 
     /**
-     * TODO 删除文章
+     * @description TODO 删除文章
+     * @param articleId
+     * @return: boolean
      */
     @Override
     public boolean deleteArticle(Integer articleId) {
@@ -67,20 +74,33 @@ public class ArticlesServiceImpl implements ArticlesService {
     }
 
     /**
-     * TODO 查看文章
+     * @description TODO 查看文章
+     * @param articleId
+     * @return: cc.backend.entity.Article
      */
     @Override
-    public Article articleView(int articleId) {
+    public Article articleView(Integer articleId) {
         return articlesMapper.selectById(articleId);
     }
 
     /**
-     * TODO 获取单个文章所有数据
+     * @description TODO 获取单个文章所有数据
+     * @param articleId
+     * @return: cc.backend.entity.Article
      */
     @Override
-    public Article getOneByArticleId(int articleId) {
-        Article oneByArticleId = articlesMapper.getOneByArticleId(articleId);
-        return oneByArticleId;
+    public Article getOneByArticleId(Integer articleId) {
+        return articlesMapper.getOneByArticleId(articleId);
+    }
+
+    /**
+     * @description TODO 更新公告状态
+     * @param articleId
+     * @return: boolean
+     */
+    @Override
+    public boolean updateAnArticleStatusById(Integer articleId, ArticleStatus articleStatus) {
+        return articlesMapper.updateArticleStatusByArticleId(articleId,articleStatus) > 0;
     }
 }
 

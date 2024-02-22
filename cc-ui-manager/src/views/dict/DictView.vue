@@ -3,11 +3,12 @@
     <template #header>
       <div class="card-header" style="margin-top: 10px">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
-          <el-form-item label="字典类型名称" @keyup.enter="onQuery">
+          <el-form-item label="字典类型名称" @keyup.enter="onQuery" style="width: 250px">
             <el-select
                 v-model="queryForm.data.dictTypeName"
                 placeholder="NULL"
                 clearable
+                width="200px"
             >
               <el-option
                   v-for="option in options"
@@ -17,8 +18,7 @@
               />
             </el-select>
           </el-form-item>
-
-          <el-form-item>
+          <el-form-item >
             <el-button type="success" @click="onQuery">查询</el-button>
           </el-form-item>
           <el-form-item>

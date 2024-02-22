@@ -1,7 +1,7 @@
 package cc.backend.enums;
 
 /**
- * @Description
+ * @Description 用户状态
  * @Author Tiamo_null
  * @Date 2023/10/15
  */

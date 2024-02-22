@@ -1,73 +1,54 @@
-<template>
-  <div class="head">
-    <el-menu
-        :default-active="activeIndex"
-        mode="horizontal"
-        @select="handleSelect"
-        router
-    >
-      <el-menu-item index="/" style="margin-left: 20px">首页</el-menu-item>
-      <el-menu-item index="/community">招聘信息</el-menu-item>
-      <el-menu-item index="personalInfo">个人信息</el-menu-item>
-      <el-menu-item index="/reservation">联系我们</el-menu-item>
-      <el-menu-item index="/forum">论坛</el-menu-item>
-      <el-menu-item index="/postAMessage">发帖</el-menu-item>
-      <div class="search-container" v-if="isSearchVisible">
-        <el-input placeholder="搜索" class="search-input" />
-        <el-button type="primary" round @click="" class="search-button">
-          搜索
-        </el-button>
-<!--        <el-switch v-model="isDarkMode" style="margin-left: 20px" @change="toggleBackground">-->
-<!--          <template #active-action>-->
-<!--            <span class="custom-active-action">T</span>-->
-<!--          </template>-->
-<!--          <template #inactive-action>-->
-<!--            <span class="custom-inactive-action">F</span>-->
-<!--          </template>-->
-<!--        </el-switch>-->
-      </div>
-      <div class="right-model">
-        <el-button type="success" round @click="onLoginOrRegister(true)" v-if="!getLocalStorage" >登录</el-button>
-        <el-button type="primary" round @click="onLoginOrRegister(false)" v-if="!getLocalStorage">注册</el-button>
-        <el-button type="danger" round v-if="getLocalStorage" @click="onLogout">退出登录</el-button>
-      </div>
-
-      <el-menu-item index="4" >设置</el-menu-item>
-    </el-menu>
-  </div>
-
-</template>
-
 <script setup lang="ts">
 
-import {ref, onMounted, onUnmounted} from "vue";
+import {ref, onMounted, onUnmounted, reactive} from "vue";
 import {useRouter} from "vue-router";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {logoutApi} from "@/api/login";
 const getLocalStorage = ref<string | null>(localStorage.getItem("TokenInfo"));
-const router = useRouter();
-const activeIndex = ref("1");
-const isSearchVisible = ref(true);
-const isDarkMode = ref(true);
-const toggleBackground = () => {
-  console.log(isDarkMode)
-}
+const router = useRouter(); //析构
+const activeIndex = ref("/"); //页面加载时默认激活菜单的 index
+const menuVisible = ref(true);  //菜单的可视化
+/**
+ * 设置选中逻辑
+ */
 const handleSelect = (key: string, keyPath: string[]) => {
-  // console.log(key, keyPath);
-};
 
+};
+/**
+ * 登录OR注册
+ * @param loginOrRegister
+ */
 const onLoginOrRegister = (loginOrRegister:boolean) => {
   localStorage.setItem('loginOrRegister', JSON.stringify(loginOrRegister));
   router.push("/login");
 };
+/**
+ * 登出
+ */
+const onLogout = async () => {
 
-const onLogout = () => {
-  localStorage.clear();
-  router.push("/login");
+  await ElMessageBox.confirm('确认登出吗?')
+      .then(() => {
+        logoutApi().then((res) => {
+          if (res["code"] === '200')
+          {
+            ElMessage.success(res["msg"])
+            localStorage.clear();
+            router.push("/login");
+          } else ElMessage.error(res["msg"])
+        })
+
+      })
+      .catch(() => {
+        // catch error
+      })
 };
 
-// 根据屏幕宽度处理可见性
+/**
+ * 根据屏幕宽度处理可见性
+ */
 const handleResize = () => {
-  isSearchVisible.value = window.innerWidth >= 768;
+  menuVisible.value = window.innerWidth >= 1000;
 };
 
 onMounted(() => {
@@ -78,9 +59,102 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
 });
+
+const ltrMenuDrawer = ref(false)
+const getMenu = () => {
+  ltrMenuDrawer.value = true
+}
 </script>
 
+<template>
+  <div v-if="menuVisible">
+    <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+        :ellipsis="false"
+        @select="handleSelect"
+        router
+    >
+      <el-menu-item index="/">
+        <div class="title">
+          <div>
+            <font-awesome-icon :icon="['fab', 'twitter']" />
+          </div>
+          <div style="padding: 0.3rem;font-size: 1.5rem" class="color-text">
+            广州航海学院
+          </div>
+        </div>
+      </el-menu-item>
+      <el-menu-item index="/community">招聘信息</el-menu-item>
+      <el-menu-item index="personalInfo">个人中心</el-menu-item>
+<!--      <el-menu-item index="/reservation">联系我们</el-menu-item>-->
+      <el-menu-item index="/forum">论坛</el-menu-item>
+      <el-menu-item index="/postAMessage">发帖</el-menu-item>
+      <div class="flex-grow" />
+
+      <div class="right-model">
+        <el-button type="success" round @click="onLoginOrRegister(true)" v-if="!getLocalStorage" >登录</el-button>
+        <el-button type="primary" round @click="onLoginOrRegister(false)" v-if="!getLocalStorage">注册</el-button>
+        <el-button type="danger" round v-if="getLocalStorage" @click="onLogout">退出登录</el-button>
+      </div>
+      <el-menu-item index="4" style="margin-right: 2rem">设置</el-menu-item>
+    </el-menu>
+  </div>
+  <div v-else >
+    <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+        :ellipsis="false"
+        @select="handleSelect"
+        router
+    >
+      <el-menu-item  style="align-items: center;" @click="getMenu">
+        <div class="title">
+          <div style="display: flex; align-items: center; padding: 0.3rem;">
+            <font-awesome-icon :icon="['fab', 'twitter']" style="font-size: 2vw; margin-right: 5px;" />
+            <span style="font-size: 2vw;" >广航论坛</span>
+            <font-awesome-icon :icon="['fas', 'bars']" style="font-size: 2vw; margin-left: 5px;" />
+          </div>
+        </div>
+      </el-menu-item>
+
+      <el-drawer
+          v-model="ltrMenuDrawer"
+          title="菜单栏"
+          :direction="'ltr'"
+      >
+        <el-menu :default-active="activeIndex" mode="vertical" router>
+          <!-- 这里放上面的菜单项 -->
+          <el-menu-item index="/">首页</el-menu-item>
+          <el-menu-item index="/community">招聘信息</el-menu-item>
+          <el-menu-item index="personalInfo">个人信息</el-menu-item>
+          <el-menu-item index="/forum">论坛</el-menu-item>
+          <el-menu-item index="/postAMessage">发帖</el-menu-item>
+          <el-menu-item v-if="!getLocalStorage" @click="onLoginOrRegister(true)">登录</el-menu-item>
+          <el-menu-item  v-if="!getLocalStorage" @click="onLoginOrRegister(false)">注册</el-menu-item>
+          <el-menu-item index="4">设置</el-menu-item>
+          <el-menu-item  v-if="getLocalStorage" @click="onLogout">退出登录</el-menu-item>
+        </el-menu>
+      </el-drawer>
+    </el-menu>
+  </div>
+</template>
+
 <style lang="scss" scoped>
+.flex-grow {
+  flex-grow: 1;
+}
+.head {
+  display: flex;
+}
+.title {
+  font-size: 2rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+}
 .el-menu {
   background-color: white;
   border-bottom: 1mm solid beige;
@@ -92,42 +166,30 @@ onUnmounted(() => {
   align-items: center;
 }
 
-.el-menu-item {
-  //margin-left: 20px;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 150px; /* Adjust the width as needed */
-}
-
-.search-button {
-  margin-left: 10px; /* Adjust the margin as needed */
-  font-size: 14px; /* Adjust the font size as needed */
-}
-
 .right-model {
   display: flex;
   align-items: center;
+
 }
 @media screen and (max-width: 768px) {
-  .el-menu {
-    flex-direction: column;
-    align-items: stretch;
-  }
+  .title {
+    font-size: 2vw;
 
+    display: flex;
+    align-items: center;
+  }
   .right-model {
     margin-top: 15px;
     margin-left: 0;
   }
-
   .search-container {
     display: none; /* 在较小屏幕上隐藏搜索容器 */
   }
 }
-
+@media screen and (max-width: 1000px) {
+  .el-menu {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
 </style>

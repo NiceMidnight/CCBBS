@@ -32,7 +32,6 @@ public class RedisKeyExpiredListener implements MessageListener {
             QueryWrapper<Token> tokenQueryWrapper = new QueryWrapper<>();
             tokenQueryWrapper.eq("redis_key",expiredKey);
             Token token = tokenMapper.selectOne(tokenQueryWrapper);
-            System.out.println(token);
             if (token != null)
             {
                 deleteDataForExpiredKey(expiredKey,token);

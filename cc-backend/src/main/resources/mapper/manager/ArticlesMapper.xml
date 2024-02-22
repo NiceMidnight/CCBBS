@@ -14,13 +14,19 @@
             ar.updated_id,
             ar.updated_time,
             u_updated.nick_name as updated_by,
-            ar.view_count
+            ar.topic_id,
+            tfa.topic_name as topic_name,
+            tfa.topic_color as topic_color,
+            ar.view_count,
+            ar.article_status
         FROM
             article ar
         LEFT JOIN
             user u_created ON ar.created_id = u_created.id
         LEFT JOIN
             user u_updated ON ar.updated_id = u_updated.id
+        LEFT JOIN
+            topic_for_article tfa ON ar.topic_id = tfa.topic_id
         <where>
             <if test="articleTitle != null and articleTitle != ''">
                 AND ar.article_title LIKE CONCAT('%', #{articleTitle}, '%')
@@ -32,6 +38,7 @@
                 AND u_created.nick_name LIKE CONCAT('%', #{userName}, '%')
             </if>
         </where>
+        ORDER BY ar.created_time DESC
     </select>
 
     <select id="getOneByArticleId" resultMap="articleResultMap" >
@@ -47,7 +54,8 @@
             u_updated.nick_name as updated_by,
             ar.view_count,
             ar.topic_id,
-            tfa.topic_name as topic_name
+            tfa.topic_name as topic_name,
+            tfa.topic_color as topic_color
         FROM
             article ar
         LEFT JOIN
@@ -58,6 +66,7 @@
             topic_for_article tfa ON ar.topic_id = tfa.topic_id
         WHERE
             ar.article_id = #{articleId}
+        ORDER BY ar.created_time DESC
     </select>
 
     <update id="updateArticle" parameterType="article">
@@ -66,7 +75,16 @@
             updated_id = #{updatedId},
             updated_time = #{updatedTime},
             article_title = #{articleTitle},
-            article_content = #{articleContent}
+            article_content = #{articleContent},
+            topic_id = #{topicId}
+        WHERE
+            article_id = #{articleId}
+    </update>
+
+    <update id="updateArticleStatusByArticleId">
+        UPDATE article
+        SET
+            article_status = #{articleStatus}
         WHERE
             article_id = #{articleId}
     </update>
@@ -84,5 +102,7 @@
         <result property="viewCount" column="view_count"/>
         <result property="topicId" column="topic_id"/>
         <result property="topicName" column="topic_name"/>
+        <result property="topicColor" column="topic_color"/>
+        <result property="articleStatus" column="article_status"/>
     </resultMap>
 </mapper>

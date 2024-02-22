@@ -24,6 +24,11 @@ public class IndexArticleServiceImpl implements IndexArticleService {
 
     @Autowired
     private IndexArticleMapper articleMapper;
+    /**
+     * @description TODO 获取首页文章
+     * @param pageData
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Article>
+     */
     @Override
     public SearchData<Article> getIndexArticle(SearchData<Article> pageData) {
         IPage<Article> articlePage = new Page<>(pageData.getPageNum(), pageData.getPageSize());
@@ -35,6 +40,11 @@ public class IndexArticleServiceImpl implements IndexArticleService {
                 articlePage.getRecords());
     }
 
+    /**
+     * @description TODO 获取单个文章内容
+     * @param articleId
+     * @return: cc.backend.entity.Article
+     */
     @Override
     public Article getArticle(int articleId) {
         return articleMapper.getOneByArticleIdArticle(articleId);

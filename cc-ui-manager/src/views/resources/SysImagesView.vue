@@ -6,7 +6,7 @@
           <el-form-item label="管理员名称">
             <el-input v-model="queryForm.data.userName" placeholder="请输入上传管理员名称" clearable @keyup.enter="onQuery"/>
           </el-form-item>
-          <el-form-item label="图片类别" @keyup.enter="onQuery">
+          <el-form-item label="图片类别" @keyup.enter="onQuery" style="width: 200px;">
             <el-select
                 v-model="queryForm.data.type"
                 placeholder="NULL"
@@ -30,9 +30,10 @@
       </div>
     </template>
     <el-table :data="tableData['data']" border style="width: 100%">
+      <el-table-column type="selection" width="55" />
       <!-- 自动递增的行ID列 -->
-      <el-table-column type="index" label="行id"  width="100" align="center"/>
-      <el-table-column prop="id" label="图片Id" width="100" align="center"/>
+      <el-table-column type="index" label="行id"  width="60" align="center"/>
+      <el-table-column prop="id" label="图片Id" width="90" align="center"/>
       <el-table-column label="图片"  width="300" align="center" v-slot="{ row }">
         <el-image
             style="width: 70%; height: 70%"
@@ -181,7 +182,7 @@
         <el-text class="mx-1" type="success">{{timeHandler(null,null,editFormData.uploadTime)}}</el-text>
       </el-form-item>
       <el-form-item label="更改图片名称">
-        <el-input v-model="editFormData.imgName" type="textarea" :rows="1" placeholder="请输入文章内容"/>
+        <el-input v-model="editFormData.imgName" type="textarea" :rows="1" placeholder="请输入图片名称"/>
       </el-form-item>
       <el-form-item label="更改图片类别">
         <el-select v-model="editFormData.type" clearable placeholder="NULL">

@@ -1,5 +1,6 @@
 package cc.backend.entity;
 
+import cc.backend.enums.ArticleStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -73,4 +74,14 @@ public class Article {
      */
     @TableField(exist = false)
     private String topicName;
+    /**
+     * 文章所属主题颜色
+     */
+    @TableField(exist = false)
+    private String topicColor;
+    /**
+     * 文章状态可见/不可见
+     */
+    private ArticleStatus articleStatus;
+
 }

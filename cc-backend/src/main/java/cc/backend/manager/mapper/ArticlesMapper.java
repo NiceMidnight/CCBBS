@@ -1,6 +1,7 @@
 package cc.backend.manager.mapper;
 
 import cc.backend.entity.Article;
+import cc.backend.enums.ArticleStatus;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,4 +22,5 @@ public interface ArticlesMapper extends BaseMapper<Article> {
     Article getOneByArticleId(@Param("articleId") int articleId);
 
     int updateArticle(Article article);
+    int updateArticleStatusByArticleId(@Param("articleId")Integer articleId, @Param("articleStatus")ArticleStatus articleStatus);
 }

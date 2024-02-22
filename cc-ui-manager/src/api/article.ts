@@ -83,4 +83,23 @@ export const getOneArticleApi = (articleId:number) => {
         url:`/manager/article/getOneByArticleId?articleId=${articleId}`
     })
 }
-
+/**
+ * 使公告公开
+ * @param articleId
+ */
+export const makeAnArticlePublicApi = (articleId:number) => {
+    return request({
+        method:'GET',
+        url:`/manager/article/makeAnArticlePublic?articleId=${articleId}`
+    })
+}
+/**
+ * 使公告私有
+ * @param articleId
+ */
+export const makeAnArticlePrivateApi = (articleId:number) => {
+    return request({
+        method:'GET',
+        url:`/manager/article/makeAnArticlePrivate?articleId=${articleId}`
+    })
+}

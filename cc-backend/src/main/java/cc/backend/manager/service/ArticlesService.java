@@ -2,6 +2,7 @@ package cc.backend.manager.service;
 
 import cc.backend.entity.Article;
 import cc.backend.entity.SearchData;
+import cc.backend.enums.ArticleStatus;
 
 /**
  * @FileName ArticleService
@@ -10,10 +11,11 @@ import cc.backend.entity.SearchData;
  * @date 2023-09-02
  **/
 public interface ArticlesService {
-    SearchData getAllArticle(SearchData<Article> searchData);
+    SearchData<Article> getAllArticle(SearchData<Article> searchData);
     boolean addArticle(Article articleData,String loginToken);
     boolean editArticle(Article article,String loginToken);
     boolean deleteArticle(Integer articleId);
-    Article articleView(int articleId);
-    Article getOneByArticleId(int articleId);
+    Article articleView(Integer articleId);
+    Article getOneByArticleId(Integer articleId);
+    boolean updateAnArticleStatusById(Integer articleId, ArticleStatus articleStatus);
 }

@@ -405,32 +405,91 @@ const formattedPostContent = (postContent) =>{
 }
 
 /* 响应式字体大小 */
-@media screen and (max-width: 768px) {
-  .right-content {
-    font-size: 15px; /* 设置较小的字体大小 */
+@media screen and (max-width: 1000px) {
+  .post-container {
+    width: 100%;
+    max-width: 1400px;
+    height: 800px;
+    display: flex;
+    margin: auto; /* 居中 */
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .post-link {
+    font-size: 2vw; /* 使用vw单位以便根据视口宽度调整字体大小 */
+    font-weight: 900;
+    text-decoration: none; /* 去除下划线 */
+    transition: color 0.3s ease; /* 添加颜色过渡效果 */
+  }
+
+  .follow-button {
+    font-size: 1vw; /* 根据需要调整字体大小 */
+    height: 3.5vw; /* 根据需要设置按钮高度 */
+    line-height: 3.5vw; /* 保持按钮内容垂直居中 */
+    /* 添加其他共同的样式属性 */
+  }
+  .el-menu-item {
+    font-size: 2vw;
+  }
+  .el-button{
+    width: 8vw;
+    font-size: 2vw;
   }
   .left-menu {
-    width: 110px;
+    width: 15%;
+    overflow: hidden; /* 去掉 el-aside 的滚动条样式 */
+    border-right: none;
     .menu-bar {
       display: flex;
       align-items: center; /* 垂直居中 */
-    //justify-content: center; /* 水平居中 */
       height: 8%;
-      font-size: 25px;
+      font-size: 1.5vw; /* 使用vw单位以便根据视口宽度调整字体大小 */
       font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
       color: #0ea67b;
     }
   }
-  .right-content .content-block {
-    /* 可以根据需要自定义每个内容块的样式 */
-    margin-top: 10px;
-    align-items: center;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    border-bottom: 1px solid #ccc; /* 添加下划线 */
+
+  .right-content {
+    margin-left: 1vw; /* 使用vw单位以便根据视口宽度调整间距 */
+    background-color: rgba(256, 256, 256, 0.3); /* 设置背景色为蓝色 */
+    padding: 2vw; /* 使用vw单位以便根据视口宽度调整内边距 */
+    flex: 1; /* 让右侧部分占据剩余的所有空间 */
+    border-radius: 1.5vw; /* 使用vw单位以便根据视口宽度调整边框圆角 */
     display: flex;
-    font-size: 10px;
+    flex-direction: column;
+    gap: 1vw; /* 使用vw单位以便根据视口宽度调整间距 */
+  }
+
+  .right-content .post-title {
+    display: flex;
+    align-items: center;
+    font-size: 2.5vw; /* 使用vw单位以便根据视口宽度调整字体大小 */
+    font-family: 微软雅黑, serif;
+    color: #387e6a;
+  }
+
+  .right-content .content-block {
+    margin-top: 1vw; /* 使用vw单位以便根据视口宽度调整间距 */
+    align-items: center;
+    padding: 1vw; /* 使用vw单位以便根据视口宽度调整内边距 */
+    background-color: #fff;
+    border-radius: 0.8vw; /* 使用vw单位以便根据视口宽度调整边框圆角 */
+    border-bottom: 0.1vw solid #ccc; /* 使用vw单位以便根据视口宽度调整边框宽度 */
+    display: flex;
+    font-size: 1.5vw; /* 使用vw单位以便根据视口宽度调整字体大小 */
+  }
+
+  .right-content .content-block:hover {
+    background-color: #cfe9ff; /* 鼠标悬停时的浅蓝背景 */
+    cursor: pointer;
+  }
+
+  .el-icon {
+    width: 0vw;
+    margin-right: -4vw; /* 使用vw单位以便根据视口宽度调整间距 */
+
   }
 }
 </style>

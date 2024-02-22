@@ -232,7 +232,7 @@ const shortcuts = [
             <el-input v-model="queryForm.data.postContent" placeholder="请输入帖子内容" clearable @keyup.enter="onQuery"/>
           </el-form-item>
           <div style="display: flex">
-            <el-form-item label="帖子状态" @keyup.enter="onQuery">
+            <el-form-item label="帖子状态" @keyup.enter="onQuery"  style="width: 250px">
               <el-select
                   v-model="queryForm.data.postStatus"
                   placeholder="NULL"

@@ -266,8 +266,8 @@ const handleStatusChange = (value) => {
             </el-form-item>
 
           </div>
-          <div>
-            <el-form-item label="帖子状态" @keyup.enter="onQuery">
+          <div >
+            <el-form-item label="帖子状态" @keyup.enter="onQuery"  style="width: 250px">
               <el-select
                   v-model="queryForm.data.statusForCompliance"
                   placeholder="NULL"

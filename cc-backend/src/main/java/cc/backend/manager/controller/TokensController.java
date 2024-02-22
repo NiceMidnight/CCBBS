@@ -5,6 +5,7 @@ import cc.backend.manager.service.impl.TokensServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,7 +19,7 @@ public class TokensController {
     @Autowired
     private TokensServiceImpl tokensService;
     @GetMapping("/tokenVerification")
-    public Result tokenVerification(String tokenInfo)
+    public Result tokenVerification(@RequestParam("token") String tokenInfo)
     {
         boolean isLegitimate = tokensService.tokenVerification(tokenInfo);
         if (isLegitimate)

@@ -18,14 +18,14 @@ const routes = [
             //默认页面
             {
                 path: '',
-                name:'',
+                name:'default',
                 component: IndexView,
                 meta: {title:"基本信息"}
             },
             // 懒加载
             {
                 path:'/a',
-                name:'',
+                name:'default',
                 component:IndexView,
                 meta: {title:""}
             },
@@ -38,7 +38,7 @@ const routes = [
             {
                 path: '/images',
                 name: 'images',
-                component: () =>import("@/views/resources/ImagesView.vue"),
+                component: () =>import("@/views/resources/SysImagesView.vue"),
                 meta: {title:"图片管理"}
             },
             {
@@ -81,6 +81,12 @@ const routes = [
                 path:'/article',
                 name:'article',
                 component: () => import("@/views/article/ArticleView.vue"),
+                meta: {title:"文章管理"}
+            },
+            {
+                path:'/articles',
+                name:'articles',
+                component: () => import("@/views/article/Article.vue"),
                 meta: {title:"文章管理"}
             },
             {

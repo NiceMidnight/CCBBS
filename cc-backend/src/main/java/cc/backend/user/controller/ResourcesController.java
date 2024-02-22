@@ -62,7 +62,7 @@ public class ResourcesController {
 
     /**
      * @description TODO 获取首页文章
-     * @param: @param pageData
+     * @param pageData
      * @return: cc.backend.common.Result
      */
     @PostMapping("/getIndexArticle")
@@ -72,7 +72,9 @@ public class ResourcesController {
     }
 
     /**
-     *  TODO 获取单个文章内容
+     * @description TODO 获取单个文章内容
+     * @param articleId
+     * @return: cc.backend.common.Result
      */
     @PostMapping("/getArticle")
     public Result getArticle(@RequestParam int articleId) {
