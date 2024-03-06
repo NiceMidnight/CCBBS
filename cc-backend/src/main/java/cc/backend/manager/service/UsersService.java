@@ -12,7 +12,7 @@ import cc.backend.entity.User;
  * @date 2023-08-04
  **/
 public interface UsersService {
-    SearchData getAllUsers(SearchData<User> userSearchData);
+    SearchData<User> getAllUsers(SearchData<User> userSearchData);
 
     boolean enableUser(Integer id);
     boolean forbidUser(Integer id);

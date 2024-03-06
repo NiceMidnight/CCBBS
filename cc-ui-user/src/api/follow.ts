@@ -1,4 +1,5 @@
 import request from "../utils/request";
+import {UnwrapNestedRefs} from "@vue/runtime-core";
 
 /**
  * 获取关注状态
@@ -40,4 +41,32 @@ export const cancelFollowApi = (followingId:number) => {
         }
     })
 }
-
+export type QueryCondition = Partial<{
+    pageNum: number
+    pageSize: number
+    total: number
+    data: {
+    }
+}>
+/**
+ * 获取关注用户
+ * @param queryForm
+ */
+export const getFollowUsersApi = (queryForm: QueryCondition) => {
+    return request({
+        method:'POST',
+        url:'/user/follow/getFollowUsers',
+        data:queryForm
+    })
+}
+/**
+ * 获取粉丝用户
+ * @param queryForm
+ */
+export const getFanUsersApi = (queryForm: QueryCondition) => {
+    return request({
+        method:'POST',
+        url:'/user/follow/getFanUsers',
+        data:queryForm
+    })
+}

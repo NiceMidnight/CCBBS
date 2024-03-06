@@ -26,4 +26,10 @@ public interface PostMapper extends BaseMapper<Post> {
     IPage<Post> getAllPostByTopicId(IPage<Post> iPage,Post post);
     Post getPostByPostId(@Param("postId") Integer postId);
     List<Post> getTopPosts();
+    IPage<Post> selectAllByUserId(IPage<Post> iPage, Post post);
+//    @Param("postTitle")String postTitle,
+//    @Param("userId")Integer userId,
+//    @Param("topicId")Integer topicId,
+//    @Param("postVisibility")PostVisibility postVisibility,
+//    @Param("postStatus")PostStatus postStatus
 }

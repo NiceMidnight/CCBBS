@@ -28,7 +28,7 @@ public class UsersServiceImpl implements UsersService {
      * @return: cc.backend.entity.SearchData
      */
     @Override
-    public SearchData getAllUsers(SearchData<User> userSearchData) {
+    public SearchData<User> getAllUsers(SearchData<User> userSearchData) {
         //  分页查询
         IPage<User> iPage = new Page<>(userSearchData.getPageNum(), userSearchData.getPageSize());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();

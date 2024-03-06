@@ -1,4 +1,4 @@
-package cc.backend.config;
+package cc.backend.config.web;
 
 
 import org.springframework.context.annotation.Bean;

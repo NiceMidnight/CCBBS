@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             user_personality = #{userPersonality}
         WHERE id = #{id}
     </update>
+
     <select id="getUserHeadById" resultType="string">
         SELECT user_head
         FROM user

@@ -1,4 +1,4 @@
-package cc.backend.config;
+package cc.backend.config.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * @Description
+ * @Description 过滤拦截
  * @Author Tiamo_null
  * @Date 2023/11/7
  */
@@ -26,8 +26,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/user/verify")
                 .excludePathPatterns("/user/getUserInfo")
                 .excludePathPatterns("/user/logout")
-                .excludePathPatterns("/user/register","/user/resources/**","/user/images/upload",
+                .excludePathPatterns("/user/register",
+                        "/user/resources/**",
+                        "/user/images/upload",
                         "/manager/token/tokenVerification",
-                        "/user/token/tokenVerification"); // 拦截？放行
+                        "/user/token/tokenVerification",
+                        "/user/job/getJobMessage"); // 拦截？放行
     }
 }

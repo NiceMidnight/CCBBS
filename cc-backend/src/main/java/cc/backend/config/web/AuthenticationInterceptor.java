@@ -1,4 +1,4 @@
-package cc.backend.config;
+package cc.backend.config.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 
 /**
- * @Description
+ * @Description token请求头的验证
  * @Author Tiamo_null
  * @Date 2023/11/7
  */

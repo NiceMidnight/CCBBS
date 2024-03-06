@@ -374,7 +374,6 @@ const ifDeleteArticle = async (article) => {
       v-model="editArticleDialogVisible"
       title="编辑系统文章"
       width="60%"
-      style="margin-top: 20px"
       draggable
   >
     <div style="margin: 10px" />

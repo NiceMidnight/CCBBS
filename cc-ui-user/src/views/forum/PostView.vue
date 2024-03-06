@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { onMounted  } from "@vue/runtime-core";
-import {getAllPostApi, getPostTopicApi, getUserHeadApi, increaseViewCountApi} from "../../api/post";
+import {getAllPostApi, getPostTopicApi, getUserHeadApi, increaseViewCountApi} from "@/api/post";
 import {ElMessage, ElNotification} from "element-plus";
 import {ChatDotRound, CirclePlus, Flag, Position, UserFilled } from "@element-plus/icons-vue";
-import {timeHandler} from "../../utils/timeHandler";
-import {baseUrl} from "../../utils/request";
+import {timeHandler} from "@/utils/timeHandler";
+import {baseUrl} from "@/utils/request";
 import {useRouter} from "vue-router";
-import {cancelFollowApi, followApi, getFollowStatusApi} from "../../api/follow";
+import {cancelFollowApi, followApi, getFollowStatusApi} from "@/api/follow";
 
 const onQuery = async () => {
   await getAllPostApi(queryForm, postMsg.value).then(async (res) => {
@@ -67,7 +67,7 @@ const queryForm = reactive({
 const postData = ref([]);
 const postTopicData = ref([]);
 const commentCount = ref({})
-onMounted(async () => {
+const onLoad = async () => {
   try {
     await getPostTopicApi().then((res) => {
       postTopicData.value = res.data;
@@ -91,7 +91,8 @@ onMounted(async () => {
   } catch (e) {
     console.log(e)
   }
-});
+};
+onLoad()
 /**
  * 获取关注状态
  * @param followingId
@@ -120,7 +121,8 @@ const onFollowClick = async (followingId,postIndex) => {
         type: 'success',
       });
       // 更新关注状态
-      postData.value["data"][postIndex].followStatus = true;
+      // postData.value["data"][postIndex].followStatus = true;
+      await onLoad()
     } else {
       ElNotification({
         title: '关注状态',
@@ -150,7 +152,8 @@ const cancelFollow = async (followingId,postIndex) => {
           message: "用户"+followingId+ res["msg"],
           type: 'success',
         })
-        postData.value["data"][postIndex].followStatus = false;
+        // postData.value["data"][postIndex].followStatus = false;
+        onLoad()
       } else ElNotification({
         title: '关注状态',
         message: "用户"+followingId+res["msg"],
@@ -215,9 +218,9 @@ const handleCurrentChange = async (val: number) => {
  */
 const updateHeadUrls = async () => {
   await Promise.all(postData.value["data"].map(async (post) => {
-    if (!userHeadUrls.value[post.userId]) {
-      const userHead = await getUserHeadApi(post.userId);
-      userHeadUrls.value[post.userId] = `${baseUrl}/${userHead.data}`;
+    if (!userHeadUrls.value[post['userId']]) {
+      const userHead = await getUserHeadApi(post['userId']);
+      userHeadUrls.value[post["userId"]] = `${baseUrl}/${userHead.data}`;
     }
   }));
 }
@@ -278,24 +281,24 @@ const formattedPostContent = (postContent) =>{
               <el-avatar :size="50" :src="getUserHead(post['userId']) || circleUrl" />
             </div>
             <div style="margin-left: 20px">
-              <el-link class="post-link" :underline="false" @click="redirectToPost( post.postTitle, post.postId)">
+              <el-link class="post-link" :underline="false" @click="redirectToPost( post['postTitle'], post['postId'])">
                 {{ post["postTitle"] }}
               </el-link>
-              <div style="margin-top: 5px" v-html="formattedPostContent(post.postContent)"></div>
+              <div style="margin-top: 5px" v-html="formattedPostContent(post['postContent'])"></div>
               <div style="display: flex;align-items: center;">
                 <el-icon><UserFilled /></el-icon>{{ post['nickName'] }}
                 <div style="margin-left: 20px">
                   <template v-if="post.followStatus">
-                    <el-button class="follow-button" type="success" size="small" plain
+                    <el-button class="follow-button" type="success" size="small" plain round
                                @mouseover="showUnfollow = true"
                                @mouseleave="showUnfollow = false"
-                               @click="cancelFollow(post.userId,index)"
+                               @click="cancelFollow(post['userId'],index)"
                     >
                       {{ showUnfollow ? '取消关注' : '已关注' }}
                     </el-button>
                   </template>
                   <template v-else>
-                    <el-button class="follow-button" type="primary" size="small" plain @click="onFollowClick(post.userId,index)">
+                    <el-button class="follow-button" type="primary" size="small" plain round @click="onFollowClick(post['userId'],index)">
                       关注<el-icon style="margin-left: 4px"><CirclePlus /></el-icon>
                     </el-button>
                   </template>

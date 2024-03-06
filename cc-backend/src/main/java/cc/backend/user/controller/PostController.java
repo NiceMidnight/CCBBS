@@ -106,4 +106,18 @@ public class PostController {
         }
         return Result.error("提交帖子失败");
     }
+
+    /**
+     * @description TODO 获取用户帖子
+     * @param searchData
+     * @param userId
+     * @return: cc.backend.common.Result
+     */
+    @RequestMapping("/getPostByUserId")
+    public Result getPostByUserId(@RequestBody SearchData<Post> searchData,@RequestParam("userId")Integer userId)
+    {
+        SearchData<Post> postByUserId = postService.getPostByUserId(searchData, userId);
+        return Result.successCDT(postByUserId,"获取用户帖子");
+    }
+
 }

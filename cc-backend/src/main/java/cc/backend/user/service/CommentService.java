@@ -1,6 +1,8 @@
 package cc.backend.user.service;
 
 import cc.backend.entity.Comments;
+import cc.backend.entity.SearchData;
+import cc.backend.enums.CommentStatusForUser;
 
 import java.util.List;
 
@@ -16,4 +18,7 @@ public interface CommentService {
     List<Comments> getAllCommentByTop(Integer postId);
     boolean submitAReply(Comments comments,String tokenInfo);
     boolean deletePersonalComment(Integer commentId,String tokenInfo);
+    SearchData<Comments> getReplyComments(SearchData<Comments> searchData,String tokenInfo);
+    int getReplyCommentsCount(String tokenInfo);
+    boolean changeStatusForUser(Integer commentId, CommentStatusForUser commentStatusForUser);
 }

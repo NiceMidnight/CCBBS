@@ -1,4 +1,4 @@
-package cc.backend.config;
+package cc.backend.config.oss;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;

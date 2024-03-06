@@ -36,7 +36,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public SearchData<Post> getAllPost(SearchData<Post> queryCondition,String postMsg) {
         IPage<Post> iPageForPost = new Page<>(queryCondition.getPageNum(), queryCondition.getPageSize());
-        postMapper.selectAllPost(iPageForPost, queryCondition.getData().getTopicId(),postMsg ,PostVisibility.PUBLIC,PostStatus.COMPLIANCE);
+        postMapper.selectAllPost(iPageForPost, queryCondition.getData().getTopicId(),postMsg ,
+                PostVisibility.PUBLIC,PostStatus.COMPLIANCE);
         return SearchData.pageData(
                 (int) iPageForPost.getCurrent(),
                 (int) iPageForPost.getSize(),
@@ -174,6 +175,12 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    /**
+     * @description TODO 发帖
+     * @param post
+     * @param tokenInfo
+     * @return: boolean
+     */
     @Override
     public boolean insertAPost(Post post,String tokenInfo) {
         int userId = token.getUserId(tokenInfo);
@@ -182,4 +189,25 @@ public class PostServiceImpl implements PostService {
         postMapper.insert(post);
         return false;
     }
+
+    /**
+     * @description TODO 获取用户帖子
+     * @param searchData
+     * @param userId
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Post>
+     */
+    @Override
+    public SearchData<Post> getPostByUserId(SearchData<Post> searchData, Integer userId) {
+        IPage<Post> iPageForPost = new Page<>(searchData.getPageNum(), searchData.getPageSize());
+        searchData.getData().setUserId(userId);
+        searchData.getData().setPostStatus(PostStatus.COMPLIANCE);
+        searchData.getData().setPostVisibility(PostVisibility.PUBLIC);
+        postMapper.selectAllByUserId(iPageForPost,searchData.getData());
+        return SearchData.pageData(
+                (int) iPageForPost.getCurrent(),
+                (int) iPageForPost.getSize(),
+                (int) iPageForPost.getTotal(),
+                iPageForPost.getRecords());
+    }
+
 }

@@ -20,4 +20,5 @@ public interface PostService {
     boolean increaseViewCount(Integer postId);
     List<Post> getTopPosts();
     boolean insertAPost(Post post,String tokenInfo);
+    SearchData<Post> getPostByUserId(SearchData<Post> searchData,Integer userId);
 }

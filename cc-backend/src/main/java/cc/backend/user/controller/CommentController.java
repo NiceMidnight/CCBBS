@@ -2,6 +2,9 @@ package cc.backend.user.controller;
 
 import cc.backend.common.Result;
 import cc.backend.entity.Comments;
+import cc.backend.entity.SearchData;
+import cc.backend.enums.CommentStatusForCompliance;
+import cc.backend.enums.CommentStatusForUser;
 import cc.backend.user.service.impl.CommentServiceImpl;
 import cc.backend.user.service.impl.PostServiceImpl;
 import lombok.SneakyThrows;
@@ -22,6 +25,11 @@ public class CommentController {
     private CommentServiceImpl commentService;
     @Autowired
     private PostServiceImpl postService;
+    /**
+     * @description TODO 获取帖子评论数
+     * @param postId
+     * @return: cc.backend.common.Result
+     */
     @GetMapping("/getCommentCount")
     public Result getCommentCount(@RequestParam("postId") Integer postId) {
         int commentCount = commentService.getCommentCount(postId);
@@ -132,6 +140,59 @@ public class CommentController {
             return Result.error("更新帖子评论数量失败");
         }
         return Result.error("删除个人评论失败");
+    }
+
+    /**
+     * @description TODO 获取未读回复数量
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("/getReplyCommentsCount")
+    public Result getReplyCommentsCount(@RequestHeader("Authorization")String tokenInfo)
+    {
+        int replyCommentsCount = commentService.getReplyCommentsCount(tokenInfo);
+        return Result.successCDT(replyCommentsCount,"获取回复评论成功");
+    }
+
+    /**
+     * @description TODO 获取未读回复消息
+     * @param searchData
+     * @param tokenInfo
+     * @return: cc.backend.common.Result
+     */
+    @PostMapping("/getReplyComments")
+    public Result getReplyComments(@RequestBody SearchData<Comments> searchData,
+                                   @RequestHeader("Authorization")String tokenInfo)
+    {
+        SearchData<Comments> replyComments = commentService.getReplyComments(searchData, tokenInfo);
+
+        return Result.successCDT(replyComments,"获取回复评论成功");
+    }
+
+    @GetMapping("/getStatusForUser")
+    public Result getStatusForUser()
+    {
+        return Result.successCDM(CommentStatusForUser.values(),"获取用户是否查看的状态枚举类");
+    }
+    @GetMapping("/getCommentStatusForCompliance")
+    public Result getCommentStatusForCompliance()
+    {
+        return Result.successCDM(CommentStatusForCompliance.values(),"获取帖子是否违规状态枚举类");
+    }
+    /**
+     * @description TODO 用户评论已读
+     * @param commentId
+     * @return: cc.backend.common.Result
+     */
+    @GetMapping("/changeStatusForUser")
+    public Result changeStatusForUser(@RequestParam("commentId")Integer commentId)
+    {
+        boolean isUpdateStatusForUser = commentService.changeStatusForUser(commentId, CommentStatusForUser.Read);
+        if (isUpdateStatusForUser)
+        {
+            return Result.successCM("用户已读成功");
+        }
+        return Result.error("用户已读失败");
     }
 
 }

@@ -2,6 +2,7 @@ package cc.backend.user.service.impl;
 
 import cc.backend.common.token.Token;
 import cc.backend.entity.User;
+import cc.backend.enums.UserStatus;
 import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -44,8 +45,9 @@ public class UserServiceImpl implements UserService {
         lambdaQueryWrapper
                 .eq(true,User::getUserName,user.getUserName())
                 .eq(true,User::getPassword,user.getPassword())
+                .eq(User::getUserStatus, UserStatus.ENABLE) //用户状态是否合法
                 .eq(User::getUserDeleted, 1)    //  逻辑删除,判断用户是否存在
-                .eq(User::getUserRole,0);       //  用户角色--用户
+                .ne(User::getUserRole,1);       //  用户角色--学生
         User isExist = userMapper.selectOne(lambdaQueryWrapper);
         if (isExist != null) { //  登录成功
             return token.TokenSave(isExist);
@@ -61,8 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserInfo(String loginToken) {
         int userId = token.getUserId(loginToken);
-        User user = userMapper.selectById(userId);
-        return user;
+        return userMapper.selectById(userId);
     }
 
     @Override
@@ -130,11 +131,12 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name",user.getUserName());
         User users = userMapper.selectOne(queryWrapper);
-        System.out.println(users);
         if (users != null)
         {
             return false;
         }
+        user.setUserStatus(UserStatus.DISABLE);
+        user.setUserRole(2);
         user.setUserDate(new Date());
         return userMapper.insert(user) > 0;
     }

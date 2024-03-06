@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.user.mapper.JobMapper">
+    <select id="selectJobMessage" resultType="job" parameterType="java.util.Map">
+        SELECT
+            j.job_id,
+            j.job_title,
+            j.job_content,
+            j.topic_id,
+            tfj.topic_name as topic_name,
+            j.user_id,
+            u.nick_name as nick_name,
+            u.user_name as user_name,
+            u.user_head as user_head,
+            j.created_at,
+            j.view_count
+        FROM job j
+        LEFT JOIN user u ON j.user_id = u.id
+        LEFT JOIN topic_for_job tfj ON j.topic_id = tfj.topic_id
+        <where>
+            j.job_status = #{job.jobStatus}
+        AND j.job_visibility = #{job.jobVisibility}
+            <if test="job.topicId != null and job.topicId != '' and job.topicId != 0">
+                AND j.topic_id = #{job.topicId}
+            </if>
+            <if test="job.nickName != null and job.nickName != ''">
+                AND u.nick_name like CONCAT('%', #{job.nickName},'%')
+            </if>
+        </where>
+        ORDER BY j.created_at DESC
+    </select>
+
+</mapper>

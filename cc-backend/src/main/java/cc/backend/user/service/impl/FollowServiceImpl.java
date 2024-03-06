@@ -2,10 +2,13 @@ package cc.backend.user.service.impl;
 
 import cc.backend.common.token.Token;
 import cc.backend.entity.Follow;
+import cc.backend.entity.SearchData;
 import cc.backend.enums.FollowStatus;
 import cc.backend.user.mapper.FollowMapper;
 import cc.backend.user.service.FollowService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +75,36 @@ public class FollowServiceImpl implements FollowService {
     public boolean updateFollowStatus(String tokenInfo, Integer followingId,FollowStatus followStatus) {
         int followerId = token.getUserId(tokenInfo);
         return followMapper.updateFollowStatus(followerId,followingId,followStatus,new Date()) > 0;
+    }
+
+    /**
+     * @description TODO 获取关注用户
+     * @param tokenInfo
+     * @param searchData
+     * @param followStatus
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Follow>
+     */
+    @Override
+    public SearchData<Follow> getFollowUsers(String tokenInfo, SearchData<Follow> searchData, FollowStatus followStatus)
+    {
+        int followerId = token.getUserId(tokenInfo);
+        IPage<Follow> iPage = new Page<>(searchData.getPageNum(), searchData.getPageSize());
+        followMapper.selectFollowUsers(iPage,followerId,followStatus);
+        return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(), iPage.getRecords());
+    }
+    /**
+     * @description TODO 获取粉丝用户
+     * @param tokenInfo
+     * @param searchData
+     * @param followStatus
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Follow>
+     */
+    @Override
+    public SearchData<Follow> getFanUsers(String tokenInfo, SearchData<Follow> searchData, FollowStatus followStatus)
+    {
+        int followingId = token.getUserId(tokenInfo);
+        IPage<Follow> iPage = new Page<>(searchData.getPageNum(), searchData.getPageSize());
+        followMapper.selectFanUsers(iPage,followingId,followStatus);
+        return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(), iPage.getRecords());
     }
 }

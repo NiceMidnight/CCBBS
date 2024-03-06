@@ -44,9 +44,11 @@ public class UserController {
     @PostMapping("/login")
     public Result login(@RequestBody User user, @RequestParam String code) {
         String token = null;
-        if (redisTemplate.opsForValue().get(code) != null) {
+        if (redisTemplate.opsForValue().get(code) != null)
+        {
             token = userService.login(user);
-        } else return Result.error("验证码错误");
+        }
+        else return Result.error("验证码错误");
         if (token != null) { //  登录成功
             Object o = redisTemplate.opsForValue().get(token);
             System.out.println(o);
@@ -86,17 +88,20 @@ public class UserController {
      * @return: cc.backend.common.Result
      */
     @GetMapping("/getUserInfo")
-    public Result getUserInfo(@RequestHeader("Authorization") String tokenInfo) {
+    public Result getUserInfo(@RequestHeader("Authorization") String tokenInfo)
+    {
         User userInfo = userService.getUserInfo(tokenInfo);
         return Result.successCDT(userInfo,tokenInfo);
     }
+
     /**
      * @description TODO 通过userId获取用户信息
      * @param userId
      * @return: cc.backend.common.Result
      */
     @GetMapping("getOtherUserInfoById")
-    public Result getOtherUserInfoById(@RequestParam("userId") Integer userId) {
+    public Result getOtherUserInfoById(@RequestParam("userId") Integer userId)
+    {
         User otherUserInfoById = userService.getOtherUserInfoById(userId);
         return Result.successCDM(otherUserInfoById,"获取"+userId+"基础信息成功");
     }
@@ -107,7 +112,8 @@ public class UserController {
      * @return: cc.backend.common.Result
      */
     @RequestMapping("/updateUserInfo")
-    public Result updateUserInfo(@RequestBody User user) {
+    public Result updateUserInfo(@RequestBody User user)
+    {
         System.out.println(user);
         boolean isUpdateUserInfo = userService.updateUserInfo(user);
         if (isUpdateUserInfo)
@@ -123,7 +129,8 @@ public class UserController {
      * @return: cc.backend.common.Result
      */
     @RequestMapping("/logout")
-    public Result logout(@RequestHeader("Authorization") String tokenInfo) {
+    public Result logout(@RequestHeader("Authorization") String tokenInfo)
+    {
         boolean isLogout = userService.logout(tokenInfo);
         if (isLogout) {
             return Result.successCM("后台成功登出。。。");
@@ -137,7 +144,8 @@ public class UserController {
      * @return: cc.backend.common.Result
      */
     @GetMapping("/getUserHead")
-    public Result getUserHead(@RequestParam("userId") int userId) {
+    public Result getUserHead(@RequestParam("userId") int userId)
+    {
         String userHead = userService.getUserHead(userId);
         return Result.successCDM(userHead,"获取头像成功");
     }
@@ -162,7 +170,6 @@ public class UserController {
     @RequestMapping("/register")
     public Result register(@RequestBody User user)
     {
-        System.out.println(user);
         boolean isRegister = userService.register(user);
         if (isRegister)
         {

@@ -1,4 +1,5 @@
 import request from "../utils/request";
+import {reactive} from "vue";
 
 export const getCommentCountApi = (postId:number) => {
     return request({
@@ -101,6 +102,66 @@ export const deletePersonalCommentApi = (commentId:number,postId:number) => {
         params:{
             commentId:commentId,
             postId:postId
+        }
+    })
+}
+
+export type QueryForm = Partial<{
+    pageNum: number,
+    pageSize: number,
+    total: number,
+    data: {
+
+    },
+}>
+/**
+ * 获取未读回复评论
+ * @param queryForm
+ */
+export const getReplyCommentsApi = (queryForm:QueryForm) => {
+    return request({
+        method:'POST',
+        url:'/user/comment/getReplyComments',
+        data:queryForm
+    })
+}
+/**
+ * 获取未读回复评论数量
+ */
+export const getReplyCommentsCountApi = () => {
+    return request({
+        method:'GET',
+        url:'/user/comment/getReplyCommentsCount',
+    })
+}
+/**
+ * 用户是否查看的枚举类
+ */
+export const getStatusForUserApi = () => {
+    return request({
+        method:'GET',
+        url:'/user/comment/getStatusForUser'
+    })
+}
+/**
+ * 评论是否违规的枚举类
+ */
+export const getCommentStatusForComplianceApi = () => {
+    return request({
+        method:'GET',
+        url:'/user/comment/getCommentStatusForCompliance'
+    })
+}
+/**
+ * 查看帖子更改状态已读
+ * @param commentId
+ */
+export const changeStatusForUserApi = (commentId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/comment/changeStatusForUser',
+        params:{
+            commentId:commentId
         }
     })
 }

@@ -2,6 +2,7 @@ package cc.backend.entity;
 
 import cc.backend.enums.FollowStatus;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -23,11 +24,30 @@ public class Follow {
 //    @TableId(value = "follower_id", type = IdType.INPUT)
     private Integer followerId;
     /**
+     * 关注者昵称
+     */
+    @TableField(exist = false)
+    private String followerNickName;
+    /**
+     * 关注者头像
+     */
+    @TableField(exist = false)
+    private String followerHead;
+    /**
      * 被关注者
      */
 //    @TableId(value = "following_id", type = IdType.INPUT)
     private Integer followingId;
-
+    /**
+     * 被关注者昵称
+     */
+    @TableField(exist = false)
+    private String followingNickName;
+    /**
+     * 被关注者头像
+     */
+    @TableField(exist = false)
+    private String followingHead;
     /**
      * 关注时间
      */

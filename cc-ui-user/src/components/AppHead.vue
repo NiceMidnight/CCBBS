@@ -86,8 +86,8 @@ const getMenu = () => {
           </div>
         </div>
       </el-menu-item>
-      <el-menu-item index="/community">招聘信息</el-menu-item>
-      <el-menu-item index="personalInfo">个人中心</el-menu-item>
+      <el-menu-item index="/recruit">招聘信息</el-menu-item>
+      <el-menu-item index="/personalInfo">个人中心</el-menu-item>
 <!--      <el-menu-item index="/reservation">联系我们</el-menu-item>-->
       <el-menu-item index="/forum">论坛</el-menu-item>
       <el-menu-item index="/postAMessage">发帖</el-menu-item>
@@ -101,6 +101,7 @@ const getMenu = () => {
       <el-menu-item index="4" style="margin-right: 2rem">设置</el-menu-item>
     </el-menu>
   </div>
+
   <div v-else >
     <el-menu
         :default-active="activeIndex"
@@ -128,8 +129,8 @@ const getMenu = () => {
         <el-menu :default-active="activeIndex" mode="vertical" router>
           <!-- 这里放上面的菜单项 -->
           <el-menu-item index="/">首页</el-menu-item>
-          <el-menu-item index="/community">招聘信息</el-menu-item>
-          <el-menu-item index="personalInfo">个人信息</el-menu-item>
+          <el-menu-item index="/recruit">招聘信息</el-menu-item>
+          <el-menu-item index="/personalInfo">个人信息</el-menu-item>
           <el-menu-item index="/forum">论坛</el-menu-item>
           <el-menu-item index="/postAMessage">发帖</el-menu-item>
           <el-menu-item v-if="!getLocalStorage" @click="onLoginOrRegister(true)">登录</el-menu-item>

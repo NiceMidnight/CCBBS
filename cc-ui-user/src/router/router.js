@@ -30,15 +30,24 @@ const routes = [
                 meta: {title:""}
             },
             {
-                path: '/community',
-                name:'community',
-                component: () => import("@/views/community/Community.vue"),
-                meta: {title:"社区"}
+                path: '/recruit',
+                name:'Recruit',
+                component: () => import("@/views/recruit/RecruitView.vue"),
+                meta: {title:"招聘"}
+            },
+            {
+                path: '/jobMessage/:jobId/:jobTitle',
+                name:'JobMessage',
+                component: () => import("@/views/recruit/JobView.vue"),
+                props: routes => ({
+                    id: parseInt(routes.params.id)
+                }),
+                meta: {title:"招聘"}
             },
             {
                 path: '/personalInfo',
-                name:'personalInfo',
-                component: () => import("@/views/personalInfo/PersonalInfo.vue"),
+                name:'PersonalInfo',
+                component: () => import("@/views/personalCenter/PersonalCenter.vue"),
                 meta: {title:"个人信息"}
             },
             {
@@ -75,7 +84,12 @@ const routes = [
                 component: () => import("@/views/addAPost/PostAMessage.vue"),
                 meta: { title: "发帖", requiresAuth: true }  // 需要验证权限
             },
-
+            {
+                path: '/personalHomepage/:userId',
+                name: 'PersonalHomepage',
+                component: () => import("@/views/PersonalHomepage/PersonalHomepage.vue"),
+                meta: { title: "个人主页", requiresAuth: true }  // 需要验证权限
+            }
         ]
     },
 ];
@@ -85,17 +99,17 @@ const router = createRouter({
     routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some(r=>r.meta?.requiresAuth)) {
-//         const store = useTokenStore()
-//         if (!store.token) {
-//             //不存在token，跳转login页面，原要跳转的页面以query形式传递
-//             next({name:'login',query:{redirect: to.fullPath}})
-//         } else next()
-//         return
-//     }
-//     //不要求权限拦截，原计划跳转
-//     next()
-// })
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(r=>r.meta?.requiresAuth)) {
+        const store = useTokenStore()
+        if (!store.token) {
+            //不存在token，跳转login页面，原要跳转的页面以query形式传递
+            next({name:'login',query:{redirect: to.fullPath}})
+        } else next()
+        return
+    }
+    //不要求权限拦截，原计划跳转
+    next()
+})
 
 export default router;

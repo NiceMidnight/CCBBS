@@ -1,4 +1,5 @@
 import request from "../utils/request";
+import {UnwrapNestedRefs} from "@vue/runtime-core";
 /**
  * 查询数据
  */
@@ -93,11 +94,34 @@ export type postData = Partial<{
     postTitle:string,
     postContent:string,
 }>
+/**
+ * 发帖
+ * @param postData
+ */
 export const postAPostApi = (postData:postData) => {
     return request({
         method:'POST',
         url:'user/post/postAPost',
         data:postData
+    })
+}
+
+export const getPostByUserIdApi = (queryForm: UnwrapNestedRefs<{
+    total: number;
+    pageSize: number;
+    pageNum: number;
+    data: {
+        postTitle: string,
+        topicId:number,
+    };
+}>, userId: number) => {
+    return request({
+        method:'POST',
+        url:'user/post/getPostByUserId',
+        data:queryForm,
+        params:{
+            userId:userId
+        }
     })
 }
 

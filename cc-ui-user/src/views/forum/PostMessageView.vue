@@ -20,7 +20,6 @@ import {
 } from "../../api/comment";
 import Comment from './CommentComponent.vue';
 
-
 const route = useRoute();
 let postId = Number(route.params.id);//帖子id
 const post = ref(); //帖子信息
@@ -427,11 +426,10 @@ const formattedPostContent = (postContent) =>{
               <el-button type="primary" @click="follow(post.userId)" plain round>关注<el-icon><Plus /></el-icon></el-button>
             </template>
             <template v-else-if="isFollow">
-              <el-button type="primary" round
+              <el-button type="success" plain round
                          @mouseover="showUnfollow = true"
                          @mouseleave="showUnfollow = false"
                          @click="cancelFollow(post.userId)"
-                         plain
               >
                 {{ showUnfollow ? '取消关注' : '已关注' }}</el-button>
             </template>

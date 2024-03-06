@@ -21,6 +21,11 @@ import java.util.List;
 public class TopicForArticlesController {
     @Autowired
     private TopicForArticlesServiceImpl topicForArticlesService;
+    /**
+     * @description TODO 获取主题
+     *
+     * @return: cc.backend.common.Result
+     */
     @GetMapping("/getArticleTopic")
     public Result getArticleTopic()
     {

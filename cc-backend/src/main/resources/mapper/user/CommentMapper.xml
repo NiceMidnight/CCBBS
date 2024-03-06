@@ -48,6 +48,73 @@
         ORDER BY reply_count DESC
     </select>
 
+    <select id="selectReplyComments" resultType="comments" >
+        SELECT
+            c.*,
+            u.user_name AS userName,
+            u.nick_name AS nickName,
+            u.user_head AS userHead,
+            p.post_title AS postTitle
+        FROM comments c
+                 LEFT JOIN post p ON c.post_id = p.post_id
+                 LEFT JOIN user u ON c.user_id = u.id
+        WHERE c.parent_comment_id IS NULL
+          AND p.user_id = #{userId}
+        UNION
+        SELECT
+            child.*,
+            u.user_name AS userName,
+            u.nick_name AS nickName,
+            u.user_head AS userHead,
+            p.post_title AS postTitle
+        FROM comments child
+                 JOIN comments parent ON child.parent_comment_id = parent.comment_id
+                 LEFT JOIN post p ON child.post_id = p.post_id
+                 LEFT JOIN user u ON child.user_id = u.id
+        WHERE parent.user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+<!--    <select id="selectReplyComments" resultMap="commentResultMap" >-->
+<!--        SELECT c.*-->
+<!--        FROM comments c-->
+<!--                 LEFT JOIN post p ON c.post_id = p.post_id-->
+<!--        WHERE c.status_for_user = 'Unread'-->
+<!--          AND c.parent_comment_id IS NULL-->
+<!--          AND p.user_id = #{userId}-->
+<!--        UNION-->
+<!--        SELECT child.*-->
+<!--        FROM comments child-->
+<!--                 JOIN comments parent ON child.parent_comment_id = parent.comment_id-->
+<!--        WHERE child.status_for_user = 'Unread'-->
+<!--          AND parent.user_id = #{userId}-->
+<!--        ORDER BY created_at DESC-->
+<!--    </select>-->
+
+    <select id="selectReplyCommentsCount" resultType="int" >
+        SELECT COUNT(*) AS total_comments
+        FROM (
+                 SELECT c.comment_id
+                 FROM comments c
+                          LEFT JOIN post p ON c.post_id = p.post_id
+                 WHERE c.status_for_user = 'Unread'
+                   AND c.parent_comment_id IS NULL
+                   AND p.user_id = #{userId}
+                 UNION
+                 SELECT child.comment_id
+                 FROM comments child
+                          JOIN comments parent ON child.parent_comment_id = parent.comment_id
+                 WHERE child.status_for_user = 'Unread'
+                   AND parent.user_id = #{userId}
+             ) AS combined_comments
+    </select>
+
+    <update id="updateStatusForUser">
+        UPDATE comments
+        SET status_for_user = #{statusForUser}
+        WHERE comment_id = #{commentId}
+    </update>
+
     <resultMap id="commentResultMap" type="Comments">
         <id property="commentId" column="comment_id"/>
         <result property="postId" column="post_id"/>

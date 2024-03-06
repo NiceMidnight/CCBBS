@@ -2,9 +2,13 @@ package cc.backend.user.service.impl;
 
 import cc.backend.common.token.Token;
 import cc.backend.entity.Comments;
+import cc.backend.entity.SearchData;
+import cc.backend.enums.CommentStatusForUser;
 import cc.backend.user.mapper.CommentMapper;
 import cc.backend.user.service.CommentService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private Token token;
+    /**
+     * @description TODO 获取评论数量
+     * @param postId
+     * @return: int
+     */
     @Override
     public int getCommentCount(int postId) {
         QueryWrapper<Comments> commentsQueryWrapper = new QueryWrapper<>();
@@ -97,6 +106,42 @@ public class CommentServiceImpl implements CommentService {
             return commentMapper.deleteById(commentId) > 0;
         }
         return false;
+    }
+
+    /**
+     * @description TODO 获取未读回复评论
+     * @param searchData
+     * @param tokenInfo
+     * @return: cc.backend.entity.SearchData<cc.backend.entity.Comments>
+     */
+    @Override
+    public SearchData<Comments> getReplyComments(SearchData<Comments> searchData,String tokenInfo) {
+        int userId = token.getUserId(tokenInfo);
+        IPage<Comments> iPage = new Page<>(searchData.getPageNum(), searchData.getPageSize());
+        commentMapper.selectReplyComments(iPage,userId);
+        return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(), iPage.getRecords());
+    }
+
+    /**
+     * @description TODO 获取未读回复数量
+     * @param tokenInfo
+     * @return: int
+     */
+    @Override
+    public int getReplyCommentsCount(String tokenInfo) {
+        int userId = token.getUserId(tokenInfo);
+        return commentMapper.selectReplyCommentsCount(userId);
+    }
+
+    /**
+     * @description TODO 用户已查看
+     * @param commentId
+     * @param commentStatusForUser
+     * @return: boolean
+     */
+    @Override
+    public boolean changeStatusForUser(Integer commentId, CommentStatusForUser commentStatusForUser) {
+        return commentMapper.updateStatusForUser(commentId,commentStatusForUser) > 0;
     }
 
     /**

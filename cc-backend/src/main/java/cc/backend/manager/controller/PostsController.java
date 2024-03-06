@@ -89,6 +89,11 @@ public class PostsController {
         return Result.successCDM(post,"查看帖子"+postId+"内容成功");
     }
 
+    /**
+     * @description TODO 获取帖子标题
+     * @param postId
+     * @return: cc.backend.common.Result
+     */
     @GetMapping("/getPostTitle")
     public Result getPostTitle(@RequestParam("postId") Integer postId)
     {

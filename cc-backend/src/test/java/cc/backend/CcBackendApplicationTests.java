@@ -3,12 +3,16 @@ package cc.backend;
 import cc.backend.common.token.Token;
 import cc.backend.entity.Comments;
 import cc.backend.entity.User;
+import cc.backend.enums.CommentStatusForCompliance;
 import cc.backend.manager.mapper.DictMapper;
 import cc.backend.manager.service.impl.ArticlesServiceImpl;
 import cc.backend.manager.service.impl.DictServiceImpl;
+import cc.backend.user.mapper.CommentMapper;
 import cc.backend.user.mapper.UserMapper;
 import cc.backend.user.service.impl.CommentServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -18,6 +22,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -91,5 +96,16 @@ class CcBackendApplicationTests {
     {
         List<Comments> allComment = commentService.getAllCommentByCreatedAt(1);
         System.out.println(allComment);
+    }
+
+    @Autowired
+    private CommentMapper commentMapper;
+    @Test
+    void getCommentStatus()
+    {
+//        IPage<Comments> iPage = new Page<>(1, 50);
+//        int  i= commentMapper.selectReplyCommentsCount(2);
+//        System.out.println("数量有："+i);
+        System.out.println(Arrays.toString(CommentStatusForCompliance.values()));
     }
 }

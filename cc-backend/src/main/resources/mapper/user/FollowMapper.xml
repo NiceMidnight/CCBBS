@@ -16,4 +16,42 @@
         WHERE follower_id = #{followerId} and following_id = #{followingId}
     </update>
 
+    <select id="selectFollowUsers" resultType="follow">
+        SELECT
+            follower_id,
+            follower_u.nick_name AS followerNickName,
+            follower_u.user_head AS followerHead,
+            following_id,
+            following_u.nick_name AS followingNickName,
+            following_u.user_head AS followingHead,
+            follow_date,
+            follow_status
+        FROM
+            follow fo
+        LEFT JOIN
+                user follower_u ON fo.follower_id = follower_u.id
+        LEFT JOIN
+                user following_u ON fo.following_id = following_u.id
+        WHERE fo.follower_id = #{followerId} AND fo.follow_status = #{followStatus}
+    </select>
+
+
+    <select id="selectFanUsers" resultType="follow">
+        SELECT
+            follower_id,
+            follower_u.nick_name AS followerNickName,
+            follower_u.user_head AS followerHead,
+            following_id,
+            following_u.nick_name AS followingNickName,
+            following_u.user_head AS followingHead,
+            follow_date,
+            follow_status
+        FROM
+            follow fo
+                LEFT JOIN
+            user follower_u ON fo.follower_id = follower_u.id
+                LEFT JOIN
+            user following_u ON fo.following_id = following_u.id
+        WHERE fo.following_id = #{followingId} AND fo.follow_status = #{followStatus}
+    </select>
 </mapper>

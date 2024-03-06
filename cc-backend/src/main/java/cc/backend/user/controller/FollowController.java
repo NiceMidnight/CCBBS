@@ -1,6 +1,8 @@
 package cc.backend.user.controller;
 
 import cc.backend.common.Result;
+import cc.backend.entity.Follow;
+import cc.backend.entity.SearchData;
 import cc.backend.enums.FollowStatus;
 import cc.backend.user.service.impl.FollowServiceImpl;
 import cc.backend.user.service.impl.UserServiceImpl;
@@ -87,4 +89,32 @@ public class FollowController {
         }
         return Result.error("取消关注失败");
     }
+
+    /**
+     * @description TODO 获取关注用户
+     * @param tokenInfo
+     * @param queryForm
+     * @return: cc.backend.common.Result
+     */
+    @PostMapping("/getFollowUsers")
+    public Result getFollowUsers(@RequestHeader("Authorization")String tokenInfo, @RequestBody SearchData<Follow> queryForm)
+    {
+        SearchData<Follow> followUsers = followService.getFollowUsers(tokenInfo, queryForm,FollowStatus.Follow);
+        return Result.successCDT(followUsers,"获取关注用户成功");
+    }
+
+    /**
+     * @description TODO 获取关注用户
+     * @param tokenInfo
+     * @param queryForm
+     * @return: cc.backend.common.Result
+     */
+    @PostMapping("/getFanUsers")
+    public Result getFanUsers(@RequestHeader("Authorization")String tokenInfo, @RequestBody SearchData<Follow> queryForm)
+    {
+        SearchData<Follow> fanUsers = followService.getFanUsers(tokenInfo, queryForm,FollowStatus.Follow);
+        return Result.successCDT(fanUsers,"获取粉丝用户成功");
+    }
+
+
 }
