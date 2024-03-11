@@ -33,3 +33,12 @@ export const addJobMessageApi = (job:Job) => {
         data:job
     })
 }
+export const getOneJobMessageApi = (jobId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/job/getOneJobMessage',
+        params:{
+            jobId:jobId
+        }
+    })
+}

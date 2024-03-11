@@ -69,7 +69,7 @@ const routes = [
                 path:'/allPostComments',
                 name:'allPostComments',
                 component: () => import("@/views/post/AllPostCommentsView.vue"),
-                meta: {title:"所有帖子评论管理"}
+                meta: {title:"帖子评论管理"}
             },
             {
                 path: '/personalInformation',
@@ -88,6 +88,24 @@ const routes = [
                 name:'articles',
                 component: () => import("@/views/article/Article.vue"),
                 meta: {title:"文章管理"}
+            },
+            {
+                path:'/applyRecruitMessage',
+                name:'ApplyRecruitMessage',
+                component: () => import("@/views/recruit/ApplyRecruitMessage.vue"),
+                meta: {title:"招聘权限申请"}
+            },
+            {
+                path:'/jobMessage',
+                name:'JobMessage',
+                component: () => import("@/views/recruit/JobMessage.vue"),
+                meta: {title:"招聘信息"}
+            },
+            {
+                path:'/jobTopicDict',
+                name:'JobTopicDict',
+                component: () => import("@/views/recruit/JobTopicDict.vue"),
+                meta: {title:"招聘信息"}
             },
             {
                 path:'/:xxx(.*)*',

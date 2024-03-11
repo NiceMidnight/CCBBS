@@ -17,4 +17,6 @@ public class TopicForJob {
     private Integer topicId;
 
     private String topicName;
+
+    private String topicColor;
 }

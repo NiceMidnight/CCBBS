@@ -55,14 +55,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     /**
-     * @description TODO 获取注册用户数量
-     *
-     * @return: java.lang.Long
+     * TODO 获取注册用户数量
      */
     @Override
     public Long getUserNumber() {
-        Long count = usersMapper.selectCount(null);
-        return count;
+        return usersMapper.selectCount(null);
     }
 
     /**
@@ -74,5 +71,12 @@ public class UsersServiceImpl implements UsersService {
     public User getUserInfo(Integer id) {
         return usersMapper.selectUserDateById(id);
     }
+
+
+    @Override
+    public boolean updateUserRole(int userId, int roleNumber) {
+        return usersMapper.updateUserRoleById(userId,roleNumber) > 0;
+    }
+
 
 }

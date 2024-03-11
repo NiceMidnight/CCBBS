@@ -19,4 +19,5 @@ public interface UsersService {
     Long getUserNumber();
     User getUserInfo(Integer id);
 
+    boolean updateUserRole(int userId,int roleNumber);
 }

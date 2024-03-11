@@ -150,4 +150,15 @@ public class UserServiceImpl implements UserService {
     public boolean logout(String tokenInfo) {
         return token.deleteToken(tokenInfo);
     }
+
+    /**
+     * TODO 获取用户角色
+     */
+    @Override
+    public Integer getUserRole(String tokenInfo) {
+        String key = tokenInfo.substring(7);
+        User user = token.getUser(key);
+        return user.getUserRole();
+    }
+
 }

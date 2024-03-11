@@ -177,4 +177,14 @@ public class UserController {
         }
         return Result.error("注册用户失败");
     }
+
+    /**
+     * TODO 用户角色
+     */
+    @GetMapping("/getUserRole")
+    public Result getUserRole(@RequestHeader("Authorization")String tokenInfo)
+    {
+        Integer userRole = userService.getUserRole(tokenInfo);
+        return Result.successCDM(userRole,"获取用户权限");
+    }
 }

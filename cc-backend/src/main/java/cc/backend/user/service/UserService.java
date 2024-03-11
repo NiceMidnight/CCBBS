@@ -18,4 +18,5 @@ public interface UserService {
     boolean updateUserFans(Integer userId,boolean addOrDel);
     boolean register(User user);
     boolean logout(String tokenInfo);
+    Integer getUserRole(String tokenInfo);
 }

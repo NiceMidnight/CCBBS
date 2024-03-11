@@ -33,6 +33,9 @@ public class Job {
     @TableField(exist = false)
     private String topicName;
 
+    @TableField(exist = false)
+    private String topicColor;
+
     private Integer userId;
 
     @TableField(exist = false)

@@ -59,7 +59,10 @@ export const getUserInfoApi = () => {
         url:'/user/getUserInfo',
     })
 }
-
+/**
+ * 获取userId的用户信息
+ * @param userId
+ */
 export const getOtherUserInfoByIdApi = (userId:number) => {
     return request({
         method:'GET',
@@ -103,10 +106,21 @@ export const tokenVerificationApi = (token:string) =>{
         }
     })
 }
-
+/**
+ * 登出
+ */
 export const logoutApi = () => {
     return request({
         method:'GET',
         url:'/user/logout'
+    })
+}
+/**
+ * 获取用户角色
+ */
+export const getUserRoleApi = () => {
+    return request({
+        method:'GET',
+        url:'/user/getUserRole'
     })
 }

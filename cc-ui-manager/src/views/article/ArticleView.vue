@@ -252,7 +252,7 @@ const ifDeleteArticle = async (article) => {
       }
   ).then(()=> {
     deleteArticleApi(article.articleId).then((res) => {
-      if (res["code"] === 500) {
+      if (res["code"] === '500') {
         ElMessage.error(res["msg"])
       } else ElMessage.success(res["msg"])
     })
@@ -305,7 +305,7 @@ const ifDeleteArticle = async (article) => {
       <el-table-column prop="updatedTime" label="更新时间"  width="170" align="center" :formatter="timeHandler"/>
       <el-table-column label="可见性" align="center"  width="200" v-slot="{ row }">
         <el-switch
-            v-model="row['article_status']"
+            v-model="row['articleStatus']"
             class="mb-2"
             active-value="PUBLIC"
             inactive-value="PRIVATE"

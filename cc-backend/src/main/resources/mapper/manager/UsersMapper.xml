@@ -24,4 +24,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM user
         WHERE id = #{Id}
     </select>
+
+    <update id="updateUserRoleById" >
+        UPDATE user
+        SET user_role = #{roleNumber}
+        WHERE id = #{userId}
+    </update>
 </mapper>

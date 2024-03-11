@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {getTopicForJobApi} from "@/api/topicForJob";
 import {reactive, ref} from "vue";
-import {addJobMessageApi, getJobMessageApi} from "@/api/recruit";
+import {addJobMessageApi, getJobMessageApi} from "@/api/job";
 import {ElMessage, ElMessageBox, ElNotification} from "element-plus";
 import TextEditor from "@/views/addAPost/TextEditor.vue";
 import {baseUrl} from "@/utils/request";
@@ -9,7 +9,10 @@ import {Document, Search} from "@element-plus/icons-vue";
 import {timeHandler} from "@/utils/timeHandler";
 import {truncateText} from "@/utils/textHandler";
 import {useRouter} from "vue-router";
+import {getUserRoleApi} from "@/api/login";
+import {addAApplyRecruiterApi} from "@/api/applyRecruit";
 
+const userRole = ref(0) //用户角色
 const circleUrl = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"; // 设置头像地址
 const options = ref(null) //招聘主题
 const jobData = ref(null) //招聘信息
@@ -33,6 +36,9 @@ const onLoad = async () => {
       queryForm.total = res.data.total
       console.log(res)
     })
+    await getUserRoleApi().then((res) => {
+      userRole.value = res.data
+    })
   }
   catch (e) {
     ElMessage.error(e)
@@ -52,7 +58,7 @@ const handleSizeChange = async (val: number) => {
       data:queryForm.data
     }
     const res = await getJobMessageApi(queryParams);
-    jobData.value = res.data
+    jobData.value = res.data.data
   } catch (e) {
     console.log(e)
   }
@@ -66,7 +72,7 @@ const handleCurrentChange = async (val: number) => {
       data:queryForm.data
     }
     const res = await getJobMessageApi(queryParams);
-    jobData.value = res.data
+    jobData.value = res.data.data
   } catch (e) {
     console.log(e)
   }
@@ -162,10 +168,56 @@ const redirectToUser = (userId:any) => {
   router.push({ name: 'PersonalHomepage', params: { userId: userId } });
 }
 
+/**
+ * 查询
+ */
 const searchJobMessage = async () => {
   await getJobMessageApi(queryForm).then((res) => {
     jobData.value = res.data.data
   })
+}
+/**
+ * 申请招聘权限
+ */
+const applyForRecruitmentDialogVisible = ref(false)
+const applyData = reactive({
+  truthName:'',
+  studentId:'',
+  phone:'',
+})
+const handleCloseApplyForm = () => {
+  ElMessageBox.confirm('是否取消申请，数据将清空！')
+      .then(() => {
+        applyForRecruitmentDialogVisible.value = false
+        Object.keys(applyData).forEach(key => {
+          applyData[key] = ''
+        })
+      })
+      .catch(() => {
+        // catch error
+      })
+}
+const addAApplyRecruiter = async () => {
+  try {
+    await addAApplyRecruiterApi(applyData).then((res) => {
+      if (res['code'] === '200')
+      {
+        ElNotification({
+          title: '提交招聘权限申请',
+          message: res["msg"],
+          type: 'success',
+        })
+        applyForRecruitmentDialogVisible.value = false
+      } else
+        ElNotification({
+          title: '提交招聘信息',
+          message: res["msg"],
+          type: 'error',
+        })
+    })
+  } catch (e) {
+    ElMessage.error(e)
+  }
 }
 </script>
 
@@ -194,12 +246,13 @@ const searchJobMessage = async () => {
             <el-input
                 v-model="queryForm.data.nickName"
                 style="width: 200px"
-                placeholder="输入昵称查询"
+                placeholder="昵称、用户名"
                 clearable
                 @keyup.enter="searchJobMessage"
             />
             <el-button :icon="Search" circle @click="searchJobMessage" style="margin-left: 1rem"/>
-            <el-button type="primary" round @click="addJobDialogVisible = true">添加招聘信息</el-button>
+            <el-button type="primary" round v-if="userRole === 0" @click="applyForRecruitmentDialogVisible = true">申请招聘权限</el-button>
+            <el-button type="primary" round v-else @click="addJobDialogVisible = true">添加招聘信息</el-button>
           </div>
         </el-menu>
       </div>
@@ -287,6 +340,41 @@ const searchJobMessage = async () => {
       <span class="dialog-footer">
         <el-button @click="handleClose">取消</el-button>
         <el-button type="primary" @click="addJobMessage">提交</el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <!--添加权限-->
+  <el-dialog
+      v-model="applyForRecruitmentDialogVisible"
+      title="申请招聘权限表格"
+      width="30%"
+      draggable
+  >
+    <div style="margin: 10px" />
+    <el-form
+        :label-position="'right'"
+        label-width="100px"
+        :model="applyData"
+        style="max-width: 500px"
+    >
+
+      <el-form-item label="真实姓名">
+        <el-input v-model="applyData.truthName" placeholder="请输入你的名字" maxlength="30" show-word-limit/>
+      </el-form-item>
+
+      <el-form-item label="学号">
+        <el-input v-model="applyData.studentId" placeholder="请输入学号" maxlength="12" show-word-limit/>
+      </el-form-item>
+
+      <el-form-item label="电话">
+        <el-input v-model="applyData.phone" placeholder="请输入电话号码" maxlength="11" show-word-limit/>
+      </el-form-item>
+
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="handleCloseApplyForm">取消</el-button>
+        <el-button type="primary" @click="addAApplyRecruiter">提交</el-button>
       </span>
     </template>
   </el-dialog>

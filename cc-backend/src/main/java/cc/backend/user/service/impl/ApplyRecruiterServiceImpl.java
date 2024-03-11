@@ -28,8 +28,8 @@ public class ApplyRecruiterServiceImpl implements ApplyRecruiterService {
     public boolean addAApplyRecruiter(ApplyRecruiter applyRecruiter, String tokenInfo) {
         int userId = token.getUserId(tokenInfo);
         applyRecruiter.setUserId(userId);
-        applyRecruiter.setApplyStatus(ApplyStatus.COMPLIANCE);
         applyRecruiter.setCreatedAt(new Date());
         return applyRecruiterMapper.insert(applyRecruiter) > 0;
     }
+
 }

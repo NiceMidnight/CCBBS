@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.JobsMapper">
+    <select id="selectAllJobMessage" resultType="job">
+        SELECT
+            jo.job_id,
+            jo.job_title,
+            jo.job_content,
+            jo.user_id,
+            u.user_name as user_name,
+            u.nick_name as nick_name,
+            u.user_head as user_head,
+            jo.created_at,
+            jo.topic_id,
+            tfj.topic_name as topic_name,
+            tfj.topic_color as topic_color,
+            jo.job_status,
+            jo.job_visibility,
+            jo.view_count
+        FROM
+            job jo
+        LEFT JOIN
+                user u ON jo.user_id = u.id
+        LEFT JOIN
+                topic_for_job tfj ON jo.topic_id = tfj.topic_id
+        <where>
+            <if test="job.userName != null and job.userName != ''">
+                AND u.user_name LIKE CONCAT('%', #{job.userName}, '%')
+            </if>
+            <if test="job.topicId != null and job.topicId != ''">
+                AND tfj.topic_id = #{job.topicId}
+            </if>
+            <if test="job.jobTitle != null and job.jobTitle != ''">
+                AND jo.job_title LIKE CONCAT('%', #{job.jobTitle}, '%')
+            </if>
+            <if test="job.jobStatus != null and job.jobStatus != ''">
+                AND jo.job_status = #{job.jobStatus}
+            </if>
+            <if test="job.jobVisibility != null and job.jobVisibility != ''">
+                AND jo.jobVisibility = #{job.jobVisibility}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND jo.created_at BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY jo.created_at DESC
+    </select>
+
+    <update id="updateJobStatus">
+        UPDATE job
+        SET job_status = #{jobStatus}
+        WHERE job_id = #{jobId}
+    </update>
+</mapper>

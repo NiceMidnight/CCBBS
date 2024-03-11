@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.ApplyRecruitersMapper">
+    <select id="selectAll" resultType="applyRecruiter">
+        SELECT
+            ar.apply_id,
+            ar.user_id,
+            u.nick_name as nick_name,
+            u.user_name as user_name,
+            ar.created_at,
+            ar.apply_status,
+            ar.handling_user_id,
+            uhd.nick_name as nick_name,
+            uhd.user_name as user_name,
+            ar.handling_at,
+            ar.truth_name,
+            ar.student_id,
+            ar.notes,
+            ar.phone
+        FROM
+            apply_recruiter ar
+        LEFT JOIN
+                user u ON ar.user_id = u.id
+        LEFT JOIN
+                user uhd ON ar.user_id = uhd.id
+        <where>
+            <if test="applyRecruiter.userName != null and applyRecruiter.userName != ''">
+                AND u.user_name LIKE CONCAT('%', #{applyRecruiter.userName}, '%')
+            </if>
+            <if test="applyRecruiter.nickName != null and applyRecruiter.nickName != ''">
+                AND u.nick_name LIKE CONCAT('%', #{applyRecruiter.nickName}, '%')
+            </if>
+            <if test="applyRecruiter.studentId != null and applyRecruiter.studentId != ''">
+                AND ar.student_id LIKE CONCAT('%', #{applyRecruiter.studentId}, '%')
+            </if>
+            <if test="applyRecruiter.truthName != null and applyRecruiter.truthName != ''">
+                AND ar.truth_name LIKE CONCAT('%', #{applyRecruiter.truthName}, '%')
+            </if>
+            <if test="applyRecruiter.applyStatus != null">
+                AND ar.apply_status = #{applyRecruiter.applyStatus}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND ar.created_at BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY ar.created_at DESC
+    </select>
+
+    <update id="updateApplyStatusById">
+        UPDATE apply_recruiter
+        SET apply_status = #{applyStatus},
+            handling_user_id = #{handlingUserId},
+            handling_at = #{handlingAt}
+        WHERE apply_id = #{applyId}
+    </update>
+
+    <select id="selectPostTitleById" parameterType="integer" resultType="string">
+        SELECT post_title
+        FROM post
+        WHERE post_id = #{postId}
+    </select>
+
+    <resultMap id="postResultMap" type="Post">
+        <id property="postId" column="post_id"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="topicName" column="topic_name"/>
+        <result property="postTitle" column="post_title"/>
+        <result property="postContent" column="post_content"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="postStatus" column="post_status"/>
+        <result property="postVisibility" column="post_visibility"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="dislikeCount" column="dislike_count"/>
+        <result property="commentCount" column="comment_count"/>
+    </resultMap>
+</mapper>

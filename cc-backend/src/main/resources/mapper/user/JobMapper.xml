@@ -27,9 +27,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="job.nickName != null and job.nickName != ''">
                 AND u.nick_name like CONCAT('%', #{job.nickName},'%')
+        OR  u.user_name like CONCAT('%', #{job.nickName},'%')
             </if>
         </where>
         ORDER BY j.created_at DESC
     </select>
-
+    <select id="selectOneByJobId" resultType="job">
+        SELECT
+        j.job_id,
+        j.job_title,
+        j.job_content,
+        j.topic_id,
+        tfj.topic_name as topic_name,
+        j.user_id,
+        u.nick_name as nick_name,
+        u.user_name as user_name,
+        u.user_head as user_head,
+        j.created_at,
+        j.view_count
+        FROM job j
+        LEFT JOIN user u ON j.user_id = u.id
+        LEFT JOIN topic_for_job tfj ON j.topic_id = tfj.topic_id
+        <where>
+            j.job_status = #{jobStatus}
+            AND j.job_visibility = #{jobVisibility}
+            AND j.job_id = #{jobId}
+        </where>
+        ORDER BY j.created_at DESC
+    </select>
 </mapper>

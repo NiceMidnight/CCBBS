@@ -25,7 +25,7 @@ public class ApplyRecruiterController {
         boolean isAdd = applyRecruiterService.addAApplyRecruiter(applyRecruiter, tokenInfo);
         if (isAdd)
         {
-            return Result.successCM("发起申请成功");
+            return Result.successCM("发起申请成功，将在七日内处理");
         }
         return Result.error("发起申请失败");
     }

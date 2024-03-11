@@ -51,4 +51,12 @@ public final class JobServiceImpl implements JobService {
         job.setCreatedAt(new Date());
         return jobMapper.insert(job) > 0;
     }
+
+    /**
+     * TODO 获取jobId单个招聘信息
+     */
+    @Override
+    public Job getOneJobMessage(Integer jobId,JobStatus jobStatus,JobVisibility jobVisibility) {
+        return jobMapper.selectOneByJobId(jobId,jobStatus,jobVisibility);
+    }
 }

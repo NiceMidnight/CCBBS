@@ -1,3 +1,8 @@
+<script setup lang="ts">
+// 是否折叠
+import { isCollapse } from '../js/isCollapse.js'
+
+</script>
 <template>
   <el-aside >
     <el-scrollbar>
@@ -37,16 +42,28 @@
           <el-icon><IEpSetting/></el-icon> <span> 帖子评论管理 </span>
         </el-menu-item>
       </el-sub-menu>
+      <!--招聘信息管理-->
+      <el-sub-menu index="3">
+        <template #title>
+          <el-icon><IEpSetting/></el-icon> <span> 招聘信息管理 </span>
+        </template>
+        <el-menu-item index="/jobTopicDict">
+          <el-icon><IEpSetting/></el-icon> <span> 招聘主题 </span>
+        </el-menu-item>
+        <el-menu-item index="/applyRecruitMessage">
+          <el-icon><IEpSetting/></el-icon> <span> 申请信息管理 </span>
+        </el-menu-item>
+        <el-menu-item index="/jobMessage">
+          <el-icon><IEpSetting/></el-icon> <span> 招聘信息管理 </span>
+        </el-menu-item>
+
+      </el-sub-menu>
 
       <el-menu-item index="/users">
         <el-icon><IEpSetting/></el-icon> <span> 用户管理 </span>
       </el-menu-item>
 
-      <el-menu-item index="personalInformation">
-        <el-icon><IEpSetting/></el-icon> <span> 个人信息 </span>
-      </el-menu-item>
-
-      <el-sub-menu index="3">
+      <el-sub-menu index="4">
         <template #title>
           <el-icon><IEpSetting/></el-icon> <span> 广告管理 </span>
         </template>
@@ -62,12 +79,6 @@
     </el-scrollbar>
   </el-aside>
 </template>
-
-<script setup lang="ts">
-// 是否折叠
-import { isCollapse } from '../js/isCollapse.js'
-
-</script>
 
 <style lang="scss" scoped>
 .el-aside {

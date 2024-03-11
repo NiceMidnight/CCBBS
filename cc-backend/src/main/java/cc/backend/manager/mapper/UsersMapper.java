@@ -30,4 +30,6 @@ public interface UsersMapper extends BaseMapper<User> {
 
     User selectUserDateById(@Param("Id") Integer id);
 
+    int updateUserRoleById(@Param("userId") int userId,
+                           @Param("roleNumber") int roleNumber);
 }
