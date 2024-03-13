@@ -94,6 +94,7 @@ export const getTopicByIdApi = (topicId:number) => {
 /**
  * 提交编辑主题
  * @param topicName
+ * @param topicId
  */
 export const editTopicApi = (topicName:string,topicId:number) => {
     return request({
@@ -102,6 +103,17 @@ export const editTopicApi = (topicName:string,topicId:number) => {
         params:{
             topicName:topicName,
             topicId:topicId
+        }
+    })
+}
+
+export const updateTopicColorApi = (topicId:number,topicColor:string) => {
+    return request({
+        method:'GET',
+        url:'/manager/tfp/updateTopicColor',
+        params:{
+            topicId:topicId,
+            topicColor:topicColor
         }
     })
 }

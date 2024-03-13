@@ -24,6 +24,13 @@ import java.util.List;
 public class JobsController {
     @Autowired
     private JobsServiceImpl jobsService;
+    /**
+     * @description TODO 根据查询条件查询招聘信息
+     * @param searchData
+     * @param startTime
+     * @param endTime
+     * @return: cc.backend.common.Result
+     */
     @RequestMapping("/getJobMessage")
     public Result getJobMessage(@RequestBody SearchData<Job> searchData,
                                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,

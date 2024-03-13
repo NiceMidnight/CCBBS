@@ -96,4 +96,9 @@ public class TopicForPostsServiceImpl implements TopicForPostsService {
         return topicForPostsMapper.updateTopicNameById(topicForPost) > 0;
     }
 
+    @Override
+    public boolean updateTopicColor(int topicId, String topicColor) {
+        return topicForPostsMapper.updateTopicColor(topicId,topicColor) > 0;
+    }
+
 }

@@ -52,11 +52,5 @@ public class DictServiceImpl implements DictService {
         return dictMapper.insert(dict) > 0;
     }
 
-    /**
-     * TODO 删除字典内容
-     */
-    @Override
-    public boolean deleteDict(Integer dictId) {
-        return dictMapper.deleteById(dictId) > 0;
-    }
+
 }

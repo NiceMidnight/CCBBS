@@ -56,15 +56,4 @@ public class DictController {
         return Result.error("添加字典内容失败");
     }
 
-    /**
-     * TODO 删除字典内容
-     */
-    @GetMapping("/deleteDict")
-    public Result deleteDict(Integer dictId) {
-        boolean isDeleteDict = dictService.deleteDict(dictId);
-        if (isDeleteDict) {
-            return Result.successCM("删除字典内容成功");
-        }
-        return Result.error("删除字典内容失败");
-    }
 }

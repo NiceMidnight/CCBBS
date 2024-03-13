@@ -40,20 +40,11 @@ public class TopicForArticle {
      */
     private Date createdTime;
     /**
-     * 更新者id
-     */
-    private Integer updatedId;
-    /**
-     * 更新者名称
-     */
-    @TableField(exist = false)
-    private String updatedBy;
-    /**
-     * 更新时间
-     */
-    private Date updatedTime;
-    /**
      * 主题状态
      */
     private TopicStatus topicStatus;
+    /**
+     * 主题颜色
+     */
+    private String topicColor;
 }

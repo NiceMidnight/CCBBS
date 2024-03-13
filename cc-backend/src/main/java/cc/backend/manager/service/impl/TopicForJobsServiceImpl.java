@@ -22,4 +22,9 @@ public class TopicForJobsServiceImpl implements TopicForJobsService {
     public List<TopicForJob> getTopicForJob() {
         return topicForJobsMapper.selectList(null);
     }
+
+    @Override
+    public boolean updateTopicColor(TopicForJob topicForJob) {
+        return topicForJobsMapper.updateById(topicForJob) > 0;
+    }
 }

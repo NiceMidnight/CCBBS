@@ -272,9 +272,13 @@ const shortcuts = [
       <!-- 自动递增的行ID列 -->
       <el-table-column type="index" label="行id" width="80" align="center"/>
       <el-table-column prop="postId" label="文章id" width="80" align="center"/>
-      <el-table-column prop="topicName" label="所属主题"  width="120" align="center"/>
       <el-table-column prop="postTitle" label="文章标题" width="160" align="center"/>
       <el-table-column prop="postContent" label="文章内容"  width="250" align="center" :formatter="truncateTextFormatter"/>
+      <el-table-column label="所属主题"  width="120" align="center">
+        <template #default="{ row }">
+          <el-tag size="large" :style="{ backgroundColor: row['topicColor'] }">{{ row['topicName'] }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="userName" label="上传用户"  width="120" align="center"/>
       <el-table-column prop="nickName" label="用户昵称"  width="120" align="center"/>
       <el-table-column prop="createdAt" label="上传时间"  width="180" align="center" :formatter="timeHandler"/>

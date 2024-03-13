@@ -43,12 +43,3 @@ export const addDictApi = (Dict:DictData) => {
         data:Dict
     })
 }
-/**
- * 删除字典内容
- */
-export const deleteDictApi = (dictId:number) => {
-    return request({
-        method:'GET',
-        url:`/manager/dict/deleteDict?dictId=${dictId}`
-    })
-}

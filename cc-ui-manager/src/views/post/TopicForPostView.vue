@@ -8,7 +8,7 @@ import {
   disableTopicApi, editTopicApi,
   enableTopicApi,
   getTFPApi,
-  getTFPStatusApi, getTopicByIdApi
+  getTFPStatusApi, getTopicByIdApi, updateTopicColorApi
 } from "@/api/topicForPost";
 import {timeHandler} from "@/utils/timeHandler";
 import {getUserInfo} from "@/api/users";
@@ -233,6 +233,20 @@ const editTopic = async () => {
 const editHandleClose = () => {
   editTopicDialogVisible.value = false
 }
+/**
+ * 更改主题颜色
+ * @param row
+ */
+const handleColorChange = async (row) => {
+  await updateTopicColorApi(row['topicId'],row['topicColor']).then((res) => {
+    if (res["code"] === '200')
+    {
+      ElMessage.success(res["msg"])
+      onQuery()
+    }
+    else ElMessage.error(res['msg'])
+  })
+}
 </script>
 
 <template>
@@ -256,11 +270,14 @@ const editHandleClose = () => {
       <el-table-column type="index" label="行id"  width="120" align="center"/>
       <el-table-column prop="topicId" label="主题ID" width="120" align="center"/>
       <el-table-column prop="topicName" label="类型名称" width="200" align="center"/>
-      <el-table-column prop="createdBy" label="创建者"  width="180" align="center"/>
+      <el-table-column prop="createdBy" label="创建者"  width="155" align="center"/>
       <el-table-column prop="createdTime" label="创建时间"  width="200" align="center" :formatter="timeHandler"/>
-      <el-table-column prop="updatedBy" label="更新者" width="180" align="center"/>
+      <el-table-column prop="updatedBy" label="更新者" width="155" align="center"/>
       <el-table-column prop="updatedTime" label="更新时间" width="200" align="center" :formatter="timeHandler"/>
-      <el-table-column label="状态" align="center"  width="200" v-slot="{ row }">
+      <el-table-column label="主题颜色" width="125" align="center" v-slot="{ row }">
+        <el-color-picker v-model="row['topicColor']" size="large" @change="handleColorChange(row)"/>
+      </el-table-column>
+      <el-table-column label="状态" align="center"  width="180" v-slot="{ row }">
         <el-switch
             v-model="row['topicStatus']"
             class="mb-2"
@@ -271,7 +288,7 @@ const editHandleClose = () => {
             @change="handleChange($event,row['topicId'])"
         />
       </el-table-column>
-      <el-table-column  label="操作" width="250" align="center" v-slot="scope">
+      <el-table-column  label="操作" width="200" align="center" v-slot="scope">
         <el-button type="primary" plain @click="onEditTopicButton(scope.row['topicId'])">编辑</el-button>
         <el-button type="danger" plain @click="deleteTopic(scope.row['topicId'])">删除</el-button>
       </el-table-column>

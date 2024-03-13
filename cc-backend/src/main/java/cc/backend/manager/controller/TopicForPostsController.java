@@ -28,6 +28,7 @@ public class TopicForPostsController {
         SearchData<TopicForPost> tfp = topicForPostService.getTFP(queryCondition);
         return Result.successCDM(tfp,"获取帖子主题内容成功");
     }
+
     /**
      * @description TODO 获取主题状态
      * @return: cc.backend.common.Result
@@ -36,6 +37,7 @@ public class TopicForPostsController {
     public Result getTFPStatus() {
         return Result.successCDM(TopicStatus.values(),"获取主题状态成功");
     }
+
     /**
      * @description TODO 添加主题
      * @param topicForPost
@@ -62,6 +64,7 @@ public class TopicForPostsController {
         }
         return Result.error("启用失败");
     }
+
     /**
      * @description TODO 禁用主题
      * @param topicId
@@ -110,5 +113,16 @@ public class TopicForPostsController {
             return Result.successCM("编辑主题id:"+topicId+"成功");
         }
         return Result.error("编辑主题id:"+topicId+"失败");
+    }
+
+    @GetMapping("/updateTopicColor")
+    public Result updateTopicColor(@RequestParam("topicId")Integer topicId, @RequestParam("topicColor")String topicColor)
+    {
+        boolean isUpdateTopicColor = topicForPostService.updateTopicColor(topicId, topicColor);
+        if (isUpdateTopicColor)
+        {
+            return Result.successCM("更改帖子主题颜色成功(id="+topicId+")");
+        }
+        return Result.error("更改帖子主题颜色失败(id="+topicId+")");
     }
 }

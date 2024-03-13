@@ -13,9 +13,9 @@ import {truncateText} from "@/utils/textHandler";
 import {ElMessage, ElTable} from "element-plus";
 import {getApplyRecruiterMessageApi} from "@/api/applyRecruit";
 import {baseUrl} from "@/utils/request";
-const jobStatusOptions = ref()  //招聘信息状态选择器
-const jobVisibilityOptions = ref()  //招聘信息可见性状态选择器
-const topicForJobOptions = ref()  //招聘主题选择器
+const jobStatusOptions = ref([])  //招聘信息状态选择器
+const jobVisibilityOptions = ref([])  //招聘信息可见性状态选择器
+const topicForJobOptions = ref([])  //招聘主题选择器
 const tableData = ref([]) //表单数据
 const queryForm = reactive({
   pageNum:1,
@@ -177,6 +177,11 @@ const handleCurrentChange = async(num:number) => {
  * 清除搜索框
  * @param value
  */
+const handleTopicChange = (value) => {
+  if (value === '') {
+    queryForm.data.topicId = null;
+  }
+}
 const handleJobStatusChange = (value) => {
   if (value === '') {
     queryForm.data.jobStatus = null;
@@ -189,7 +194,7 @@ const handleJobVisibilityChange = (value) => {
 }
 /**
  * 文本截断
- * @param row
+ * @param jobContent
  */
 const truncateTextFormatter = (jobContent: string) => {
   return truncateText(jobContent, 10);
@@ -255,12 +260,14 @@ const jobView = async (job) => {
                   v-model="queryForm.data.topicId"
                   placeholder="NULL"
                   clearable
+                  @change="handleTopicChange"
+                  v-if="topicForJobOptions && topicForJobOptions.length > 0"
               >
                 <el-option
                     v-for="option in topicForJobOptions"
-                    :key="option.value"
-                    :value="option.value"
-                    :label="option.label"
+                    :key="option.topicId"
+                    :value="option.topicId"
+                    :label="option['topicName']"
                 />
               </el-select>
             </el-form-item>
@@ -270,6 +277,7 @@ const jobView = async (job) => {
                   placeholder="NULL"
                   clearable
                   @change="handleJobStatusChange"
+                  v-if="jobStatusOptions && jobStatusOptions.length > 0"
               >
                 <el-option
                     v-for="option in jobStatusOptions"
@@ -285,6 +293,7 @@ const jobView = async (job) => {
                   placeholder="NULL"
                   clearable
                   @change="handleJobVisibilityChange"
+                  v-if="jobVisibilityOptions && jobVisibilityOptions.length > 0"
               >
                 <el-option
                     v-for="option in jobVisibilityOptions"

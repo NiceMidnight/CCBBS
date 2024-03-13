@@ -81,13 +81,13 @@ const routes = [
                 path:'/article',
                 name:'article',
                 component: () => import("@/views/article/ArticleView.vue"),
-                meta: {title:"文章管理"}
+                meta: {title:"公告文章管理"}
             },
             {
-                path:'/articles',
-                name:'articles',
-                component: () => import("@/views/article/Article.vue"),
-                meta: {title:"文章管理"}
+                path:'/topicForArticle',
+                name:'TopicForArticle',
+                component: () => import("@/views/article/ArticleTopicDict.vue"),
+                meta: {title:"公告主题管理"}
             },
             {
                 path:'/applyRecruitMessage',

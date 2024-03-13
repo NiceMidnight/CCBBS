@@ -36,7 +36,7 @@ public class TopicForPost {
     @TableField(exist = false)
     private String createdBy;
     /**
-     * 更新时间
+     * 创建时间
      */
     private Date createdTime;
     /**
@@ -56,4 +56,8 @@ public class TopicForPost {
      * 主题状态
      */
     private TopicStatus topicStatus;
+    /**
+     * 主题背景颜色
+     */
+    private String topicColor;
 }

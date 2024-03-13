@@ -335,7 +335,7 @@ const ifDeleteArticle = async (article) => {
         @current-change="handleCurrentChange"
         style="margin-top: 20px"
     />
-    <el-drawer v-model="drawer" :title="articleMessage['articleTitle']" :direction="'ltr'">
+    <el-drawer v-model="drawer" :title="articleMessage['articleTitle']" :direction="'btt'">
       <span v-html="articleMessage['articleContent'] "></span>
     </el-drawer>
   </el-card>

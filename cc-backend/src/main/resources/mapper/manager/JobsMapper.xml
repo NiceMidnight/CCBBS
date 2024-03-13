@@ -35,11 +35,11 @@
             <if test="job.jobTitle != null and job.jobTitle != ''">
                 AND jo.job_title LIKE CONCAT('%', #{job.jobTitle}, '%')
             </if>
-            <if test="job.jobStatus != null and job.jobStatus != ''">
+            <if test="job.jobStatus != null">
                 AND jo.job_status = #{job.jobStatus}
             </if>
-            <if test="job.jobVisibility != null and job.jobVisibility != ''">
-                AND jo.jobVisibility = #{job.jobVisibility}
+            <if test="job.jobVisibility != null">
+                AND jo.job_visibility = #{job.jobVisibility}
             </if>
             <if test="startTime != null and endTime != null">
                 AND jo.created_at BETWEEN #{startTime} AND #{endTime}

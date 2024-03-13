@@ -13,7 +13,8 @@
         tfp.updated_id,
         u_updated.nick_name as updated_by,
         tfp.updated_time,
-        tfp.topic_status
+        tfp.topic_status,
+        tfp.topic_color
         FROM
         topic_for_post tfp
         LEFT JOIN
@@ -46,6 +47,15 @@
             topic_name = #{topicName},
             updated_id = #{updatedId},
             updated_time = #{updatedTime}
+        WHERE
+            topic_id = #{topicId}
+    </update>
+
+    <update id="updateTopicColor">
+        UPDATE
+            topic_for_post
+        SET
+            topic_color = #{topicColor}
         WHERE
             topic_id = #{topicId}
     </update>

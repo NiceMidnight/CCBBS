@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+
 /**
  * @FileName UsersServiceImpl
  * @Description 用户管理
@@ -35,7 +37,7 @@ public class UsersServiceImpl implements UsersService {
         queryWrapper
                 .like(userSearchData.getData().getUserName()!=null,"user_name",userSearchData.getData().getUserName())
                 .like(userSearchData.getData().getUserSex()!=null,"user_sex",userSearchData.getData().getUserSex())
-                .like("user_role",0);
+                .in("user_role", Arrays.asList(0, 2));
         usersMapper.selectPage(iPage, queryWrapper);
         return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(), iPage.getRecords());
     }

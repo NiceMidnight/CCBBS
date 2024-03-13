@@ -24,15 +24,6 @@ public class Post {
     @TableId(value = "post_id",type = IdType.AUTO)
     private Integer postId;
     /**
-     * 帖子所属主题id
-     */
-    private Integer topicId;
-    /**
-     * 帖子标题名称
-     */
-    @TableField(exist = false)
-    private String topicName;
-    /**
      * 帖子标题
      */
     private String postTitle;
@@ -40,6 +31,20 @@ public class Post {
      * 帖子内容
      */
     private String postContent;
+    /**
+     * 帖子所属主题id
+     */
+    private Integer topicId;
+    /**
+     * 帖子主题名称
+     */
+    @TableField(exist = false)
+    private String topicName;
+    /**
+     * 主题背景颜色
+     */
+    @TableField(exist = false)
+    private String topicColor;
     /**
      * 管理员ID
      */

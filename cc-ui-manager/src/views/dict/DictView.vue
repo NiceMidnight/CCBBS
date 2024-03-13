@@ -33,10 +33,6 @@
       <el-table-column prop="dictTypeId" label="类型Id" width="220" align="center"/>
       <el-table-column prop="dictTypeName" label="字典类型名称"  width="300" align="center"/>
       <el-table-column prop="dictItemName" label="类型属性名称" width="300" align="center"/>
-      <el-table-column  label="操作" width="330" align="center" v-slot="scope">
-        <el-button type="primary" plain>编辑</el-button>
-        <el-button type="danger" plain @click="deleteDict(scope.row.dictId)">删除</el-button>
-      </el-table-column>
     </el-table>
     <el-pagination
         v-model:current-page="queryForm.pageNum"
@@ -96,15 +92,12 @@
       </span>
     </template>
   </el-dialog>
-
-
 </template>
 
 <script setup lang="ts">
-
 import {reactive, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {addDictApi, deleteDictApi, getAllDict, getDictTypeName} from "../../api/dict";
+import {addDictApi, getAllDict, getDictTypeName} from "../../api/dict";
 /**
  * 字典类型选择器
  */
@@ -196,17 +189,7 @@ const handleDictTypeIdInput = (value) => {
   // 只允许输入数字
   addDictData.dictTypeId = value.replace(/\D/g, '');
 };
-/**
- * 删除字典内容
- */
-const deleteDict = async (dictId: number) => {
-  await deleteDictApi(dictId).then((res) => {
-    if (res["code"] === '200') {
-      ElMessage.success(res["msg"])
-      onLoad()
-    } else ElMessage.error(res["msg"])
-  })
-}
+
 </script>
 
 <style lang="scss" scoped>

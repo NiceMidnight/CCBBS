@@ -45,7 +45,6 @@ public class ImagesServiceImpl implements ImagesService {
         //  分页查询
         IPage<SysImageResource> iPage = new Page<>(searchData.getPageNum(),searchData.getPageSize());
         imagesMapper.selectAllImg(iPage,searchData.getData().getType(),searchData.getData().getUserName());
-        System.out.println(iPage.getRecords());
         return SearchData.pageData((int)iPage.getCurrent(),(int) iPage.getSize(),(int)iPage.getTotal(),iPage.getRecords());
     }
 

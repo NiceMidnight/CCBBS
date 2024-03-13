@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 11/03/2024 23:50:14
+ Date: 13/03/2024 18:20:59
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `apply_recruiter`  (
   `student_id` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学号',
   `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '电话',
   PRIMARY KEY (`apply_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of apply_recruiter
@@ -56,18 +56,18 @@ CREATE TABLE `article`  (
   `topic_id` int NULL DEFAULT NULL COMMENT '主题id',
   `article_status` varchar(7) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT 'PUBLIC' COMMENT '可见/不可见',
   PRIMARY KEY (`article_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '公告文章' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '公告文章' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of article
 -- ----------------------------
-INSERT INTO `article` VALUES (1, '测试11', '三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1', 1, '2023-11-02 16:55:19.000000', 1, '2023-12-02 17:52:07.472000', 10, 1, 'PUBLIC');
+INSERT INTO `article` VALUES (1, '测试11', '<p>三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1三生三世十里桃花1</p>', 1, '2023-11-02 16:55:19.000000', 1, '2024-03-13 18:19:58.627000', 10, 4, 'PUBLIC');
 INSERT INTO `article` VALUES (2, '测试2', '三生三世十里桃花222222222', 1, '2023-11-17 16:55:32.000000', 1, '2023-12-07 16:10:18.288000', 0, 1, 'PUBLIC');
-INSERT INTO `article` VALUES (3, '测试33', '三生三世十里桃花33333345', 1, '2023-11-23 16:55:40.000000', NULL, NULL, 0, 1, 'PUBLIC');
-INSERT INTO `article` VALUES (7, '水水水水水水水水啊', '<h1>查看提交</h1><p style=\"text-align: left;\">1231231231<img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/mmexport1639369490349.jpg\" alt=\"\" data-href=\"\" style=\"width: 147.30px;height: 146.88px;\"><img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/getThumbnail.jpg\" alt=\"\" data-href=\"\" style=\"width: 147.31px;height: 147.31px;\"></p>', 1, '2023-11-24 16:55:46.000000', 1, '2024-02-22 14:18:55.297000', 0, 1, 'PUBLIC');
-INSERT INTO `article` VALUES (8, '生生世世', '生生世世', 1, '2023-11-26 16:55:53.000000', NULL, NULL, 0, 1, 'PUBLIC');
-INSERT INTO `article` VALUES (9, '测试4', '这是一段内容，\\n可以在这里添加多行文本。\\n\\n  这是新的一行，开头空两格。\\n  这也是新的一行，同样开头空两格。\\n\\n再来一段新的内容。这是一段内容，\r\n可以在这里添加多行文本。\r\n\r\n  这是新的一行，开头空两格。\r\n  这也是新的一行，同样开头空两格。\r\n\r\n再来一段新的内容。', 1, '2023-11-30 16:55:59.000000', NULL, NULL, 0, 1, 'PUBLIC');
-INSERT INTO `article` VALUES (11, '重构', '123132132', 1, '2023-12-26 00:14:32.341000', NULL, NULL, 0, 1, 'PUBLIC');
+INSERT INTO `article` VALUES (3, '测试33', '<p>三生三世十里桃花33333345</p>', 1, '2023-11-23 16:55:40.000000', 1, '2024-03-13 18:19:53.083000', 0, 2, 'PUBLIC');
+INSERT INTO `article` VALUES (7, '水水水水水水水水啊', '<h1>查看提交</h1><p style=\"text-align: left;\">1231231231<img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/mmexport1639369490349.jpg\" alt=\"\" data-href=\"\" style=\"width: 147.30px;height: 146.88px;\"><img src=\"https://postfiles.oss-cn-guangzhou.aliyuncs.com/getThumbnail.jpg\" alt=\"\" data-href=\"\" style=\"width: 147.31px;height: 147.31px;\"></p>', 1, '2023-11-24 16:55:46.000000', 1, '2024-03-13 18:20:19.961000', 0, 5, 'PUBLIC');
+INSERT INTO `article` VALUES (8, '生生世世', '<p>生生世世</p>', 1, '2023-11-26 16:55:53.000000', 1, '2024-03-13 18:19:39.900000', 0, 4, 'PUBLIC');
+INSERT INTO `article` VALUES (9, '测试4', '<p>这是一段内容，\\n可以在这里添加多行文本。\\n\\n &nbsp;这是新的一行，开头空两格。\\n &nbsp;这也是新的一行，同样开头空两格。\\n\\n再来一段新的内容。这是一段内容，<br></p><p>可以在这里添加多行文本。<br></p><p><br></p><p> &nbsp;这是新的一行，开头空两格。<br></p><p> &nbsp;这也是新的一行，同样开头空两格。<br></p><p><br></p><p>再来一段新的内容。</p>', 1, '2023-11-30 16:55:59.000000', 1, '2024-03-13 18:19:36.447000', 0, 3, 'PUBLIC');
+INSERT INTO `article` VALUES (11, '重构', '123132132', 1, '2023-12-26 00:14:32.341000', 1, '2024-03-13 18:19:31.104000', 0, 1, 'PUBLIC');
 
 -- ----------------------------
 -- Table structure for comments
@@ -83,7 +83,7 @@ CREATE TABLE `comments`  (
   `status_for_user` varchar(6) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT 'Unread' COMMENT '评论状态已读/未读（Unread/Read）',
   `status_for_compliance` varchar(12) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT 'COMPLIANCE' COMMENT '评论状态是否合规（COMPLIANCE/IRREGULARITY）',
   PRIMARY KEY (`comment_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '评论' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '评论' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
@@ -121,7 +121,7 @@ CREATE TABLE `dict`  (
   `dict_type_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '类型名',
   `dict_item_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '属性',
   PRIMARY KEY (`dict_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '字典表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '字典表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dict
@@ -277,7 +277,7 @@ CREATE TABLE `job`  (
   `job_visibility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'PUBLIC' COMMENT '是否可见（PUBLIC/PRIVATE）',
   `view_count` int NOT NULL DEFAULT 0 COMMENT '点击数',
   PRIMARY KEY (`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of job
@@ -321,7 +321,7 @@ CREATE TABLE `post`  (
   `dislike_count` int NULL DEFAULT 0 COMMENT '踩贴数量',
   `comment_count` int NULL DEFAULT 0 COMMENT '评论数量',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '帖子' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '帖子' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of post
@@ -377,7 +377,7 @@ CREATE TABLE `sys_images`  (
   `type` int NULL DEFAULT NULL COMMENT '用的地方',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `img_user`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统图片表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '系统图片表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_images
@@ -436,7 +436,8 @@ INSERT INTO `token` VALUES (62, 2, 'zhangsan', 'a6165f59-23cb-485a-aba8-16a9a25e
 INSERT INTO `token` VALUES (63, 1, 'root', '1ab91e71-70e2-4c92-82b7-a140fdf9ef56', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":null,\"fans\":0}', 'INVALID');
 INSERT INTO `token` VALUES (64, 1, 'root', '35ea083c-52bf-46d3-bbef-67a81bdea579', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'INVALID');
 INSERT INTO `token` VALUES (65, 1, 'root', 'cc87e2d1-f66b-4fc2-8208-4f48b7e967cd', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'INVALID');
-INSERT INTO `token` VALUES (66, 1, 'root', '78d3043e-903c-456f-b082-b48be6268033', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":null,\"fans\":0}', 'EFFECTIVE');
+INSERT INTO `token` VALUES (66, 1, 'root', '78d3043e-903c-456f-b082-b48be6268033', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":null,\"fans\":0}', 'INVALID');
+INSERT INTO `token` VALUES (67, 1, 'root', 'db2a3edd-d60f-4421-85d6-4dee30f77e0d', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'EFFECTIVE');
 
 -- ----------------------------
 -- Table structure for topic_for_article
@@ -444,20 +445,22 @@ INSERT INTO `token` VALUES (66, 1, 'root', '78d3043e-903c-456f-b082-b48be6268033
 DROP TABLE IF EXISTS `topic_for_article`;
 CREATE TABLE `topic_for_article`  (
   `topic_id` int NOT NULL AUTO_INCREMENT COMMENT '主键，主题id',
-  `topic_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题名称',
-  `created_id` bigint NULL DEFAULT NULL COMMENT '创建者id',
-  `created_time` datetime(6) NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_id` bigint NULL DEFAULT NULL COMMENT '更新者id',
-  `updated_time` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
-  `topic_status` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题状态（ENABLE/DISABLE）',
+  `topic_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主题名称',
+  `created_id` bigint NOT NULL COMMENT '创建者id',
+  `created_time` datetime(6) NOT NULL COMMENT '创建时间',
+  `topic_status` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'ENABLE' COMMENT '主题状态（ENABLE/DISABLE）',
   `topic_color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题标签颜色#FF0000十六进制',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告文章主题' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告文章主题' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of topic_for_article
 -- ----------------------------
-INSERT INTO `topic_for_article` VALUES (1, '测试', 1, '2023-12-20 02:50:42.000000', NULL, NULL, 'ENABLE', '#ECF5FF');
+INSERT INTO `topic_for_article` VALUES (1, '测试', 1, '2023-12-20 02:50:42.000000', 'ENABLE', '#ECF5FF');
+INSERT INTO `topic_for_article` VALUES (2, '行政管理', 1, '2024-03-13 18:16:44.764000', 'ENABLE', '#FFD5D5');
+INSERT INTO `topic_for_article` VALUES (3, '校园活动', 1, '2024-03-13 18:17:48.977000', 'ENABLE', '#CFBFFC');
+INSERT INTO `topic_for_article` VALUES (4, '学术', 1, '2024-03-13 18:18:36.912000', 'ENABLE', '#CC95EB');
+INSERT INTO `topic_for_article` VALUES (5, '招生', 1, '2024-03-13 18:19:01.236000', 'ENABLE', '#CFC2C8');
 
 -- ----------------------------
 -- Table structure for topic_for_job
@@ -468,7 +471,7 @@ CREATE TABLE `topic_for_job`  (
   `topic_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题信息',
   `topic_color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题标签颜色#FF0000十六进制',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of topic_for_job
@@ -489,18 +492,19 @@ CREATE TABLE `topic_for_post`  (
   `updated_id` bigint NULL DEFAULT NULL COMMENT '更新者id',
   `updated_time` datetime(6) NULL DEFAULT NULL COMMENT '更新时间',
   `topic_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '帖子状态Enabled/Disabled',
+  `topic_color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题颜色',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子主题' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子主题' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of topic_for_post
 -- ----------------------------
-INSERT INTO `topic_for_post` VALUES (1, '测试', 1, '2023-12-17 01:26:03.000000', 1, '2024-02-03 18:59:58.250000', 'ENABLE');
-INSERT INTO `topic_for_post` VALUES (2, '失物招领', 1, '2023-12-17 01:26:03.000000', NULL, NULL, 'ENABLE');
-INSERT INTO `topic_for_post` VALUES (3, '寻物启事', 1, '2024-01-09 00:11:36.117000', NULL, NULL, 'ENABLE');
-INSERT INTO `topic_for_post` VALUES (4, '表白墙', 1, '2024-01-09 00:15:09.480000', NULL, NULL, 'ENABLE');
-INSERT INTO `topic_for_post` VALUES (5, '生活趣事', 1, '2024-01-09 00:16:41.275000', 1, '2024-02-20 11:45:45.509000', 'ENABLE');
-INSERT INTO `topic_for_post` VALUES (6, '考研交流', 1, '2024-01-09 00:17:22.665000', 1, '2024-02-03 18:59:21.172000', 'ENABLE');
+INSERT INTO `topic_for_post` VALUES (1, '测试', 1, '2023-12-17 01:26:03.000000', 1, '2024-02-03 18:59:58.250000', 'ENABLE', '#FFFABD');
+INSERT INTO `topic_for_post` VALUES (2, '失物招领', 1, '2023-12-17 01:26:03.000000', NULL, NULL, 'ENABLE', '#ACF5CF');
+INSERT INTO `topic_for_post` VALUES (3, '寻物启事', 1, '2024-01-09 00:11:36.117000', NULL, NULL, 'ENABLE', '#FDD666');
+INSERT INTO `topic_for_post` VALUES (4, '表白墙', 1, '2024-01-09 00:15:09.480000', NULL, NULL, 'ENABLE', '#FFD3BD');
+INSERT INTO `topic_for_post` VALUES (5, '生活趣事', 1, '2024-01-09 00:16:41.275000', 1, '2024-02-20 11:45:45.509000', 'ENABLE', '#ECF5FF');
+INSERT INTO `topic_for_post` VALUES (6, '考研交流', 1, '2024-01-09 00:17:22.665000', 1, '2024-02-03 18:59:21.172000', 'ENABLE', '#DEBAFA');
 
 -- ----------------------------
 -- Table structure for user
@@ -524,7 +528,7 @@ CREATE TABLE `user`  (
   `user_version` int NOT NULL DEFAULT 1 COMMENT '乐观锁',
   `fans` int NULL DEFAULT 0 COMMENT '粉丝',
   PRIMARY KEY (`id`, `user_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user

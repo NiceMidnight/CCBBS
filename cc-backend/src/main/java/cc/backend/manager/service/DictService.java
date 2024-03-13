@@ -15,5 +15,4 @@ public interface DictService {
     SearchData<Dict> getAllDict(SearchData<Dict> searchData);
     List<Dict> getDictTypeName();
     boolean addDict(Dict dict);
-    boolean deleteDict(Integer dictId);
 }

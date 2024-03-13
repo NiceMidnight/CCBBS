@@ -22,4 +22,6 @@ public interface TopicForPostsMapper extends BaseMapper<TopicForPost> {
                         @Param("updatedId")Long updatedId,
                         @Param("updatedTime")Date updatedTime);
     int updateTopicNameById(TopicForPost topicForPost);
+
+    int updateTopicColor(@Param("topicId") Integer topicId,@Param("topicColor") String topicColor);
 }
