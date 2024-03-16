@@ -16,17 +16,55 @@
               <el-option label="女" value="0" />
             </el-select>
           </el-form-item>
-<!--          <el-form-item label="注册时间">-->
-<!--            <el-date-picker-->
-<!--                v-model="timeRange"-->
-<!--                type="datetimerange"-->
-<!--                start-placeholder="Start Date"-->
-<!--                end-placeholder="End Date"-->
-<!--            />-->
-<!--          </el-form-item>-->
+          <el-form-item label="用户状态" @keyup.enter="onQuery"  style="width: 250px">
+            <el-select
+                v-model="queryForm.data.userStatus"
+                placeholder="NULL"
+                clearable
+                @change="handleUserStatusChange"
+            >
+              <el-option
+                  v-for="option in userStatusOptions"
+                  :key="option.value"
+                  :value="option.value"
+                  :label="option.label"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="角色" @keyup.enter="onQuery"  style="width: 250px">
+            <el-select
+                v-model="queryForm.data.userRole"
+                placeholder="NULL"
+                clearable
+                @change="handleUserRoleChange"
+            >
+              <el-option
+                  v-for="option in userRoleOptions"
+                  :key="option['dictTypeId']"
+                  :value="option['dictTypeId']"
+                  :label="option['dictItemName']"
+              />
+            </el-select>
+          </el-form-item>
+          <div style="display: flex">
+          <el-form-item>
+            <div >
+              <span >时间</span>
+              <el-date-picker
+                  v-model="timeRange"
+                  type="datetimerange"
+                  :shortcuts="shortcuts"
+                  range-separator="至"
+                  start-placeholder="起始时间"
+                  end-placeholder="结束时间"
+                  style="margin-left: 1rem"
+              />
+            </div>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onQuery">查询</el-button>
           </el-form-item>
+          </div>
         </el-form>
       </div>
     </template>
@@ -45,6 +83,11 @@
       <el-table-column prop="userAddress" label="住址" align="center"/>
       <el-table-column prop="fans" label="粉丝" width="70" align="center"/>
       <el-table-column prop="userDate" label="注册时间" align="center" width="180" :formatter="timeHandler"/>
+      <el-table-column label="角色" width="100" align="center">
+        <template #default="{ row }">
+          <el-tag size="large" :style="{ backgroundColor: row['dictColor'] }">{{ row['dictItemName'] }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center"  width="200" v-slot="{ row }">
         <el-switch
             v-model="row['userStatus']"
@@ -67,7 +110,8 @@
         :background="background"
         layout="total, sizes, prev, pager, next, jumper"
         :total="tableData['total']"
-        @current-change="(pageNum) => { onChange(pageNum)}"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
         style="margin-top: 20px"
     />
   </el-card>
@@ -75,17 +119,47 @@
 
 <script setup lang="ts">
 
-import {enableUser, forbidUser, getAllUsers} from "../../api/users";
+import {enableUser, forbidUser, getAllUsers, getUserStatusOptionsApi} from "../../api/users";
 import {ElMessage} from "element-plus";
-import {reactive, ref} from "vue";
+import {reactive, ref,watch} from "vue";
 import {timeHandler} from "../../utils/timeHandler";
 import {baseUrl} from "../../utils/request";
+import {getUserRoleOptionsApi} from "@/api/dict";
 const small = ref(false)
 const background = ref(false)
 const disabled = ref(false)
-
+const handleSizeChange = async (size:number) => {
+  try {
+    const queryParams = {
+      pageNum:queryForm.pageNum,
+      pageSize:size,
+      total:queryForm.total,
+      data:queryForm.data
+    }
+    await getAllUsers(queryParams,startTime.value,endTime.value).then((res) => {
+      tableData.value = res.data
+    })
+  } catch (e) {
+    ElMessage.error("改变每页数量错误："+e)
+  }
+}
+const handleCurrentChange = async(num:number) => {
+  try {
+    const queryParams = {
+      pageNum:num,
+      pageSize:queryForm.pageSize,
+      total:queryForm.total,
+      data:queryForm.data
+    }
+    await getAllUsers(queryParams,startTime.value,endTime.value).then((res) => {
+      tableData.value = res.data
+    })
+  } catch (e) {
+    ElMessage.error("改变页码错误："+e)
+  }
+}
 /**
- * 表格数据---查询条件
+ * 表格数据---查询条件---用户状态选择器
  */
 const tableData = ref([])
 const queryForm = reactive({
@@ -94,16 +168,33 @@ const queryForm = reactive({
   total:1,
   data: {
     userName:'',
-    userSex:''
+    userSex:'',
+    userStatus:null,
+    userRole:'',
   }
 })
+const userStatusOptions = ref([])
+const userRoleOptions = ref([])
 /**
  * 请求数据 加载到表格内
  */
 const onLoad = async() => {
   try {
-    await getAllUsers(queryForm).then((res) => {
+    await getAllUsers(queryForm,null,null).then((res) => {
+      // console.log(res)
       tableData.value = res.data;
+    })
+    await getUserStatusOptionsApi().then((res) => {
+      userStatusOptions.value = res.data.map(option => {
+        return {
+          label: translateUserStatus(option),
+          value: option
+        }
+      })
+    })
+    await getUserRoleOptionsApi().then((res) => {
+      userRoleOptions.value = res.data
+      console.log(res)
     })
   } catch (e) {
     ElMessage.error(e)
@@ -111,11 +202,35 @@ const onLoad = async() => {
 }
 onLoad()
 /**
+ * 转译
+ */
+const translateUserStatus = (status) => {
+  switch (status) {
+    case 'ENABLE':
+      return '合规';
+    case 'DISABLE':
+      return '不合规';
+    default:
+      return status;
+  }
+}
+const handleUserStatusChange = (value) => {
+  if (value === '') {
+    queryForm.data.userStatus = null;
+  }
+}
+const handleUserRoleChange = (value) => {
+  if (value === '') {
+    queryForm.data.userRole = null;
+  }
+}
+
+/**
  * 查询数据 加载到表格
  */
 const onQuery = async() => {
   try {
-    await getAllUsers(queryForm).then((res) => {
+    await getAllUsers(queryForm,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data;
     })
   } catch (e) {
@@ -133,7 +248,7 @@ const onChange = async(pageNum:number) => {
       pageSize:queryForm.pageSize,
       data:queryForm.data
     }
-    await getAllUsers(queryParams).then((res) => {
+    await getAllUsers(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data;
     })
   } catch (e) {
@@ -141,18 +256,60 @@ const onChange = async(pageNum:number) => {
   }
 }
 
-//  时间选取器
-const timeRange = ref(null)
-//  时间查询监听
-// watch(timeRange,(newTime) => {
-//   if (Array.isArray(newTime)) {
-//     queryCondition.value.startCreateTime = newTime[0].toISOString
-//     queryCondition.value.endCreateTime = newTime[1].toISOString
-//   } else {
-//     queryCondition.value.startCreateTime = ''
-//     queryCondition.value.endCreateTime = ''
-//   }
-// })
+/**
+ * 时间范围
+ */
+const timeRange = ref("") //时间
+const startTime =  ref() ;
+const endTime =  ref();
+watch(timeRange,(newTime) => {
+  if (Array.isArray(newTime))
+  {
+    const start = new Date(newTime[0]);
+    start.setHours(start.getHours() + 8);
+    startTime.value = start.toISOString();
+    const end = new Date(newTime[1]);
+    end.setHours(end.getHours() + 8);
+    endTime.value = end.toISOString();
+  }
+  else {
+    startTime.value = ""
+    endTime.value = ""
+  }
+})
+/**
+ * 快速时间选择器
+ * @type {[{text: string, value: (function(): [Date,Date])},{text: string, value: (function(): [Date,Date])},{text: string, value: (function(): [Date,Date])}]}
+ */
+const shortcuts = [
+  {
+    text: '上周',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: '上个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: '过去三个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
 
 // 男/女
 const formatUserSex = (row: any) => {
@@ -160,7 +317,7 @@ const formatUserSex = (row: any) => {
 };
 //  是否注销
 const formatUserDeleted = (row: any) => {
-  return row.userDeleted === 1 ? '否' : row.userDeleted === 0 ? '是' : '';
+  return row['userDeleted'] === 1 ? '否' : row['userDeleted'] === 0 ? '是' : '';
 };
 // 默认用户头像
 const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'

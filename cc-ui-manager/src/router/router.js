@@ -10,24 +10,18 @@ const routes = [
     },
     {
         path: '/index',
-        name: 'home',
-        // component: AppLayout, // 设置根路径对应的组件
         component: () =>import('@/components/layout/AppLayout.vue'),
         meta: { requiresAuth: true,title:"首页" },  //   是否需要验证
         children:[
             //默认页面
             {
                 path: '',
+                redirect: { name: 'default' } // 重定向到默认页面
+            },
+            {
+                path: '',
                 name:'default',
                 component: IndexView,
-                meta: {title:"基本信息"}
-            },
-            // 懒加载
-            {
-                path:'/a',
-                name:'default',
-                component:IndexView,
-                meta: {title:""}
             },
             {
                 path: '/dict',

@@ -43,3 +43,21 @@ export const addDictApi = (Dict:DictData) => {
         data:Dict
     })
 }
+
+export const updateDictColorApi = (dictId:number,dictColor:string) => {
+    return request({
+        method:'GET',
+        url:'/manager/dict/updateDictColor',
+        params:{
+            dictId:dictId,
+            dictColor:dictColor
+        }
+    })
+}
+
+export const getUserRoleOptionsApi = () => {
+    return request({
+        method:'GET',
+        url:'/manager/dict/getUserRole',
+    })
+}

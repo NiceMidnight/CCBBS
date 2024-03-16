@@ -12,4 +12,5 @@ import java.util.List;
 public interface TopicForJobsService {
     List<TopicForJob> getTopicForJob();
     boolean updateTopicColor(TopicForJob topicForJob);
+
 }

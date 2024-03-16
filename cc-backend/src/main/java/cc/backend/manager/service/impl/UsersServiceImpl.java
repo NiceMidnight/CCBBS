@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -30,15 +31,20 @@ public class UsersServiceImpl implements UsersService {
      * @return: cc.backend.entity.SearchData
      */
     @Override
-    public SearchData<User> getAllUsers(SearchData<User> userSearchData) {
+    public SearchData<User> getAllUsers(SearchData<User> userSearchData, LocalDateTime startTime, LocalDateTime endTime) {
         //  分页查询
         IPage<User> iPage = new Page<>(userSearchData.getPageNum(), userSearchData.getPageSize());
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper
-                .like(userSearchData.getData().getUserName()!=null,"user_name",userSearchData.getData().getUserName())
-                .like(userSearchData.getData().getUserSex()!=null,"user_sex",userSearchData.getData().getUserSex())
-                .in("user_role", Arrays.asList(0, 2));
-        usersMapper.selectPage(iPage, queryWrapper);
+//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        queryWrapper
+//                .like(userSearchData.getData().getUserName()!=null,"user_name",userSearchData.getData().getUserName())
+//                .like(userSearchData.getData().getUserSex()!=null,"user_sex",userSearchData.getData().getUserSex())
+//                .in("user_role", Arrays.asList(0, 2));
+//        // 添加时间范围条件（如果startTime和endTime都不为null）
+//        if (startTime != null && endTime != null) {
+//            queryWrapper.between("user_date", startTime, endTime);
+//        }
+//        usersMapper.selectPage(iPage, queryWrapper);
+        usersMapper.selectUser(iPage,userSearchData.getData(),startTime,endTime);
         return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(), iPage.getRecords());
     }
     /**

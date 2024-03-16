@@ -1,6 +1,7 @@
 package cc.backend.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -31,4 +32,13 @@ public class Dict {
      * 字典主题名详细内容
      */
     private String dictItemName;
+    /**
+     * 字典颜色
+     */
+    private String dictColor;
+    /**
+     * 数量
+     */
+    @TableField(exist = false)
+    private Long count;
 }

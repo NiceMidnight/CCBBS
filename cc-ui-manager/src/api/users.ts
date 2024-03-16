@@ -15,15 +15,26 @@ export type QueryCondition = Partial<{
 /**
  * 获取用户列表信息
  * @param queryCondition
+ * @param startTime
+ * @param endTime
  */
-export const getAllUsers = (queryCondition: QueryCondition = {}) => {
+export const getAllUsers = (queryCondition: QueryCondition = {},startTime:any,endTime:any) => {
     return request({
         method: 'POST',
         url: '/manager/user/getAllUsers',
         data: queryCondition,
+        params:{
+            startTime:startTime,
+            endTime:endTime
+        }
     })
 }
-
+export const getUserStatusOptionsApi = () => {
+    return request({
+        method: 'GET',
+        url: '/manager/user/getUserStatusOptions'
+    })
+}
 /**
  * 启用用户
  * @param userId

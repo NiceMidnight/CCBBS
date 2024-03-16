@@ -15,4 +15,6 @@ public interface DictService {
     SearchData<Dict> getAllDict(SearchData<Dict> searchData);
     List<Dict> getDictTypeName();
     boolean addDict(Dict dict);
+    boolean updateDictColor(Integer dictId,String dictColor);
+    List<Dict> getUserRole();
 }

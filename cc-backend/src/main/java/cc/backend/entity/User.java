@@ -65,6 +65,10 @@ public class User {
      * 角色  管理员1/用户0
      */
     private Integer userRole;
+    @TableField(exist = false)
+    private String dictItemName;
+    @TableField(exist = false)
+    private String dictColor;
     /**
      * 状态
      */

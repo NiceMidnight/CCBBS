@@ -88,6 +88,7 @@ const onLoad = async () => {
       // 获取关注状态
       post.followStatus = await getFollowStatus(post.userId);
     }));
+
   } catch (e) {
     console.log(e)
   }

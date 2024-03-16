@@ -47,4 +47,7 @@ public class TopicForArticle {
      * 主题颜色
      */
     private String topicColor;
+
+    @TableField(exist = false)
+    private Long count;
 }

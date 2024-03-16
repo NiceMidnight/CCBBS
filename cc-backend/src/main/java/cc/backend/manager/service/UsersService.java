@@ -4,6 +4,8 @@ package cc.backend.manager.service;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.User;
 
+import java.time.LocalDateTime;
+
 
 /**
  * @FileName UsersService
@@ -12,7 +14,7 @@ import cc.backend.entity.User;
  * @date 2023-08-04
  **/
 public interface UsersService {
-    SearchData<User> getAllUsers(SearchData<User> userSearchData);
+    SearchData<User> getAllUsers(SearchData<User> userSearchData, LocalDateTime startTime, LocalDateTime endTime);
 
     boolean enableUser(Integer id);
     boolean forbidUser(Integer id);

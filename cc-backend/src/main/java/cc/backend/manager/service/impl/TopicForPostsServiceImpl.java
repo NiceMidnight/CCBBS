@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description 帖子主题
@@ -99,6 +100,14 @@ public class TopicForPostsServiceImpl implements TopicForPostsService {
     @Override
     public boolean updateTopicColor(int topicId, String topicColor) {
         return topicForPostsMapper.updateTopicColor(topicId,topicColor) > 0;
+    }
+
+    /**
+     * TODO 获取所有TFP数据
+     */
+    @Override
+    public List<TopicForPost> getTFP() {
+        return topicForPostsMapper.selectList(null);
     }
 
 }

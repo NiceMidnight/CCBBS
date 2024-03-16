@@ -4,9 +4,15 @@ package cc.backend.manager.controller;
 import cc.backend.common.Result;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.User;
+import cc.backend.enums.UserStatus;
 import cc.backend.manager.service.impl.UsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @FileName UsersController
@@ -26,9 +32,20 @@ public class UsersController {
      * @return: cc.backend.common.Result
      */
     @RequestMapping("/getAllUsers")
-    public Result getAllUsers(@RequestBody SearchData<User> userSearchData){
-        SearchData allUsers = usersService.getAllUsers(userSearchData);
+    public Result getAllUsers(@RequestBody SearchData<User> userSearchData,
+                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime){
+        SearchData allUsers = usersService.getAllUsers(userSearchData,startTime,endTime);
         return Result.successCDM(allUsers,"获取所有用户信息");
+    }
+    /**
+     * TODO 用户状态选择器
+     */
+    @GetMapping("/getUserStatusOptions")
+    public Result getUserStatus()
+    {
+        List<UserStatus> userStatusList = Arrays.asList(UserStatus.values());
+        return Result.successCDM(userStatusList,"获取用户状态选择器成功");
     }
     /**
      * @description TODO 启用用户

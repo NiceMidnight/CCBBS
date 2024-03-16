@@ -1,25 +1,32 @@
 <template>
-  <div class="echarts-container" ref="chartContainer"></div>
-  <div>{{userNumber}}</div>
+  <div>
+    <div class="echarts-container" ref="chartContainer"></div>
+    <div>{{ userNumber }}</div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import * as echarts from 'echarts'
-import {ref, onMounted, reactive} from 'vue';
-import {getUserNumber} from "@/api/chartContainerData";
-import {getIndexDataApi} from "@/api/echartsData";
-const chartContainer = ref(null);
-const data = reactive(['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'])
-const userNumber = ref(null)
+import * as echarts from 'echarts';
+import { ref, onMounted, reactive } from 'vue';
+import { getUserNumber } from "@/api/eChartData";
+import { getIndexDataApi } from "@/api/echartsData";
+
+const chartContainer = ref<HTMLElement | null>(null);
+const data = reactive(['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']);
+const userNumber = ref(null);
+
 onMounted(async () => {
-  initChart("a",data);
+  initChart("a", data);
   await getUserNumber().then((res) => {
-    userNumber.value = res.data
-  })
+    // console.log(res);
+    userNumber.value = res.data;
+  });
   await getIndexDataApi().then((res) => {
-    console.log(res)
-  })
+    userNumber.value = res.data;
+    // console.log(res);
+  });
 });
+
 const initChart = (da: string, data: Array<string>) => {
   // 获取图表容器元素
   const container = chartContainer.value;
@@ -54,7 +61,7 @@ const initChart = (da: string, data: Array<string>) => {
   };
 
   myChart.setOption(options);
-}
+};
 </script>
 
 <style lang="scss" scoped>

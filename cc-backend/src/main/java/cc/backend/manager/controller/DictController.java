@@ -27,7 +27,7 @@ public class DictController {
     @PostMapping("/getAllDict")
     public Result getAllDict(@RequestBody SearchData<Dict> searchData) {
         SearchData<Dict> dict = dictService.getAllDict(searchData);
-        return Result.successCDM(dict,"获取数据成功...");
+        return Result.successCDM(dict,"获取数据成功");
     }
 
     /**
@@ -54,6 +54,25 @@ public class DictController {
             return Result.successCM("添加字典内容成功");
         }
         return Result.error("添加字典内容失败");
+    }
+
+
+    @GetMapping("/updateDictColor")
+    public Result updateDictColor(@RequestParam("dictId")Integer dictId,@RequestParam("dictColor")String dictColor)
+    {
+        boolean isUpdateDictColor = dictService.updateDictColor(dictId, dictColor);
+        if (isUpdateDictColor)
+        {
+            return Result.successCM("更改字典颜色成功");
+        }
+        return Result.error("更改字典颜色失败");
+    }
+
+    @GetMapping("/getUserRole")
+    public Result getUserRole()
+    {
+        List<Dict> userRole = dictService.getUserRole();
+        return Result.successCDM(userRole,"获取用户角色字典成功");
     }
 
 }

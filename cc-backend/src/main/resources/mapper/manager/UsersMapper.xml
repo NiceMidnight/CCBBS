@@ -3,6 +3,38 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.backend.manager.mapper.UsersMapper">
+    <select id="selectUser" resultType="user">
+        SELECT
+            u.*,
+            d.dict_item_name as dict_item_name,
+            d.dict_color as dict_color
+        FROM
+            user u
+        LEFT JOIN
+            dict d ON u.user_role = d.dict_type_id
+        <where>
+            <if test="user.userName != null and user.userName != ''">
+                AND u.user_name LIKE CONCAT('%', #{user.userName}, '%')
+            </if>
+            <if test="user.userSex != null and user.userSex != ''">
+                AND u.user_sex LIKE CONCAT('%', #{user.userSex}, '%')
+            </if>
+            <if test="user.userRole != null">
+                AND u.user_role = #{user.userRole}
+            </if>
+            <if test="user.userStatus != null">
+                AND u.user_status = #{user.userStatus}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND u.user_date BETWEEN #{startTime} AND #{endTime}
+            </if>
+            AND u.user_role IN (0, 2)
+            AND d.dict_type_name = 'role'
+        </where>
+        ORDER BY u.id DESC
+    </select>
+
+
     <update id="updateUserVersion" >
         UPDATE user
         SET user_version = #{version}

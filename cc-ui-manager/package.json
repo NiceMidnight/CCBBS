@@ -19,7 +19,7 @@
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.4.0",
-    "echarts": "^5.4.3",
+    "echarts": "^5.5.0",
     "element-plus": "^2.3.8",
     "pinia": "^2.0.0-rc.10",
     "sass": "^1.64.2",

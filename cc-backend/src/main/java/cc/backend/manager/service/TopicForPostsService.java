@@ -3,6 +3,8 @@ package cc.backend.manager.service;
 import cc.backend.entity.SearchData;
 import cc.backend.entity.forpost.TopicForPost;
 
+import java.util.List;
+
 /**
  * @Description
  * @Author Tiamo_null
@@ -16,4 +18,5 @@ public interface TopicForPostsService {
     TopicForPost getTopicById(Integer topicId);
     boolean editTopic(String topicName,Integer topicId,String tokenInfo);
     boolean updateTopicColor(int topicId,String topicColor);
+    List<TopicForPost> getTFP();
 }

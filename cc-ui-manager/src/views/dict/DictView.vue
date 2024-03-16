@@ -33,6 +33,9 @@
       <el-table-column prop="dictTypeId" label="类型Id" width="220" align="center"/>
       <el-table-column prop="dictTypeName" label="字典类型名称"  width="300" align="center"/>
       <el-table-column prop="dictItemName" label="类型属性名称" width="300" align="center"/>
+      <el-table-column label="颜色" width="125" align="center" v-slot="{ row }">
+        <el-color-picker v-model="row['dictColor']" size="large" @change="handleColorChange(row)"/>
+      </el-table-column>
     </el-table>
     <el-pagination
         v-model:current-page="queryForm.pageNum"
@@ -97,7 +100,7 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {addDictApi, getAllDict, getDictTypeName} from "../../api/dict";
+import {addDictApi, getAllDict, getDictTypeName, updateDictColorApi} from "../../api/dict";
 /**
  * 字典类型选择器
  */
@@ -129,6 +132,20 @@ const onLoad = async() => {
   }
 }
 onLoad()
+/**
+ * 更改主题颜色
+ * @param row
+ */
+const handleColorChange = async (row) => {
+  await updateDictColorApi(row['dictId'],row['dictColor']).then((res) => {
+    if (res["code"] === '200')
+    {
+      ElMessage.success(res["msg"])
+      onQuery()
+    }
+    else ElMessage.error(res['msg'])
+  })
+}
 /**
  * 查询数据---改变页码查询数据
  */

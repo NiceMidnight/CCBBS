@@ -4,11 +4,12 @@ package cc.backend.manager.mapper;
 import cc.backend.entity.User;
 import cc.backend.enums.UserStatus;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * @FileName UsersMapper
@@ -18,8 +19,9 @@ import java.util.List;
  **/
 @Mapper
 public interface UsersMapper extends BaseMapper<User> {
-    @Select("select * from user where user_name like concat('%',#{name},'%')")
-    List<User> selectByName(String name);
+    IPage<User> selectUser(IPage<User> iPage, User user,
+                              @Param("startTime") LocalDateTime startTime,
+                              @Param("endTime")LocalDateTime endTime);
 
     int updateUserVersion(@Param("id")Integer id,@Param("userName")String userName,@Param("version")Integer version);
     int updateUserVersionById(@Param("id")Integer id,@Param("version")Integer version);
@@ -32,4 +34,5 @@ public interface UsersMapper extends BaseMapper<User> {
 
     int updateUserRoleById(@Param("userId") int userId,
                            @Param("roleNumber") int roleNumber);
+
 }

@@ -7,8 +7,8 @@
       <el-container class="header-and-main">
 <!--        头部-->
         <AppHead/>
+        <!--          主体-->
         <el-main>
-<!--          主体-->
           <el-scrollbar>
             <RouterView/>
           </el-scrollbar>

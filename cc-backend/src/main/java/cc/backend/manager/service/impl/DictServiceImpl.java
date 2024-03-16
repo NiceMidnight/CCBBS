@@ -30,7 +30,7 @@ public class DictServiceImpl implements DictService {
     public SearchData<Dict> getAllDict(SearchData<Dict> searchData) {
         IPage<Dict> iPage = new Page<>(searchData.getPageNum(),searchData.getPageSize());
         LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(searchData.getData().getDictTypeName()!=null,Dict::getDictTypeName,searchData.getData().getDictTypeName());
+        queryWrapper.like(searchData.getData().getDictTypeName()!=null, Dict::getDictTypeName,searchData.getData().getDictTypeName());
         dictMapper.selectPage(iPage, queryWrapper);
         return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(),iPage.getRecords());
     }
@@ -52,5 +52,19 @@ public class DictServiceImpl implements DictService {
         return dictMapper.insert(dict) > 0;
     }
 
+    /**
+     * TODO 更新字典颜色
+     */
+    @Override
+    public boolean updateDictColor(Integer dictId, String dictColor) {
+        return dictMapper.updateDictColor(dictId,dictColor) > 0;
+    }
+
+    @Override
+    public List<Dict> getUserRole() {
+        QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();
+        dictQueryWrapper.eq("dict_type_name","role");
+        return dictMapper.selectList(dictQueryWrapper);
+    }
 
 }

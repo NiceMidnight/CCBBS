@@ -60,4 +60,9 @@ public class TopicForPost {
      * 主题背景颜色
      */
     private String topicColor;
+    /**
+     *
+     */
+    @TableField(exist = false)
+    private Long postCount;
 }
