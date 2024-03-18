@@ -13,7 +13,7 @@ let dictData = reactive([])
 onMounted(async () => {
   await getTFAEChartDataApi().then((res) => {
     dictData = res.data
-    console.log(res)
+    // console.log(res)
     initPostChart()
   })
 });

@@ -99,17 +99,17 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(r=>r.meta?.requiresAuth)) {
-        const store = useTokenStore()
-        if (!store.token) {
-            //不存在token，跳转login页面，原要跳转的页面以query形式传递
-            next({name:'login',query:{redirect: to.fullPath}})
-        } else next()
-        return
-    }
-    //不要求权限拦截，原计划跳转
-    next()
-})
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.some(r=>r.meta?.requiresAuth)) {
+//         const store = useTokenStore()
+//         if (!store.token) {
+//             //不存在token，跳转login页面，原要跳转的页面以query形式传递
+//             next({name:'login',query:{redirect: to.fullPath}})
+//         } else next()
+//         return
+//     }
+//     //不要求权限拦截，原计划跳转
+//     next()
+// })
 
 export default router;

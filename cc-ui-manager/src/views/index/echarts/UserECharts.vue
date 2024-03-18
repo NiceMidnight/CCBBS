@@ -13,8 +13,8 @@ let dictData = reactive([])
 onMounted(async () => {
   await getUserRoleEChartDataApi().then((res) => {
     dictData = res.data
-    console.log(res)
-    initPostChart()
+    // console.log(res)
+    initUserChart()
   })
 });
 /**
@@ -32,7 +32,7 @@ const translateJobStatus = (userRole) => {
       return userRole;
   }
 }
-const initPostChart = () => {
+const initUserChart = () => {
   // 格式化聚合好的数据为 echarts 饼图数据格式
   const pieData = dictData.map(item => ({
     value: item['count'],
@@ -89,4 +89,5 @@ const initPostChart = () => {
   };
   myChart.setOption(option);
 }
+
 </script>

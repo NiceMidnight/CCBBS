@@ -238,6 +238,11 @@ const editHandleClose = () => {
  * @param row
  */
 const handleColorChange = async (row) => {
+  if (row['topicColor'] === '' || row['topicColor'] === null)
+  {
+    ElMessage.error("颜色不能为空")
+    return
+  }
   await updateTopicColorApi(row['topicId'],row['topicColor']).then((res) => {
     if (res["code"] === '200')
     {

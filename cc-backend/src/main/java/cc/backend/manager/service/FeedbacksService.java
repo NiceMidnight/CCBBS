@@ -1,6 +1,6 @@
 package cc.backend.manager.service;
 
-import cc.backend.entity.Feedback;
+import cc.backend.entity.feedback.Feedback;
 import cc.backend.entity.SearchData;
 
 import java.time.LocalDateTime;

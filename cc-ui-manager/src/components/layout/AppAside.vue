@@ -57,7 +57,7 @@ import { isCollapse } from '../js/isCollapse.js'
           <el-icon><IEpSetting/></el-icon> <span> 招聘信息管理 </span>
         </template>
         <el-menu-item index="/jobTopicDict">
-          <el-icon><IEpSetting/></el-icon> <span> 招聘主题 </span>
+          <el-icon><IEpSetting/></el-icon> <span> 招聘类型 </span>
         </el-menu-item>
         <el-menu-item index="/applyRecruitMessage">
           <el-icon><IEpSetting/></el-icon> <span> 申请信息管理 </span>
@@ -67,11 +67,24 @@ import { isCollapse } from '../js/isCollapse.js'
         </el-menu-item>
       </el-sub-menu>
 
+      <!--反馈信息管理-->
+      <el-sub-menu index="4">
+        <template #title>
+          <el-icon><IEpSetting/></el-icon> <span> 反馈信息管理 </span>
+        </template>
+        <el-menu-item index="/feedback">
+          <el-icon><IEpSetting/></el-icon> <span> 反馈信息管理 </span>
+        </el-menu-item>
+        <el-menu-item index="/topicForFeedback">
+          <el-icon><IEpSetting/></el-icon> <span> 反馈类型管理 </span>
+        </el-menu-item>
+      </el-sub-menu>
+
       <el-menu-item index="/users">
         <el-icon><IEpSetting/></el-icon> <span> 用户管理 </span>
       </el-menu-item>
 
-      <el-sub-menu index="4">
+      <el-sub-menu index="5">
         <template #title>
           <el-icon><IEpSetting/></el-icon> <span> 广告管理 </span>
         </template>

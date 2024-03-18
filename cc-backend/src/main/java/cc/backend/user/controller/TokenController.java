@@ -2,6 +2,7 @@ package cc.backend.user.controller;
 
 import cc.backend.common.Result;
 import cc.backend.user.service.impl.TokenServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Description
+ * @Description 进入页面token校验
  * @Author Tiamo_null
  * @Date 2024/2/20
  */
@@ -33,4 +34,5 @@ public class TokenController {
         }
         return Result.error("用户非法登录，已登出");
     }
+
 }

@@ -11,18 +11,22 @@
 </template>
 <script setup lang="ts">
 import {RouterView} from "vue-router";
-import {onMounted} from "vue";
+import {onMounted,ref} from "vue";
 import {useTokenStore} from "@/stores/mytoken";
-import {tokenVerificationApi} from "@/api/login";
+import {enterDailyUniqueVisitorsLogApi, tokenVerificationApi} from "@/api/login";
 import {ElMessage} from "element-plus";
 onMounted(()=> {
   const tokenStore = useTokenStore()
   const token = tokenStore.getToken()
+
   if (token) {
     try {
       tokenVerificationApi(token).then((res) => {
-        if (res["code"] === '500')
+        console.log(res)
+        if (res["code"] === '200')
         {
+          enterDailyUniqueVisitorsLogApi()
+        } else {
           tokenStore.clearToken()
           ElMessage.error(res["msg"]);
         }
@@ -33,6 +37,28 @@ onMounted(()=> {
   }
 })
 
+const localIPAddress = ref<string | null>(null);
+
+const getLocalIPAddress = async () => {
+  try {
+    const pc = new RTCPeerConnection();
+    pc.createDataChannel('');
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    pc.onicecandidate = (event) => {
+      if (event.candidate) {
+        const ipAddress = event.candidate.address;
+        localIPAddress.value = ipAddress;
+        console.log(localIPAddress)
+        pc.close();
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching local IP address:', error);
+  }
+};
+
+getLocalIPAddress();
 
 </script>
 <style scoped>

@@ -106,6 +106,13 @@ export const tokenVerificationApi = (token:string) =>{
         }
     })
 }
+
+export const enterDailyUniqueVisitorsLogApi = () =>{
+    return request({
+        method:'GET',
+        url:'/user/log/enterDailyUniqueVisitorsLog',
+    })
+}
 /**
  * 登出
  */

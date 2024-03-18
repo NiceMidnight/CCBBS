@@ -102,6 +102,18 @@ const routes = [
                 meta: {title:"招聘信息"}
             },
             {
+                path:'/feedback',
+                name:'Feedback',
+                component: () => import("@/views/feedback/FeedbackView.vue"),
+                meta: {title:"反馈信息"}
+            },
+            {
+                path:'/topicForFeedback',
+                name:'TopicForFeedback',
+                component: () => import("@/views/feedback/TopicForFeedbackView.vue"),
+                meta: {title:"反馈主题"}
+            },
+            {
                 path:'/:xxx(.*)*',
                 name:'ErrorPage',
                 component: () => import("@/views/404/ErrorPage.vue")

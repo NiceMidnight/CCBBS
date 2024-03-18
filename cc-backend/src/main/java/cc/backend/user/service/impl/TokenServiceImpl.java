@@ -29,7 +29,7 @@ public class TokenServiceImpl implements TokenService {
             User user = token.getUser(tokenInfo);
             if (user != null)
             {
-                return user.getUserRole() == 0;
+                return user.getUserRole() == 0 || user.getUserRole() == 2 ;
             }
         }
         return false;

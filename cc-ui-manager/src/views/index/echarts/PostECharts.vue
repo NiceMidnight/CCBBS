@@ -12,7 +12,7 @@ const chart = ref<HTMLElement | null>(null);  // 声明一个 ref 变量用于�
 onMounted(async () => {
   await getTFPEChartDataApi().then((res) => {
     postData = res.data
-    console.log(res)
+    // console.log(res)
     initPostChart()
   })
 });

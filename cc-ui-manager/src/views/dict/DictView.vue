@@ -137,6 +137,11 @@ onLoad()
  * @param row
  */
 const handleColorChange = async (row) => {
+  if (row['dictColor'] === '' || row['dictColor'] === null)
+  {
+    ElMessage.error("颜色不能为空")
+    return
+  }
   await updateDictColorApi(row['dictId'],row['dictColor']).then((res) => {
     if (res["code"] === '200')
     {

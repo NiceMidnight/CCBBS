@@ -12,6 +12,8 @@ import {
 import {timeHandler} from "@/utils/timeHandler";
 import {truncateText} from "@/utils/textHandler";
 import {useRouter} from "vue-router";
+import {getAllFeedbackApi, getFeedbackStatusOptionApi, getReminderStatusOptionApi} from "@/api/feedback";
+import {getTFFOptionsApi} from "@/api/topicForFeedback";
 
 const drawer = ref(false)
 /**
@@ -26,52 +28,89 @@ const truncateTextFormatter = (row: any) => {
  * 表单数据---查询数据
  */
 const tableData = ref([])
-const postStatusForComplianceOptions = ref([]) //帖子状态选择器
+const feedbackStatusOptions = ref([]) //反馈处理状态选择器
+const reminderStatusOptions = ref([]) //反馈信息状态
+const topicForFeedbackOptions = ref([]) //类型选择器
 const queryForm = reactive({
   pageNum:1,
   pageSize:10,
   total:1,
   data:{
     userName:'',
-    postTitle:'',
-    postContent:'',
-    nickName:'',
-    postStatus:null
+    topicId:null,
+    reminderStatus:null,
+    feedbackStatus:null,
   }
 })
 const onLoad = async() => {
   try {
-    await getAllPostApi(queryForm,null,null).then((res) => {
+    await getAllFeedbackApi(queryForm,null,null).then((res) => {
       tableData.value = res.data
       console.log(res.data)
     })
-    await getPostStatusForComplianceOptionApi().then((res) => {
-      postStatusForComplianceOptions.value = res.data.map(option => {
+    await getFeedbackStatusOptionApi().then((res) => {
+      feedbackStatusOptions.value = res.data.map(option => {
         return {
-          label: translateStatus(option),
+          label: translateFeedbackStatus(option),
           value: option
         }
       })
+    })
+    await getReminderStatusOptionApi().then((res) => {
+      reminderStatusOptions.value = res.data.map(option => {
+        return {
+          label:translateReminderStatus(option),
+          value:option
+        }
+      })
+    })
+    await getTFFOptionsApi().then((res) => {
+      topicForFeedbackOptions.value = res.data
+      console.log(res)
     })
   } catch (e) {
     ElMessage.error(e)
   }
 }
-const translateStatus = (status) => {
+/**
+ * 转译
+ * @param status
+ */
+const translateReminderStatus = (status) => {
   switch (status) {
-    case 'COMPLIANCE':
-      return '合规';
-    case 'IRREGULARITY':
-      return '不合规';
+    case 'Reminder':
+      return '催促中';
+    case 'NotReminded':
+      return '未催促';
+    default:
+      return status;
+  }
+}
+const translateFeedbackStatus = (status) => {
+  switch (status) {
+    case 'Pending':
+      return '未处理';
+    case 'InProgress':
+      return '处理中';
+    case 'Processed':
+      return '已处理';
+    case 'Closed':
+      return '已完成';
     default:
       return status;
   }
 }
 onLoad()
-const handleStatusChange = (value) => {
+const handleHandlerStatusChange = (value) => {
   // 如果选项的值为空字符串，则将其设置为 null
   if (value === '') {
-    queryForm.data.postStatus = null;
+    queryForm.data.feedbackStatus = null;
+  }
+}
+const handleReminderStatusChange = (value) => {
+  // 如果选项的值为空字符串，则将其设置为 null
+  if (value === '') {
+    queryForm.data.feedbackStatus = null;
   }
 }
 /**
@@ -79,7 +118,7 @@ const handleStatusChange = (value) => {
  */
 const onQuery = async() => {
   try {
-    await getAllPostApi(queryForm,startTime.value,endTime.value).then((res) => {
+    await getAllFeedbackApi(queryForm,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -95,9 +134,10 @@ const handleSizeChange = async (size:number) => {
     const queryParams = {
       pageNum:queryForm.pageNum,
       pageSize:size,
+      total:queryForm.total,
       data:queryForm.data
     }
-    await getAllPostApi(queryParams,startTime.value,endTime.value).then((res) => {
+    await getAllFeedbackApi(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -109,9 +149,10 @@ const handleCurrentChange = async(num:number) => {
     const queryParams = {
       pageNum:num,
       pageSize:queryForm.pageSize,
+      total:queryForm.total,
       data:queryForm.data
     }
-    await getAllPostApi(queryParams,startTime.value,endTime.value).then((res) => {
+    await getAllFeedbackApi(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data;
     })
   } catch (e) {
@@ -222,31 +263,52 @@ const shortcuts = [
           <el-form-item label="用户名">
             <el-input v-model="queryForm.data.userName" placeholder="请输入上传用户名称" clearable @keyup.enter="onQuery"/>
           </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="queryForm.data.nickName" placeholder="请输入上传用户昵称" clearable @keyup.enter="onQuery"/>
+          <el-form-item label="类型" @keyup.enter="onQuery"  style="width: 250px">
+            <el-select
+                v-model="queryForm.data.topicId"
+                placeholder="NULL"
+                clearable
+                @change="handleHandlerStatusChange"
+            >
+              <el-option
+                  v-for="option in feedbackStatusOptions"
+                  :key="option['topicId']"
+                  :value="option['topicId']"
+                  :label="option['topicName']"
+              />
+            </el-select>
           </el-form-item>
-          <el-form-item label="标题">
-            <el-input v-model="queryForm.data.postTitle" placeholder="请输入帖子标题" clearable @keyup.enter="onQuery"/>
+          <el-form-item label="处理状态" @keyup.enter="onQuery"  style="width: 250px">
+            <el-select
+                v-model="queryForm.data.feedbackStatus"
+                placeholder="NULL"
+                clearable
+                @change="handleHandlerStatusChange"
+            >
+              <el-option
+                  v-for="option in feedbackStatusOptions"
+                  :key="option.value"
+                  :value="option.value"
+                  :label="option.label"
+              />
+            </el-select>
           </el-form-item>
-          <el-form-item label="内容">
-            <el-input v-model="queryForm.data.postContent" placeholder="请输入帖子内容" clearable @keyup.enter="onQuery"/>
+          <el-form-item label="信息状态" @keyup.enter="onQuery"  style="width: 250px">
+            <el-select
+                v-model="queryForm.data.reminderStatus"
+                placeholder="NULL"
+                clearable
+                @change="handleReminderStatusChange"
+            >
+              <el-option
+                  v-for="option in reminderStatusOptions"
+                  :key="option.value"
+                  :value="option.value"
+                  :label="option.label"
+              />
+            </el-select>
           </el-form-item>
           <div style="display: flex">
-            <el-form-item label="帖子状态" @keyup.enter="onQuery"  style="width: 250px">
-              <el-select
-                  v-model="queryForm.data.postStatus"
-                  placeholder="NULL"
-                  clearable
-                  @change="handleStatusChange"
-              >
-                <el-option
-                    v-for="option in postStatusForComplianceOptions"
-                    :key="option.value"
-                    :value="option.value"
-                    :label="option.label"
-                />
-              </el-select>
-            </el-form-item>
             <el-form-item>
               <div >
                 <span >时间</span>

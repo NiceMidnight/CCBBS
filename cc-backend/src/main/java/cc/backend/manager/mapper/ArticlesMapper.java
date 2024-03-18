@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @FileName ArticleMapper
@@ -23,4 +24,12 @@ public interface ArticlesMapper extends BaseMapper<Article> {
 
     int updateArticle(Article article);
     int updateArticleStatusByArticleId(@Param("articleId")Integer articleId, @Param("articleStatus")ArticleStatus articleStatus);
+
+    @Select("SELECT COUNT(*) FROM article WHERE YEAR(created_time) = YEAR(CURDATE()) " +
+            "AND MONTH(created_time) = MONTH(CURDATE())")
+    Long countByCurrentMonth();
+
+    @Select("SELECT COUNT(*) FROM article WHERE YEAR(created_time) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) " +
+            "AND MONTH(created_time) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)")
+    Long countByLastMonth();
 }

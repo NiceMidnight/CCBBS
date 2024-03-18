@@ -1,17 +1,18 @@
 package cc.backend.manager.controller;
 
 import cc.backend.common.Result;
-import cc.backend.entity.Feedback;
+import cc.backend.entity.feedback.Feedback;
 import cc.backend.entity.SearchData;
+import cc.backend.enums.FeedbackReminderStatus;
+import cc.backend.enums.FeedbackStatus;
 import cc.backend.manager.service.impl.FeedbacksServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Description
@@ -29,5 +30,17 @@ public class FeedbacksController {
                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime){
         SearchData<Feedback> allFeedback = feedbacksService.getAllFeedback(searchData, startTime, endTime);
         return Result.successCDM(allFeedback,"获取所有用户信息");
+    }
+    @GetMapping("/getFeedbackStatusOption")
+    public Result getFeedbackStatusOption()
+    {
+        List<FeedbackStatus> feedbackStatusList = Arrays.asList(FeedbackStatus.values());
+        return Result.successCDM(feedbackStatusList,"获取帖子处理状态选择器成功");
+    }
+    @GetMapping("/getReminderStatusOption")
+    public Result getReminderStatusOption()
+    {
+        List<FeedbackReminderStatus> feedbackReminderStatuses = Arrays.asList(FeedbackReminderStatus.values());
+        return Result.successCDM(feedbackReminderStatuses,"获取帖子催促状态选择器成功");
     }
 }

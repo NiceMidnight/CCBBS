@@ -1,27 +1,49 @@
-package cc.backend.entity;
+package cc.backend.entity.feedback;
 
 import cc.backend.enums.FeedbackReminderStatus;
 import cc.backend.enums.FeedbackStatus;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 /**
- * @Description
+ * @Description 反馈信息
  * @Author Tiamo_null
  * @Date 2024/2/22
  */
 @Data
 @TableName("feedback")
 public class Feedback {
+    @TableId(value = "feedback_id",type = IdType.AUTO)
     private Integer feedbackId;
-    private Integer feedbackType;
+
+    private Integer topicId;
+
+    @TableField(exist = false)
+    private String topicName;
+
     private String feedbackContent;
+
     private Integer creatorId;
-    private Date createTime;
+
+    @TableField(exist = false)
+    private String creator;
+
+    private Date createdTime;
+
     private Integer handlerId;
+
+    @TableField(exist = false)
+    private String handler;
+
     private Date handleTime;
+
     private FeedbackStatus feedbackStatus;
+
     private FeedbackReminderStatus reminderStatus;
+
 }
