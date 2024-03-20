@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {getTopicForJobApi, updateTopicColorApi} from "@/api/topicForJob";
 import {reactive, ref} from "vue";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import {
+  addTFFApi,
   disableTopicApi,
   enableTopicApi,
   getTopicForFeedbackApi,
@@ -77,6 +78,37 @@ const handleChange = async (act:"ENABLE" | "DISABLE",topicId: number) => {
     throw new Error(data['msg'])
   }
 }
+/**
+ * 添加类型
+ */
+const addTopicDialogVisible = ref(false)
+const addTopicData = reactive({
+  topicName:'',
+  topicColor:'',
+  topicStatus:null,
+})
+const addHandleClose = () => {
+  ElMessageBox.confirm('是否取消添加帖子主题，数据将清空！')
+      .then(() => {
+        addTopicDialogVisible.value = false
+        Object.keys(addTopicData).forEach(key => {
+          addTopicData[key] = ''
+        })
+      })
+      .catch(() => {
+        // catch error
+      })
+}
+const onSubmitAddTopic = async () => {
+  await addTFFApi(addTopicData).then((res) => {
+    if (res['code'] === '200')
+    {
+      addTopicDialogVisible.value = false
+      onQuery()
+      ElMessage.success(res['msg'])
+    } else ElMessage.error(res['msg'])
+  })
+}
 </script>
 
 <template>
@@ -100,6 +132,7 @@ const handleChange = async (act:"ENABLE" | "DISABLE",topicId: number) => {
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="onQuery">查询</el-button>
+            <el-button type="primary" @click="addTopicDialogVisible = true">添加</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -127,6 +160,48 @@ const handleChange = async (act:"ENABLE" | "DISABLE",topicId: number) => {
       </el-table-column>
     </el-table>
   </el-card>
+  <!--添加主题-->
+  <el-dialog
+      v-model="addTopicDialogVisible"
+      title="添加帖子主题"
+      width="25%"
+      draggable
+  >
+    <div style="margin: 10px" />
+    <el-form
+        :label-position="'right'"
+        label-width="100px"
+        :model="addTopicData"
+        style="max-width: 500px"
+    >
+      <el-form-item label="类型名" style="width: 350px;">
+        <el-input v-model="addTopicData.topicName" placeholder="输入类型名称" />
+      </el-form-item>
+      <el-form-item label="类型颜色" style="width: 300px;">
+        <el-color-picker v-model="addTopicData.topicColor" size="large"/>
+      </el-form-item>
+      <el-form-item label="类型状态">
+        <el-select
+            v-model="addTopicData.topicStatus"
+            placeholder="请选择反馈类型状态（默认启用）"
+            style="width: 300px"
+        >
+          <el-option
+              v-for="option in topicStatusOptions"
+              :key="option.value"
+              :value="option.value"
+              :label="option.label"
+          />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addHandleClose">取消</el-button>
+        <el-button type="primary" @click="onSubmitAddTopic">提交</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">

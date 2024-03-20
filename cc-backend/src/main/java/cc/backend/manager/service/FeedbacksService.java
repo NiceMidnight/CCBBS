@@ -12,4 +12,6 @@ import java.time.LocalDateTime;
  */
 public interface FeedbacksService {
     SearchData<Feedback> getAllFeedback(SearchData<Feedback> searchData, LocalDateTime startTime,LocalDateTime endTime);
+
+    boolean updateFeedbackStatus(Integer feedbackId,String feedbackStatus,boolean upOrDown);
 }

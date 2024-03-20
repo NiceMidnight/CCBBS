@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.FeedbacksMapper">
+    <select id="selectAllFeedbackMessage" resultType="feedback">
+        SELECT
+            fb.*,
+            creator_u.user_name as creator_name,
+            creator_u.user_head as creator_head,
+            handler_u.user_name as handler_name,
+            handler_u.user_head as handler_head,
+            tff.topic_name as topic_name,
+            tff.topic_color as topic_color
+        FROM
+            feedback fb
+        LEFT JOIN
+                user creator_u ON fb.creator_id = creator_u.id
+        LEFT JOIN
+                user handler_u ON fb.handler_id = handler_u.id
+        LEFT JOIN
+                topic_for_feedback tff ON fb.topic_id = tff.topic_id
+        <where>
+            <if test="feedback.creatorName != null and feedback.creatorName != ''">
+                AND creator_u.user_name LIKE CONCAT('%', #{feedback.creatorName}, '%')
+            </if>
+            <if test="feedback.topicId != null and feedback.topicId != ''">
+                AND tff.topic_id = #{feedback.topicId}
+            </if>
+            <if test="feedback.reminderStatus != null">
+                AND fb.reminder_status = #{feedback.reminderStatus}
+            </if>
+            <if test="feedback.feedbackStatus != null">
+                AND fb.feedback_status = #{feedback.feedbackStatus}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND fb.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY fb.created_time DESC
+    </select>
+
+    <update id="updateFeedbackStatus">
+        UPDATE feedback
+        SET feedback_status = #{FeedbackStatus}
+        WHERE feedback_id = #{id}
+    </update>
+</mapper>

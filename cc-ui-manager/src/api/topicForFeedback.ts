@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import {UnwrapRef} from "vue";
+import {UnwrapNestedRefs, UnwrapRef} from "vue";
 
 export const getTFFOptionsApi = () => {
     return request({
@@ -47,5 +47,13 @@ export const updateTFFColorApi = (topicId:number,topicColor:string) => {
             topicId:topicId,
             topicColor:topicColor
         }
+    })
+}
+
+export const addTFFApi = (topicData: UnwrapNestedRefs<{ topicStatus: null; topicName: string; topicColor: string }>) => {
+    return request({
+        method:"POST",
+        url:'/manager/tff/addTFF',
+        data:topicData
     })
 }

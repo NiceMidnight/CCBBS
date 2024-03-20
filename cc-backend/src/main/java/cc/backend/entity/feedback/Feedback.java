@@ -25,20 +25,23 @@ public class Feedback {
 
     @TableField(exist = false)
     private String topicName;
+    @TableField(exist = false)
+    private String topicColor;
 
     private String feedbackContent;
 
     private Integer creatorId;
-
     @TableField(exist = false)
-    private String creator;
-
+    private String creatorName;
+    @TableField(exist = false)
+    private String creatorHead;
     private Date createdTime;
 
     private Integer handlerId;
-
     @TableField(exist = false)
-    private String handler;
+    private String handlerName;
+    @TableField(exist = false)
+    private String handlerHead;
 
     private Date handleTime;
 

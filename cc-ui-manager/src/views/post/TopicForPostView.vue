@@ -314,7 +314,7 @@ const handleColorChange = async (row) => {
         style="margin-top: 20px"
     />
   </el-card>
-<!--编辑主题-->
+<!--添加主题-->
   <el-dialog
       v-model="addTopicDialogVisible"
       title="添加帖子主题"
@@ -334,7 +334,7 @@ const handleColorChange = async (row) => {
       <el-form-item label="主题状态">
         <el-select
             v-model="addTopicData.topicStatus"
-            placeholder="请输入字典类型名称"
+            placeholder="请选择字典类型名称"
             clearable
         >
           <el-option
@@ -355,7 +355,7 @@ const handleColorChange = async (row) => {
   </el-dialog>
 
 
-  <!--编辑文章-->
+  <!--编辑主题-->
   <el-dialog
       v-model="editTopicDialogVisible"
       :title="`编辑主题名称--${editTopicData.data.topicId}`"

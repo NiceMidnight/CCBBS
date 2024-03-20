@@ -1,19 +1,15 @@
 package cc.backend.manager.controller;
 
 import cc.backend.common.Result;
+import cc.backend.common.token.Token;
 import cc.backend.entity.feedback.TopicForFeedback;
 import cc.backend.enums.TopicStatus;
 import cc.backend.manager.service.impl.TopicForFeedbacksServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static com.sun.beans.introspect.PropertyInfo.Name.required;
 
 /**
  * @Description
@@ -25,6 +21,8 @@ import static com.sun.beans.introspect.PropertyInfo.Name.required;
 public class TopicForFeedbacksController {
     @Autowired
     private TopicForFeedbacksServiceImpl topicForFeedbacksService;
+    @Autowired
+    private Token token;
     @GetMapping("/getTFFOptions")
     public Result getTFFOptions()
     {
@@ -79,5 +77,19 @@ public class TopicForFeedbacksController {
             return Result.successCM("更新颜色成功");
         }
         return Result.error("更新颜色失败");
+    }
+
+    @PostMapping("/addTFF")
+    public Result addTFF(@RequestBody TopicForFeedback topicForFeedback,@RequestHeader("Authorization")String tokenInfo)
+    {
+
+        int userId = token.getUserId(tokenInfo);
+        topicForFeedback.setUserId(userId);
+        boolean isAddTFF = topicForFeedbacksService.addTopic(topicForFeedback);
+        if (isAddTFF)
+        {
+            return Result.successCM("添加反馈类型成功");
+        }
+        return Result.error("添加反馈类型失败");
     }
 }

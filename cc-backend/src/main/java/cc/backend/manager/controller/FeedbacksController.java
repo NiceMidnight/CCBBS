@@ -24,23 +24,48 @@ import java.util.List;
 public class FeedbacksController {
     @Autowired
     private FeedbacksServiceImpl feedbacksService;
+
     @RequestMapping("/getAllFeedback")
     public Result getAllFeedback(@RequestBody SearchData<Feedback> searchData,
                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime){
         SearchData<Feedback> allFeedback = feedbacksService.getAllFeedback(searchData, startTime, endTime);
-        return Result.successCDM(allFeedback,"获取所有用户信息");
+        return Result.successCDM(allFeedback,"获取反馈信息成功");
     }
+
     @GetMapping("/getFeedbackStatusOption")
     public Result getFeedbackStatusOption()
     {
         List<FeedbackStatus> feedbackStatusList = Arrays.asList(FeedbackStatus.values());
         return Result.successCDM(feedbackStatusList,"获取帖子处理状态选择器成功");
     }
+
     @GetMapping("/getReminderStatusOption")
     public Result getReminderStatusOption()
     {
         List<FeedbackReminderStatus> feedbackReminderStatuses = Arrays.asList(FeedbackReminderStatus.values());
         return Result.successCDM(feedbackReminderStatuses,"获取帖子催促状态选择器成功");
+    }
+
+    @GetMapping("/upProgress")
+    public Result upProgress(@RequestParam("feedbackId")Integer feedbackId,@RequestParam("feedbackStatus")String feedbackStatus)
+    {
+        boolean isUpdate = feedbacksService.updateFeedbackStatus(feedbackId, feedbackStatus, true);
+        if (isUpdate)
+        {
+            return Result.successCM("更新进度成功");
+        }
+        return Result.error("更新进度失败");
+    }
+
+    @GetMapping("/downProgress")
+    public Result downProgress(@RequestParam("feedbackId")Integer feedbackId,@RequestParam("feedbackStatus")String feedbackStatus)
+    {
+        boolean isUpdate = feedbacksService.updateFeedbackStatus(feedbackId, feedbackStatus, false);
+        if (isUpdate)
+        {
+            return Result.successCM("更新进度成功");
+        }
+        return Result.error("更新进度失败");
     }
 }

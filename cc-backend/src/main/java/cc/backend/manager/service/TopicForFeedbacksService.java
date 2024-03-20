@@ -18,4 +18,6 @@ public interface TopicForFeedbacksService {
     boolean changeTopicStatus(Integer topicId,TopicStatus topicStatus);
 
     boolean updateTopicColor(Integer topicId,String topicColor);
+
+    boolean addTopic(TopicForFeedback topicForFeedback);
 }

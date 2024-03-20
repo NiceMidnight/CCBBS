@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,4 +41,11 @@ public class TopicForFeedbacksServiceImpl implements TopicForFeedbacksService {
     public boolean updateTopicColor(Integer topicId, String topicColor) {
         return topicForFeedbacksMapper.updateTopicColor(topicId,topicColor) > 0;
     }
+
+    @Override
+    public boolean addTopic(TopicForFeedback topicForFeedback) {
+        topicForFeedback.setCreatedTime(new Date());
+        return topicForFeedbacksMapper.insert(topicForFeedback) > 0;
+    }
+
 }

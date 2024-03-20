@@ -4,24 +4,30 @@ import {reactive, ref, watch} from "vue";
 import {ElMessage} from "element-plus";
 import {
   compliancePostApi,
-  getAllPostApi,
-  getPostStatusForComplianceOptionApi,
   irregularityPostApi,
   postViewApi
 } from "@/api/post";
 import {timeHandler} from "@/utils/timeHandler";
 import {truncateText} from "@/utils/textHandler";
 import {useRouter} from "vue-router";
-import {getAllFeedbackApi, getFeedbackStatusOptionApi, getReminderStatusOptionApi} from "@/api/feedback";
+import {
+  downProgressApi,
+  getAllFeedbackApi,
+  getFeedbackStatusOptionApi,
+  getReminderStatusOptionApi,
+  upProgressApi
+} from "@/api/feedback";
 import {getTFFOptionsApi} from "@/api/topicForFeedback";
+import {baseUrl} from "@/utils/request";
+import {Minus, Plus} from "@element-plus/icons-vue";
 
-const drawer = ref(false)
+const router = useRouter(); // 解析router
 /**
  * 文本截断
  * @param row
  */
-const truncateTextFormatter = (row: any) => {
-  return truncateText(row.postContent, 20);
+const truncateTextFormatter = (feedbackContent: string) => {
+  return truncateText(feedbackContent, 20);
 };
 
 /**
@@ -36,7 +42,7 @@ const queryForm = reactive({
   pageSize:10,
   total:1,
   data:{
-    userName:'',
+    creatorName:'',
     topicId:null,
     reminderStatus:null,
     feedbackStatus:null,
@@ -71,6 +77,11 @@ const onLoad = async() => {
   } catch (e) {
     ElMessage.error(e)
   }
+}
+// 用户头像
+const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+const getImage = (userHead) => {
+  return `${baseUrl}/${userHead}`
 }
 /**
  * 转译
@@ -110,9 +121,10 @@ const handleHandlerStatusChange = (value) => {
 const handleReminderStatusChange = (value) => {
   // 如果选项的值为空字符串，则将其设置为 null
   if (value === '') {
-    queryForm.data.feedbackStatus = null;
+    queryForm.data.reminderStatus = null;
   }
 }
+
 /**
  * 查找
  */
@@ -159,46 +171,7 @@ const handleCurrentChange = async(num:number) => {
     ElMessage.error("改变页码错误："+e)
   }
 }
-/**
- * 文章视图
- */
-const post = ref([])
-const postView = async (postId: number) => {
-  try {
-    await postViewApi(postId).then((res) => {
-      drawer.value = true
-      post.value = res.data
-    })
-  } catch (e) {
-    ElMessage.error(e)
-  }
-}
-/**
- * 启用禁用
- */
-const handleChange = async (act:"COMPLIANCE" | "IRREGULARITY",postId: number) => {
-  let actions = {
-    COMPLIANCE: {msg: '启用',fn: compliancePostApi},
-    IRREGULARITY: {msg: '禁用',fn: irregularityPostApi}
-  }
-  const data = await actions[act].fn(postId)
-  console.log(data)
-  if (data["code"] === '200') {
-    ElMessage.success( `${actions[act].msg}帖子`+postId+'成功')
-  } else {
-    ElMessage.error(`${actions[act].msg}帖子`+postId+'失败')
-    throw new Error(`${actions[act].msg}帖子`+postId+'失败')
-  }
-}
-const router = useRouter(); // 解析router
-/**
- * 重定向到对于帖子的评论管理
- * @param postId
- * @param postTitle
- */
-const redirectToPostComment = (postId,postTitle) => {
-  router.push({ name: 'signalPostComments', params: { title:postTitle,id: postId } });
-}
+
 /**
  * 时间范围
  */
@@ -253,6 +226,57 @@ const shortcuts = [
     },
   },
 ]
+
+/**
+ * 进度条
+ * @param status
+ */
+const getPercentage = (status)  => {
+  switch (status) {
+    case 'Pending':
+      return 0;
+    case 'InProgress':
+      return 50;
+    case 'Processed':
+      return 90;
+    case 'Closed':
+      return 100;
+    default:
+      return 0; // 如果状态不匹配，则默认为 0
+  }
+}
+const getProgressColor = (status) => {
+  switch (status) {
+    case 'Pending':
+      return '#f56c6c'; // 自定义颜色
+    case 'InProgress':
+      return '#85c6ef'; // 自定义颜色
+    case 'Processed':
+      return '#6f7ad3'; // 自定义颜色
+    case 'Closed':
+      return '#77dea0'; // 自定义颜色
+    default:
+      return 'blue'; // 如果状态不匹配，则默认为蓝色
+  }
+}
+const upProgress = async (feedbackId:number,feedbackStatus:string) => {
+  await upProgressApi(feedbackId,feedbackStatus).then((res) => {
+    if (res['code'] === '200')
+    {
+      ElMessage.success(res['msg'])
+      onQuery()
+    } else ElMessage.error(res['msg'])
+  })
+}
+const downProgress = async (feedbackId:number,feedbackStatus:string) => {
+  await downProgressApi(feedbackId,feedbackStatus).then((res) => {
+    if (res['code'] === '200')
+    {
+      ElMessage.success(res['msg'])
+      onQuery()
+    } else ElMessage.error(res['msg'])
+  })
+}
 </script>
 
 <template>
@@ -261,17 +285,16 @@ const shortcuts = [
       <div class="card-header" style="margin-top: 10px;width: 1800px">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
           <el-form-item label="用户名">
-            <el-input v-model="queryForm.data.userName" placeholder="请输入上传用户名称" clearable @keyup.enter="onQuery"/>
+            <el-input v-model="queryForm.data.creatorName" placeholder="请输入上传用户名称" clearable @keyup.enter="onQuery"/>
           </el-form-item>
           <el-form-item label="类型" @keyup.enter="onQuery"  style="width: 250px">
             <el-select
                 v-model="queryForm.data.topicId"
                 placeholder="NULL"
                 clearable
-                @change="handleHandlerStatusChange"
             >
               <el-option
-                  v-for="option in feedbackStatusOptions"
+                  v-for="option in topicForFeedbackOptions"
                   :key="option['topicId']"
                   :value="option['topicId']"
                   :label="option['topicName']"
@@ -293,7 +316,7 @@ const shortcuts = [
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="信息状态" @keyup.enter="onQuery"  style="width: 250px">
+          <el-form-item label="催促状态" @keyup.enter="onQuery"  style="width: 250px">
             <el-select
                 v-model="queryForm.data.reminderStatus"
                 placeholder="NULL"
@@ -330,35 +353,46 @@ const shortcuts = [
         </el-form>
       </div>
     </template>
+
     <el-table :data="tableData['data']" border style="width: 100%">
       <!-- 自动递增的行ID列 -->
       <el-table-column type="index" label="行id" width="80" align="center"/>
-      <el-table-column prop="postId" label="文章id" width="80" align="center"/>
-      <el-table-column prop="postTitle" label="文章标题" width="160" align="center"/>
-      <el-table-column prop="postContent" label="文章内容"  width="250" align="center" :formatter="truncateTextFormatter"/>
-      <el-table-column label="所属主题"  width="120" align="center">
+      <el-table-column prop="feedbackId" label="反馈id" width="80" align="center"/>
+      <el-table-column label="反馈内容" width="160" align="center" v-slot="{ row }">
+        <el-tooltip
+            class="box-item"
+            effect="dark"
+            :content="row['feedbackContent']"
+            placement="bottom"
+        >
+          {{truncateTextFormatter(row['feedbackContent'])}}
+        </el-tooltip>
+      </el-table-column>
+      <el-table-column prop="creatorHead" label="头像"  width="120" align="center" v-slot="{ row }">
+        <el-avatar :size="50" :src="getImage(row['creatorHead']) || circleUrl" />
+      </el-table-column>
+      <el-table-column prop="creatorName" label="反馈用户"  width="120" align="center" />
+      <el-table-column prop="createdTime" label="反馈时间"  width="180" align="center" :formatter="timeHandler"/>
+      <el-table-column label="类型"  width="120" align="center">
         <template #default="{ row }">
           <el-tag size="large" :style="{ backgroundColor: row['topicColor'] }">{{ row['topicName'] }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="userName" label="上传用户"  width="120" align="center"/>
-      <el-table-column prop="nickName" label="用户昵称"  width="120" align="center"/>
-      <el-table-column prop="createdAt" label="上传时间"  width="180" align="center" :formatter="timeHandler"/>
-      <el-table-column  label="操作" width="240" align="center" v-slot="scope">
-        <el-button type="default" @click="postView(scope.row['postId'])" plain>查看</el-button>
-        <el-button type="default" @click="redirectToPostComment(scope.row['postId'],scope.row['postTitle'])" plain>查看评论</el-button>
-      </el-table-column>
-      <el-table-column prop="postVisibility" label="状态"  width="100" align="center"/>
-      <el-table-column label="是否合规" align="center"  width="205" v-slot="{ row }">
-        <el-switch
-            v-model="row['postStatus']"
-            class="mb-2"
-            active-value="COMPLIANCE"
-            inactive-value="IRREGULARITY"
-            active-text="启用"
-            inactive-text="禁用"
-            @change="handleChange($event,row['postId'])"
-        />
+      <el-table-column prop="handlerName" label="处理员"  width="120" align="center"/>
+      <el-table-column prop="createdAt" label="处理时间"  width="180" align="center" :formatter="timeHandler"/>
+      <el-table-column label="催促状态"  width="100" align="center" v-slot="{ row }">
+        {{translateReminderStatus(row['reminderStatus'])}}
+      </el-table-column>>
+      <el-table-column label="处理状态" align="center" width="300" v-slot="{ row }" >
+        <el-progress :percentage="getPercentage(row.feedbackStatus)" :color="getProgressColor(row.feedbackStatus)" >
+          <template #default="{ percentage }">
+            <span class="percentage-label">{{translateFeedbackStatus(row['feedbackStatus'])}}</span>
+          </template>
+        </el-progress>
+        <el-button-group>
+          <el-button :icon="Minus" @click="downProgress(row['feedbackId'],row['feedbackStatus'])" />
+          <el-button :icon="Plus" @click="upProgress(row['feedbackId'],row['feedbackStatus'])" />
+        </el-button-group>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -374,10 +408,6 @@ const shortcuts = [
         @current-change="handleCurrentChange"
         style="margin-top: 20px"
     />
-
-    <el-drawer v-model="drawer" :title="post['postTitle']" :direction="'ltr'">
-      <span v-html="post['postContent']"></span>
-    </el-drawer>
 
   </el-card>
 </template>
