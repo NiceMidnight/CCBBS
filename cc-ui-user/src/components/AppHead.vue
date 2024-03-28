@@ -4,6 +4,8 @@ import {ref, onMounted, onUnmounted, reactive} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {logoutApi} from "@/api/login";
+import {getTFFOptionsApi} from "@/api/feedback";
+import TextEditor from "@/views/addAPost/TextEditor.vue";
 const getLocalStorage = ref<string | null>(localStorage.getItem("TokenInfo"));
 const router = useRouter(); //析构
 const activeIndex = ref("/"); //页面加载时默认激活菜单的 index
@@ -64,6 +66,8 @@ const ltrMenuDrawer = ref(false)
 const getMenu = () => {
   ltrMenuDrawer.value = true
 }
+
+
 </script>
 
 <template>
@@ -98,7 +102,11 @@ const getMenu = () => {
         <el-button type="primary" round @click="onLoginOrRegister(false)" v-if="!getLocalStorage">注册</el-button>
         <el-button type="danger" round v-if="getLocalStorage" @click="onLogout">退出登录</el-button>
       </div>
-      <el-menu-item index="4" style="margin-right: 2rem">设置</el-menu-item>
+      <el-sub-menu index="4">
+        <template #title>设置</template>
+        <el-menu-item index="/2-2" >更改密码</el-menu-item>
+      </el-sub-menu>
+<!--      <el-menu-item index="4" style="margin-right: 2rem">设置</el-menu-item>-->
     </el-menu>
   </div>
 
@@ -135,12 +143,15 @@ const getMenu = () => {
           <el-menu-item index="/postAMessage">发帖</el-menu-item>
           <el-menu-item v-if="!getLocalStorage" @click="onLoginOrRegister(true)">登录</el-menu-item>
           <el-menu-item  v-if="!getLocalStorage" @click="onLoginOrRegister(false)">注册</el-menu-item>
+
           <el-menu-item index="4">设置</el-menu-item>
           <el-menu-item  v-if="getLocalStorage" @click="onLogout">退出登录</el-menu-item>
         </el-menu>
       </el-drawer>
     </el-menu>
   </div>
+
+
 </template>
 
 <style lang="scss" scoped>

@@ -25,9 +25,7 @@ public class IndexArticleServiceImpl implements IndexArticleService {
     @Autowired
     private IndexArticleMapper articleMapper;
     /**
-     * @description TODO 获取首页文章
-     * @param pageData
-     * @return: cc.backend.entity.SearchData<cc.backend.entity.Article>
+     * TODO 获取首页公告
      */
     @Override
     public SearchData<Article> getIndexArticle(SearchData<Article> pageData) {
@@ -41,9 +39,16 @@ public class IndexArticleServiceImpl implements IndexArticleService {
     }
 
     /**
-     * @description TODO 获取单个文章内容
-     * @param articleId
-     * @return: cc.backend.entity.Article
+     * TODO 获取热门公告
+     */
+    @Override
+    public List<Article> getHotArticle() {
+
+        return articleMapper.selectHotArticle();
+    }
+
+    /**
+     * TODO 获取单个公告内容
      */
     @Override
     public Article getArticle(int articleId) {

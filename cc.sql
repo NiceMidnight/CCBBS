@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 18/03/2024 21:10:42
+ Date: 21/03/2024 01:28:25
 */
 
 SET NAMES utf8mb4;
@@ -56,7 +56,7 @@ CREATE TABLE `article`  (
   `topic_id` int NULL DEFAULT NULL COMMENT '主题id',
   `article_status` varchar(7) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT 'PUBLIC' COMMENT '可见/不可见',
   PRIMARY KEY (`article_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '公告文章' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '公告文章' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of article
@@ -121,7 +121,7 @@ CREATE TABLE `daily_unique_visitors`  (
   `first_access_time` datetime(6) NULL DEFAULT NULL COMMENT '生成时间',
   `ip` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT 'ip地址',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '每日用户单个访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '每日用户单个访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of daily_unique_visitors
@@ -142,7 +142,7 @@ CREATE TABLE `dict`  (
   `dict_item_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '属性',
   `dict_color` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '字典颜色',
   PRIMARY KEY (`dict_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '字典表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '字典表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dict
@@ -208,11 +208,12 @@ CREATE TABLE `feedback`  (
   `feedback_status` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Pending' COMMENT '该反馈的状态未处理Pending/处理中InProgress/已处理Processed/已关闭Closed',
   `reminder_status` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'NotReminded' COMMENT '是否催促中Reminder/NotReminded',
   PRIMARY KEY (`feedback_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户提交关于网站相关报告' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户提交关于网站相关报告' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of feedback
 -- ----------------------------
+INSERT INTO `feedback` VALUES (1, 1, '测试', 2, '2024-03-20 23:33:59.000000', NULL, NULL, 'Pending', 'NotReminded');
 
 -- ----------------------------
 -- Table structure for file_for_post
@@ -298,7 +299,7 @@ CREATE TABLE `job`  (
   `job_visibility` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'PUBLIC' COMMENT '是否可见（PUBLIC/PRIVATE）',
   `view_count` int NOT NULL DEFAULT 0 COMMENT '点击数',
   PRIMARY KEY (`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '招聘信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '招聘信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of job
@@ -342,7 +343,7 @@ CREATE TABLE `post`  (
   `dislike_count` int NULL DEFAULT 0 COMMENT '踩贴数量',
   `comment_count` int NULL DEFAULT 0 COMMENT '评论数量',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '帖子' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '帖子' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of post
@@ -409,7 +410,7 @@ INSERT INTO `sys_images` VALUES (4, '咒术回战 五条悟4k壁纸_彼岸图网
 INSERT INTO `sys_images` VALUES (5, '动漫美女 鲜花 帽子 唯美 好看 4K壁纸_彼岸图网.jpg', 'static/sys_img/动漫美女 鲜花 帽子 唯美 好看 4K壁纸_彼岸图网.jpg', 1, '2023-12-07 11:26:18.464000', 'VISIBLE', 1);
 INSERT INTO `sys_images` VALUES (6, '宣纸国画 紫罗兰永恒花园 赛博color 4k壁纸_彼岸图网.jpg', 'static/sys_img/宣纸国画 紫罗兰永恒花园 赛博color 4k壁纸_彼岸图网.jpg', 1, '2023-12-26 00:18:55.407000', 'VISIBLE', 0);
 INSERT INTO `sys_images` VALUES (16, '动漫女孩 水花 海浪 海洋之女 4k壁纸_彼岸图网.jpg', 'static/sys_img/07957ce3-b0ea-49e2-957e-c2b791befb5d-动漫女孩 水花 海浪 海洋之女 4k壁纸_彼岸图网.jpg', 1, '2024-02-02 21:30:56.749000', 'VISIBLE', 0);
-INSERT INTO `sys_images` VALUES (19, '1703957554963.jpg', 'static/sys_img/65ecdf7b-bf71-479d-978e-cc8e38493b99-1703957554963.jpg', 1, '2024-02-03 16:44:21.323000', 'VISIBLE', 4);
+INSERT INTO `sys_images` VALUES (20, '七海深奈实4K壁纸_彼岸图网.jpg', 'static/sys_img/0c8e7560-74f2-4994-8f62-ea4727d45182-七海深奈实4K壁纸_彼岸图网.jpg', 1, '2024-03-21 01:27:38.868000', 'VISIBLE', 0);
 
 -- ----------------------------
 -- Table structure for token
@@ -423,7 +424,7 @@ CREATE TABLE `token`  (
   `redis_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '值',
   `token_status` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'EFFECTIVE' COMMENT '是否删除(EFFECTIVE/INVALID)',
   PRIMARY KEY (`token_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 70 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '令牌' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '令牌' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of token
@@ -462,7 +463,7 @@ INSERT INTO `token` VALUES (67, 1, 'root', 'db2a3edd-d60f-4421-85d6-4dee30f77e0d
 INSERT INTO `token` VALUES (68, 1, 'root', '00a2384d-10b1-401c-bfa3-c39bb2c6b11c', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'INVALID');
 INSERT INTO `token` VALUES (69, 1, 'root', 'b91cf0c3-05c5-469b-82e1-f135260668a7', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'INVALID');
 INSERT INTO `token` VALUES (70, 1, 'root', '55b9537d-5034-4d26-bf2f-323d4270ae97', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'INVALID');
-INSERT INTO `token` VALUES (71, 1, 'root', '9e911cf1-1009-4c5d-bdfe-22558a39eeaf', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'EFFECTIVE');
+INSERT INTO `token` VALUES (71, 1, 'root', '9e911cf1-1009-4c5d-bdfe-22558a39eeaf', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'INVALID');
 INSERT INTO `token` VALUES (72, 2, 'zhangsan', 'a9b7a39e-72e2-463d-954c-3d4ba467313e', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市\",\"userDate\":1707895578207,\"userRole\":2,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":1,\"userPersonality\":\"123随便\",\"fans\":1}', 'INVALID');
 INSERT INTO `token` VALUES (73, 2, 'zhangsan', 'bd8ab0e7-7a64-4500-9787-904fcef7ca08', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市\",\"userDate\":1707895578207,\"userRole\":2,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":1}', 'INVALID');
 INSERT INTO `token` VALUES (74, 2, 'zhangsan', '02d483f4-5cff-44cf-9ccd-eaea6168d7ad', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市\",\"userDate\":1707895578207,\"userRole\":2,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":1}', 'INVALID');
@@ -471,6 +472,7 @@ INSERT INTO `token` VALUES (76, 2, 'zhangsan', '6bd59f24-1555-4322-bd40-295fe5a7
 INSERT INTO `token` VALUES (77, 2, 'zhangsan', '645dca28-c283-4e2d-ad72-dd2fb93f2094', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市\",\"userDate\":1707895578207,\"userRole\":2,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":1}', 'INVALID');
 INSERT INTO `token` VALUES (78, 2, 'zhangsan', '17a3b9e5-a82d-4cbd-b61f-d65b481befca', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市\",\"userDate\":1707895578207,\"userRole\":2,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":1}', 'INVALID');
 INSERT INTO `token` VALUES (79, 2, 'zhangsan', 'cf636fec-7cf6-419c-967d-b65710db98cd', '{\"id\":2,\"userHead\":\"static/sys_img/adminHead/2023.jpg\",\"userName\":\"zhangsan\",\"nickName\":\"小宜\",\"password\":null,\"userSex\":1,\"userAge\":20,\"userPhone\":\"16616649103\",\"userAddress\":\"广西省桂林市\",\"userDate\":1707895578207,\"userRole\":2,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":\"123随便\",\"fans\":1}', 'EFFECTIVE');
+INSERT INTO `token` VALUES (80, 1, 'root', '66419331-64f3-4e81-b23a-5d299ee8e0f1', '{\"id\":1,\"userHead\":null,\"userName\":\"root\",\"nickName\":\"管理员\",\"password\":null,\"userSex\":null,\"userAge\":null,\"userPhone\":null,\"userAddress\":null,\"userDate\":null,\"userRole\":1,\"dictItemName\":null,\"dictColor\":null,\"userStatus\":\"ENABLE\",\"userDeleted\":1,\"userVersion\":0,\"userPersonality\":null,\"fans\":0}', 'EFFECTIVE');
 
 -- ----------------------------
 -- Table structure for topic_for_article
@@ -484,7 +486,7 @@ CREATE TABLE `topic_for_article`  (
   `topic_status` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'ENABLE' COMMENT '主题状态（ENABLE/DISABLE）',
   `topic_color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题标签颜色#FF0000十六进制',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告文章主题' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '公告文章主题' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of topic_for_article
@@ -507,12 +509,14 @@ CREATE TABLE `topic_for_feedback`  (
   `topic_color` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '类型颜色',
   `topic_status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT 'ENABLE' COMMENT '主题状态（ENABLE/DISABLE）',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of topic_for_feedback
 -- ----------------------------
 INSERT INTO `topic_for_feedback` VALUES (1, '测试', 1, '2024-03-18 20:10:18', '#FFC7C7', 'ENABLE');
+INSERT INTO `topic_for_feedback` VALUES (2, '技术问题反馈', 1, '2024-03-20 23:29:35', '#E7C6C6', 'ENABLE');
+INSERT INTO `topic_for_feedback` VALUES (3, '投诉与举报', 1, '2024-03-20 23:32:18', '#CFFFD4', 'ENABLE');
 
 -- ----------------------------
 -- Table structure for topic_for_job
@@ -523,7 +527,7 @@ CREATE TABLE `topic_for_job`  (
   `topic_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题信息',
   `topic_color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题标签颜色#FF0000十六进制',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '招聘主题' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '招聘主题' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of topic_for_job
@@ -546,7 +550,7 @@ CREATE TABLE `topic_for_post`  (
   `topic_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '帖子状态ENABLE/DISABLE',
   `topic_color` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主题颜色',
   PRIMARY KEY (`topic_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子主题' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '帖子主题' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of topic_for_post
@@ -580,7 +584,7 @@ CREATE TABLE `user`  (
   `user_version` int NOT NULL DEFAULT 1 COMMENT '乐观锁',
   `fans` int NULL DEFAULT 0 COMMENT '粉丝',
   PRIMARY KEY (`id`, `user_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user

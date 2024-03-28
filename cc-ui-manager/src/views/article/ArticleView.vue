@@ -14,118 +14,6 @@ import {timeHandler} from "@/utils/timeHandler";
 import {truncateText} from "@/utils/textHandler";
 import {getArticleTopicApi} from "@/api/topicForArticle";
 import TextEditor from "@/views/article/TextEditor.vue";
-const drawer = ref(false)
-/**
- * 文本截断
- * @param row
- */
-const truncateTextFormatter = (row: any) => {
-  return truncateText(row.articleContent, 42);
-};
-/**
- * 添加文章
- */
-const addArticleDialogVisible = ref(false)
-const articleData = reactive({
-  createdBy:'',
-  articleTitle:'',
-  articleContent:'',
-})
-const addArticle = async () => {
-  addArticleDialogVisible.value = true
-  await getUserName().then((res) => {
-    console.log(res)
-    articleData.createdBy = res.data
-  })
-}
-const handleClose = () => {
-  ElMessageBox.confirm('是否取消添加文章，数据将清空！')
-      .then(() => {
-        addArticleDialogVisible.value = false
-        Object.keys(articleData).forEach(key => {
-          articleData[key] = ''
-        })
-      })
-      .catch(() => {
-        // catch error
-      })
-}
-const onSubmitAddArticle = async () => {
-  try {
-    await addArticleApi(articleData).then((res) => {
-      addArticleDialogVisible.value = false
-      if (res["code"] === 500) {
-        ElMessage.error(res["msg"])
-      } else ElMessage.success(res["msg"])
-      onLoad()
-    })
-  } catch (e) {
-    ElMessage.error(e)
-  }
-}
-
-
-/**
- * 编辑文章   数据---对话框数据---取消清空数据---提交编辑数据
- */
-const editArticleDialogVisible = ref(false)
-const editArticleData = reactive({
-  createdBy:'',
-  updatedBy:'',
-  articleId:'',
-  articleTitle:'',
-  articleContent:'',
-  topicId:''
-})
-const editArticle = async(article) => {
-  try {
-    editArticleDialogVisible.value = true
-    editArticleData.createdBy = article.createdBy
-    if (article.updatedBy)
-    {
-      editArticleData.updatedBy = article.createdBy
-    } else editArticleData.updatedBy = "未曾更新"
-    editArticleData.articleId = article.articleId
-    editArticleData.articleTitle = article.articleTitle
-    editArticleData.articleContent = article.articleContent
-    editArticleData.topicId = article.topicId
-  } catch (e) {
-    ElMessage.error(e)
-  }
-}
-const editHandleClose = () => {
-  ElMessageBox.confirm('是否取消编辑文章，数据将清空！')
-      .then(() => {
-        editArticleDialogVisible.value = false
-        Object.keys(editArticleData).forEach(key => {
-          editArticleData[key] = ''
-        })
-      })
-      .catch(() => {
-        // catch error
-      })
-}
-const onSubmitEditArticle = async () => {
-  try {
-    if (editArticleData.topicId != null)
-    {
-      await editArticleApi(editArticleData).then((res) => {
-        console.log(res)
-        if (res["code"] === 500) {
-          ElMessage.error("文章"+editArticleData.articleId+res["msg"])
-        }
-        else {
-          editArticleDialogVisible.value = false
-          onLoad()
-          ElMessage.success("文章"+editArticleData.articleId+res["msg"])
-        }
-      })
-    }
-    else ElMessage.error("主题不能为空")
-  } catch (e) {
-    ElMessage.error(e)
-  }
-}
 
 /**
  * 获取下拉主题选择
@@ -261,6 +149,118 @@ const ifDeleteArticle = async (article) => {
     ElMessage.info('取消删除')
   })
 }
+const drawer = ref(false)
+/**
+ * 文本截断
+ * @param row
+ */
+const truncateTextFormatter = (row: any) => {
+  return truncateText(row.articleContent, 42);
+};
+/**
+ * 添加文章
+ */
+const addArticleDialogVisible = ref(false)
+const articleData = reactive({
+  createdBy:'',
+  articleTitle:'',
+  articleContent:'',
+  topicId:'',
+})
+const addArticle = async () => {
+  addArticleDialogVisible.value = true
+  await getUserName().then((res) => {
+    console.log(res)
+    articleData.createdBy = res.data
+  })
+}
+const handleClose = () => {
+  ElMessageBox.confirm('是否取消添加文章，数据将清空！')
+      .then(() => {
+        addArticleDialogVisible.value = false
+        Object.keys(articleData).forEach(key => {
+          articleData[key] = ''
+        })
+      })
+      .catch(() => {
+        // catch error
+      })
+}
+const onSubmitAddArticle = async () => {
+  try {
+    await addArticleApi(articleData).then((res) => {
+      addArticleDialogVisible.value = false
+      if (res["code"] === 500) {
+        ElMessage.error(res["msg"])
+      } else ElMessage.success(res["msg"])
+      onLoad()
+    })
+  } catch (e) {
+    ElMessage.error(e)
+  }
+}
+
+/**
+ * 编辑文章   数据---对话框数据---取消清空数据---提交编辑数据
+ */
+const editArticleDialogVisible = ref(false)
+const editArticleData = reactive({
+  createdBy:'',
+  updatedBy:'',
+  articleId:'',
+  articleTitle:'',
+  articleContent:'',
+  topicId:''
+})
+const editArticle = async(article) => {
+  try {
+    editArticleDialogVisible.value = true
+    editArticleData.createdBy = article.createdBy
+    if (article.updatedBy)
+    {
+      editArticleData.updatedBy = article.createdBy
+    } else editArticleData.updatedBy = "未曾更新"
+    editArticleData.articleId = article.articleId
+    editArticleData.articleTitle = article.articleTitle
+    editArticleData.articleContent = article.articleContent
+    editArticleData.topicId = article.topicId
+  } catch (e) {
+    ElMessage.error(e)
+  }
+}
+const editHandleClose = () => {
+  ElMessageBox.confirm('是否取消编辑公告，已改数据不提交！')
+      .then(() => {
+        editArticleDialogVisible.value = false
+        Object.keys(editArticleData).forEach(key => {
+          editArticleData[key] = ''
+        })
+      })
+      .catch(() => {
+        // catch error
+      })
+}
+const onSubmitEditArticle = async () => {
+  try {
+    if (editArticleData.topicId != null)
+    {
+      await editArticleApi(editArticleData).then((res) => {
+        console.log(res)
+        if (res["code"] === 500) {
+          ElMessage.error("文章"+editArticleData.articleId+res["msg"])
+        }
+        else {
+          editArticleDialogVisible.value = false
+          onLoad()
+          ElMessage.success("文章"+editArticleData.articleId+res["msg"])
+        }
+      })
+    }
+    else ElMessage.error("主题不能为空")
+  } catch (e) {
+    ElMessage.error(e)
+  }
+}
 </script>
 
 <template>
@@ -344,7 +344,7 @@ const ifDeleteArticle = async (article) => {
   <el-dialog
       v-model="addArticleDialogVisible"
       title="添加系统文章"
-      width="40%"
+      width="50%"
       draggable
   >
     <div style="margin: 10px" />
@@ -352,13 +352,27 @@ const ifDeleteArticle = async (article) => {
         :label-position="'right'"
         label-width="100px"
         :model="articleData"
-        style="max-width: 660px"
+        style="max-width: 900px"
     >
       <el-form-item label="文章标题">
         <el-input v-model="articleData.articleTitle" placeholder="请输入文章标题"/>
       </el-form-item>
-      <el-form-item label="文章内容">
-        <el-input v-model="articleData.articleContent" type="textarea" :rows="12" placeholder="请输入文章内容"/>
+      <el-form-item label="更改主题">
+        <el-select v-model="articleData.topicId" :clearable="false" placeholder="NULL">
+          <el-option
+              v-for="option in options"
+              :key="option['topicId']"
+              :value="option['topicId']"
+              :label="option['topicName']"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="文章内容" >
+        <div>
+          <TextEditor
+              v-model="articleData.articleContent"
+          />
+        </div>
       </el-form-item>
     </el-form>
     <template #footer>

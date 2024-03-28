@@ -304,8 +304,8 @@ const handleSelectionChange = (val: any) => {
       <el-table-column prop="truthName" label="真实姓名" width="150" align="center"/>
       <el-table-column prop="phone" label="电话" width="150" align="center"/>
       <el-table-column prop="createdAt" label="提交时间"  width="170" align="center" :formatter="timeHandler"/>
-      <el-table-column prop="handlingUserName" label="管理者" width="100" align="center"/>
-      <el-table-column prop="handlingNickName" label="管理昵称" width="100" align="center"/>
+      <el-table-column prop="handlingUserName" label="处理员" width="100" align="center"/>
+<!--      <el-table-column prop="handlingNickName" label="管理昵称" width="100" align="center"/>-->
       <el-table-column prop="handlingAt" label="处理时间"  width="170" align="center" :formatter="timeHandler"/>
       <el-table-column label="备注"  width="170" align="center" v-slot="{ row }">
         <el-tooltip

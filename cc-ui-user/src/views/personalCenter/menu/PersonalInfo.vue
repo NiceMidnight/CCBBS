@@ -4,7 +4,7 @@ import {useRouter} from "vue-router";
 import {ref} from "vue";
 import {onMounted} from "@vue/runtime-core";
 import {getUserInfoApi, updateUserInfoApi} from "@/api/login";
-import {ElMessage, ElMessageBox} from "element-plus";
+import {ElMessage, ElMessageBox, ElNotification} from "element-plus";
 const route = useRouter()
 const token = localStorage.getItem("TokenInfo")
 const personalInfo = ref()
@@ -29,9 +29,18 @@ const onConfirm = async () => {
       }
   )
       .then(() => {
-        ElMessage.success("提交成功")
         updateUserInfoApi(personalInfo.value).then((res) => {
-          ElMessage.success("修改成功")
+          if (res["code"] === "200") {
+            ElNotification({
+              title: '个人信息',
+              message: res["msg"],
+              type: 'success',
+            })
+          } else ElNotification({
+            title: '个人信息',
+            message: "修改失败",
+            type: 'info',
+          })
         })
       })
       .catch(() => {

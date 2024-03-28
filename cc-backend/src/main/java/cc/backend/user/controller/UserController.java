@@ -43,7 +43,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user, @RequestParam String code) {
-        String token = null;
+        String token;
         if (redisTemplate.opsForValue().get(code) != null)
         {
             token = userService.login(user);

@@ -14,4 +14,5 @@ public interface JobService {
     SearchData<Job> getJobMessage(SearchData<Job> searchData);
     boolean addJobMessage(Job job,String tokenInfo);
     Job getOneJobMessage(Integer jobId, JobStatus jobStatus, JobVisibility jobVisibility);
+    boolean addViewCount(Integer jobId);
 }

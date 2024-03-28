@@ -19,8 +19,6 @@
         LEFT JOIN
             user u_created ON ar.created_id = u_created.id
         LEFT JOIN
-            user u_updated ON ar.updated_id = u_updated.id
-        LEFT JOIN
             topic_for_article tfa ON ar.topic_id = tfa.topic_id
         <where>
             <if test="articleTitle != null and articleTitle != ''">
@@ -28,6 +26,26 @@
             </if>
         </where>
         ORDER BY ar.created_time DESC
+    </select>
+
+    <select id="selectHotArticle" resultType="article">
+        SELECT
+        ar.article_id,
+        ar.article_title,
+        ar.article_content,
+        ar.created_id,
+        u_created.nick_name as created_by,
+        ar.created_time,
+        ar.view_count
+        FROM
+        article ar
+        LEFT JOIN
+        user u_created ON ar.created_id = u_created.id
+        <where>
+            ar.article_status = 'PUBLIC'
+        </where>
+        ORDER BY (ar.view_count) DESC
+            LIMIT 5;
     </select>
 
     <select id="getOneByArticleIdArticle" resultMap="oneArticleResultMap" >

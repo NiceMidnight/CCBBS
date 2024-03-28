@@ -47,6 +47,7 @@ public class JobController {
     @GetMapping("/getOneJobMessage")
     public Result getOneJobMessage(@RequestParam("jobId")Integer jobId)
     {
+        jobService.addViewCount(jobId);
         Job oneJobMessage = jobService.getOneJobMessage(jobId, JobStatus.COMPLIANCE, JobVisibility.PUBLIC);
         return Result.successCDM(oneJobMessage,"获取id为"+jobId+"的招聘信息成功");
     }

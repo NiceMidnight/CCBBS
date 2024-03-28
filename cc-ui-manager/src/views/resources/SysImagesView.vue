@@ -45,7 +45,11 @@
       <el-table-column prop="imgName" label="图片名"  width="230" align="center"/>
       <el-table-column prop="userName" label="上传管理员"  width="130" align="center"/>
       <el-table-column prop="uploadTime" label="上传时间" align="center" width="200" :formatter="timeHandler"/>
-      <el-table-column prop="typeName" label="类型" width="150" align="center"/>
+      <el-table-column label="类型"  width="120" align="center">
+        <template #default="{ row }">
+          <el-tag size="large" :style="{ backgroundColor: row['dictColor'] }">{{ row['typeName'] }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="可见性" align="center"  width="200" v-slot="{ row }">
         <el-switch
             v-model="row['visible']"
@@ -60,7 +64,7 @@
       <el-table-column  label="操作" width="240" align="center" v-slot="scope">
         <el-button type="primary" plain @click="showEditSysImageDialog(scope.row)">编辑</el-button>
         <el-button type="danger" plain @click="deleteSysImageResourceById(scope.row.id)">删除</el-button>
-        <el-button type="primary" @click="downloadImage(scope.row.imgPath,scope.row.imgName)">下载</el-button>
+<!--        <el-button type="primary" @click="downloadImage(scope.row.imgPath,scope.row.imgName)">下载</el-button>-->
       </el-table-column>
     </el-table>
     <el-pagination
@@ -137,7 +141,6 @@
       </span>
     </template>
   </el-dialog>
-
 <!--  图片放大-->
   <el-dialog
       v-model="imageDialogVisible"
@@ -152,7 +155,6 @@
         fit="contain"
     />
   </el-dialog>
-
 <!--  编辑图片-->
   <el-dialog
       v-model="editSysImageDialogVisible"
@@ -220,11 +222,20 @@ import {baseUrl} from "@/utils/request";
 import {getUserName} from "@/api/users";
 import { v4 as uuidV4 } from 'uuid';
 import { AddSysImgData  } from '@/api/images';
-const downloadImage = (imgPath, imgName) => {
-  const downloadLink = document.createElement('a');
-  downloadLink.href = getImage(imgPath);
-  downloadLink.download = imgName;
-  downloadLink.click();
+
+const downloadImage = async (imgPath, imgName) => {
+  const encodedImgPath = encodeURIComponent(baseUrl+imgPath);
+  const response = await fetch(encodedImgPath);
+  console.log(baseUrl+imgPath)
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', imgName+'.jpg');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url); // 释放 URL 对象
 };
 /**
  * 编辑图片数据

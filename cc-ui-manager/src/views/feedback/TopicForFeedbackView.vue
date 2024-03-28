@@ -141,8 +141,8 @@ const onSubmitAddTopic = async () => {
       <!-- 自动递增的行ID列 -->
       <el-table-column type="index" label="行id" width="70" align="center" fixed/>
       <el-table-column prop="topicId" label="主题id" width="70" align="center" fixed/>
-      <el-table-column prop="topicName" label="主题名" width="100" align="center"/>
-      <el-table-column prop="userName" label="创建者" width="100" align="center"/>
+      <el-table-column prop="topicName" label="主题名" width="200" align="center"/>
+      <el-table-column prop="userName" label="创建者" width="150" align="center"/>
       <el-table-column prop="createdTime" label="创建时间" width="180" align="center" :formatter="timeHandler"/>
       <el-table-column label="类型颜色" width="125" align="center" v-slot="{ row }">
         <el-color-picker v-model="row['topicColor']" size="large" @change="handleColorChange(row)"/>

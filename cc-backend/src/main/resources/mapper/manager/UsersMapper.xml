@@ -40,11 +40,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SET user_version = #{version}
         WHERE id = #{id} AND user_name = #{userName}
     </update>
+
     <update id="updateUserVersionById" >
         UPDATE user
         SET user_version = #{version}
         WHERE id = #{id}
     </update>
+
     <update id="updateUserStatus" parameterType="user">
         UPDATE user
         SET user_status = #{user_status}

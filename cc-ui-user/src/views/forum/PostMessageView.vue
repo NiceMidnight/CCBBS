@@ -29,18 +29,19 @@ const isFollow = ref(false) //是否关注
 const showUnfollow = ref(false) //鼠标停留状态
 const commentData = ref([]) //评论数据
 const userId = ref() //本人用户id
-const topPost = ref()
+const topPost = ref() //热门帖子
 const router = useRouter(); // 解析router
 const redirectToPost =  (postTitle,postId) => {
-  // console.log(postId)
-  // console.log(postTitle)
   increaseViewCountApi(postId);
   router.push({ name: 'Post', params: { title:postTitle,id: postId } });
 }
 watch(() => route.params.id, (newId, oldId) => {
-  postId = Number(newId); // 更新 postId 的值
-  console.log(postId)
-  loadData(postId.value); // 调用加载数据的方法
+  if (newId != null)
+  {
+    postId = Number(newId); // 更新 postId 的值
+    console.log(postId)
+    loadData(postId.value); // 调用加载数据的方法
+  }
 });
 const loadData = async () => {
   /**
@@ -49,7 +50,6 @@ const loadData = async () => {
    */
   const response = await getPostByPostIdApi(postId);
   post.value = response.data;
-  // console.log(response.data);
   /**
    * 获取对当前用户基本信息
    */
@@ -600,7 +600,7 @@ const formattedPostContent = (postContent) =>{
         <div v-for="post in topPost" :key="post.postId" @click="redirectToPost( post.postTitle, post.postId)" class="top-post" >
           <div class="font3">{{post.postTitle}}</div>
           <div class="font1" v-html="formattedPostContent(post.postContent)"></div>
-          <div >{{post.viewCount}}次浏览</div>
+          <div >{{post['viewCount']}}次浏览</div>
         </div>
       </div>
     </div>

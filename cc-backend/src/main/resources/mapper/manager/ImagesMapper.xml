@@ -9,11 +9,12 @@
             si.img_name,
             si.img_path,
             si.user_id,
-            u.nick_name as user_name,
+            u.user_name as user_name,
             si.upload_time,
             si.visible,
             si.type,
-            di.dict_item_name as type_name
+            di.dict_item_name as type_name,
+            di.dict_color as dict_color
         FROM
             sys_images si
                 LEFT JOIN

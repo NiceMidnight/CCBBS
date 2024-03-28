@@ -105,7 +105,7 @@ const addJobMessage = async () => {
         })
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 /**

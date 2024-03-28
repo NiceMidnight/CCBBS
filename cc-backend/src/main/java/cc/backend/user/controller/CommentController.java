@@ -70,7 +70,7 @@ public class CommentController {
         List<Comments> allCommentByTop = commentService.getAllCommentByTop(postId);
         if (allCommentByTop != null)
         {
-            System.out.println(allCommentByTop);
+//            System.out.println(allCommentByTop);
             return Result.successCDM(allCommentByTop,"获取最热评论成功");
         }
         return Result.error("获取最热评论失败");

@@ -7,6 +7,7 @@ import cc.backend.enums.JobStatus;
 import cc.backend.enums.JobVisibility;
 import cc.backend.user.mapper.JobMapper;
 import cc.backend.user.service.JobService;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,17 @@ public final class JobServiceImpl implements JobService {
     @Override
     public Job getOneJobMessage(Integer jobId,JobStatus jobStatus,JobVisibility jobVisibility) {
         return jobMapper.selectOneByJobId(jobId,jobStatus,jobVisibility);
+    }
+
+    /**
+     * TODO 增加阅读量
+     */
+    @Override
+    public boolean addViewCount(Integer jobId) {
+        Job job = jobMapper.selectById(jobId);
+        job.setViewCount(job.getViewCount() + 1);
+        UpdateWrapper<Job> jobUpdateWrapper = new UpdateWrapper<>();
+        jobUpdateWrapper.eq("job_id",jobId);
+        return jobMapper.update(job,jobUpdateWrapper) > 0;
     }
 }

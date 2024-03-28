@@ -22,7 +22,7 @@ onMounted(()=> {
   if (token) {
     try {
       tokenVerificationApi(token).then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res["code"] === '200')
         {
           enterDailyUniqueVisitorsLogApi()
@@ -37,28 +37,6 @@ onMounted(()=> {
   }
 })
 
-const localIPAddress = ref<string | null>(null);
-
-const getLocalIPAddress = async () => {
-  try {
-    const pc = new RTCPeerConnection();
-    pc.createDataChannel('');
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        const ipAddress = event.candidate.address;
-        localIPAddress.value = ipAddress;
-        console.log(localIPAddress)
-        pc.close();
-      }
-    };
-  } catch (error) {
-    console.error('Error fetching local IP address:', error);
-  }
-};
-
-getLocalIPAddress();
 
 </script>
 <style scoped>

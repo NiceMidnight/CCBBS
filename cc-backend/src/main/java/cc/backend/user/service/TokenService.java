@@ -7,5 +7,5 @@ package cc.backend.user.service;
  */
 public interface TokenService {
     boolean tokenVerification(String tokenInfo);
-
+    Long getTheNumOfLogins();
 }

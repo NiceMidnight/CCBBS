@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { onMounted  } from "@vue/runtime-core";
 import {getAllPostApi, getPostTopicApi, getUserHeadApi, increaseViewCountApi} from "@/api/post";
 import {ElMessage, ElNotification} from "element-plus";
 import {ChatDotRound, CirclePlus, Flag, Position, UserFilled } from "@element-plus/icons-vue";
@@ -24,8 +23,6 @@ const showUnfollow = ref(false);
  */
 const router = useRouter(); // 解析router
 const redirectToPost = (postTitle,postId) => {
-  // console.log(postId)
-  // console.log(postTitle)
   increaseViewCountApi(postId);
   router.push({ name: 'Post', params: { title:postTitle,id: postId } });
 };

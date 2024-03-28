@@ -29,8 +29,8 @@
             co.comment_id,
             co.post_id,
             co.user_id,
-            u.nick_name AS nick_name,
-            u.user_head AS user_head,
+            MAX(u.nick_name) AS nick_name,
+            MAX(u.user_head) AS user_head,
             co.comment_content,
             co.parent_comment_id,
             co.created_at,
@@ -44,7 +44,7 @@
                 LEFT JOIN
             comments reply ON co.comment_id = reply.parent_comment_id
         WHERE co.post_id = #{postId}
-        GROUP BY co.comment_id
+        GROUP BY co.comment_id, co.post_id, co.user_id, co.comment_content, co.parent_comment_id, co.created_at, co.status_for_user, co.status_for_compliance
         ORDER BY reply_count DESC
     </select>
 
@@ -74,22 +74,6 @@
         WHERE parent.user_id = #{userId}
         ORDER BY created_at DESC
     </select>
-
-<!--    <select id="selectReplyComments" resultMap="commentResultMap" >-->
-<!--        SELECT c.*-->
-<!--        FROM comments c-->
-<!--                 LEFT JOIN post p ON c.post_id = p.post_id-->
-<!--        WHERE c.status_for_user = 'Unread'-->
-<!--          AND c.parent_comment_id IS NULL-->
-<!--          AND p.user_id = #{userId}-->
-<!--        UNION-->
-<!--        SELECT child.*-->
-<!--        FROM comments child-->
-<!--                 JOIN comments parent ON child.parent_comment_id = parent.comment_id-->
-<!--        WHERE child.status_for_user = 'Unread'-->
-<!--          AND parent.user_id = #{userId}-->
-<!--        ORDER BY created_at DESC-->
-<!--    </select>-->
 
     <select id="selectReplyCommentsCount" resultType="int" >
         SELECT COUNT(*) AS total_comments

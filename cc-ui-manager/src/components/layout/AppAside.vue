@@ -84,17 +84,17 @@ import { isCollapse } from '../js/isCollapse.js'
         <el-icon><IEpSetting/></el-icon> <span> 用户管理 </span>
       </el-menu-item>
 
-      <el-sub-menu index="5">
-        <template #title>
-          <el-icon><IEpSetting/></el-icon> <span> 广告管理 </span>
-        </template>
-        <el-menu-item index="/advertisements">
-          <el-icon><IEpSetting/></el-icon> <span> 广告列表</span>
-        </el-menu-item>
-        <el-menu-item>
-          <el-icon><IEpSetting/></el-icon> <span> 广告位管理</span>
-        </el-menu-item>
-      </el-sub-menu>
+<!--      <el-sub-menu index="5">-->
+<!--        <template #title>-->
+<!--          <el-icon><IEpSetting/></el-icon> <span> 广告管理 </span>-->
+<!--        </template>-->
+<!--        <el-menu-item index="/advertisements">-->
+<!--          <el-icon><IEpSetting/></el-icon> <span> 广告列表</span>-->
+<!--        </el-menu-item>-->
+<!--        <el-menu-item>-->
+<!--          <el-icon><IEpSetting/></el-icon> <span> 广告位管理</span>-->
+<!--        </el-menu-item>-->
+<!--      </el-sub-menu>-->
 
     </el-menu>
     </el-scrollbar>

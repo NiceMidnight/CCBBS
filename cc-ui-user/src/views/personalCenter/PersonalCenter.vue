@@ -3,13 +3,14 @@ import {onMounted} from "@vue/runtime-core";
 import {getUserInfoApi} from "@/api/login";
 import {ref,computed } from "vue";
 import { useRouter } from "vue-router";
-import {ChatDotRound, Lollipop, Memo, Star, User} from "@element-plus/icons-vue";
+import {ChatDotRound, Lollipop, Memo, Message, Opportunity, Star, User} from "@element-plus/icons-vue";
 import PersonalInfo from "@/views/personalCenter/menu/PersonalInfo.vue";
 import PersonalMessage from "@/views/personalCenter/menu/PersonalMessage.vue";
 import PersonalFans from "@/views/personalCenter/menu/PersonalFans.vue";
 import PersonalFollow from "@/views/personalCenter/menu/PersonalFollow.vue";
 import PersonalDevelopment from "@/views/personalCenter/menu/PersonalDevelopment.vue";
 import {getReplyCommentsCountApi} from "@/api/comment";
+import ReservationView from "@/views/personalCenter/menu/ReservationView.vue";
 const route = useRouter()
 const token = localStorage.getItem("TokenInfo")
 const personalInfo = ref()  //个人信息
@@ -50,6 +51,8 @@ const selectedComponent = computed(() => {
     case "4":
       return PersonalMessage;
     case "5":
+      return ReservationView;
+    case "6":
       return PersonalDevelopment;
       // 添加更多菜单项对应的组件
     default:
@@ -82,14 +85,18 @@ const selectedComponent = computed(() => {
           </el-menu-item>
           <el-menu-item index="4">
             <el-badge :value="replyCommentsReply" :max="99" class="item">
-              <el-icon><ChatDotRound /></el-icon>
+              <el-icon><Message /></el-icon>
               我的消息
             </el-badge>
           </el-menu-item>
           <el-menu-item index="5">
-            <el-icon><Memo /></el-icon>
-            <template #title>成就值排行榜</template>
+            <el-icon><Opportunity /></el-icon>
+            <template #title>反馈</template>
           </el-menu-item>
+<!--          <el-menu-item index="6">-->
+<!--            <el-icon><Memo /></el-icon>-->
+<!--            <template #title>成就值排行榜</template>-->
+<!--          </el-menu-item>-->
         </el-menu>
       </el-aside>
     </div>

@@ -58,4 +58,9 @@ public class SysImageResource {
      */
     @TableField(exist = false)
     private String typeName;
+    /**
+     * 字典颜色
+     */
+    @TableField(exist = false)
+    private String dictColor;
 }

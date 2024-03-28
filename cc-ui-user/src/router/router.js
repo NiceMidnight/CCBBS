@@ -3,10 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import ErrorPage from "@/views/ErrorPage.vue";
 import {useTokenStore} from "@/stores/mytoken";
 const routes = [
+
     {
         path:'/login',
         name:'login',
-        component: () => import("@/views/login/LoginView.vue")
+        component: () => import("@/views/loginAndRegister/LoginAndRegister.vue")
     },
     {
         path: '/',
@@ -15,25 +16,31 @@ const routes = [
         component: () => import("@/components/AppLayout.vue"),
         meta: { requiresAuth: true,title:"首页" },  //   是否需要验证
         children:[
-            //默认页面
+            //默认主页面
             {
                 path: '/',
                 name:'index',
                 component: () => import("@/views/index/HomeView.vue"),
                 meta: {title:"基本信息"}
             },
-            // 懒加载
+
+            //公告信息
             {
-                path:'/:xxx(.*)*',
-                name:'ErrorPage',
-                component:ErrorPage,
-                meta: {title:""}
+                path: '/articleMessage/:id/:title',
+                name: 'ArticleView',
+                component: () => import("@/views/index/ArticleView.vue"),
+                props: routes => ({
+                    id: parseInt(routes.params.id)
+                }),
+                meta:{title:"文章信息"}
             },
+
+            //招聘
             {
                 path: '/recruit',
                 name:'Recruit',
                 component: () => import("@/views/recruit/RecruitView.vue"),
-                meta: {title:"招聘"}
+                meta: {title:"所有招聘信息"}
             },
             {
                 path: '/jobMessage/:jobId/:jobTitle',
@@ -42,31 +49,28 @@ const routes = [
                 props: routes => ({
                     id: parseInt(routes.params.id)
                 }),
-                meta: {title:"招聘"}
+                meta: {title:"工作信息"}
             },
+
+            //个人中心
             {
                 path: '/personalInfo',
                 name:'PersonalInfo',
                 component: () => import("@/views/personalCenter/PersonalCenter.vue"),
                 meta: {title:"个人信息"}
             },
+
+            //反馈
             {
-                path: '/articleMessage/:id/:title',   //定义带有参数的路由
-                name: 'ArticleView',
-                component: () => import("@/views/index/ArticleView.vue"),
-                props: routes => ({
-                    id: parseInt(routes.params.id)
-                }),
-                meta:{title:"文章信息"}
-            },
-            {
-                path: '/reservation',   //定义带有参数的路由
+                path: '/reservation',
                 name: 'Reservation',
-                component: () => import("@/views/reservation/ReservationView.vue"),
-                meta:{title:"文章信息"}
+                component: () => import("@/views/personalCenter/menu/ReservationView.vue"),
+                meta:{title:"反馈信息"}
             },
+
+            //论坛
             {
-                path: '/forum',   //定义带有参数的路由
+                path: '/forum',
                 name: 'Forum',
                 component: () => import("@/views/forum/PostView.vue"),
                 meta:{title:"帖子"},
@@ -84,12 +88,22 @@ const routes = [
                 component: () => import("@/views/addAPost/PostAMessage.vue"),
                 meta: { title: "发帖", requiresAuth: true }  // 需要验证权限
             },
+
+            //个人主页
             {
                 path: '/personalHomepage/:userId',
                 name: 'PersonalHomepage',
                 component: () => import("@/views/PersonalHomepage/PersonalHomepage.vue"),
                 meta: { title: "个人主页", requiresAuth: true }  // 需要验证权限
-            }
+            },
+
+            // 懒加载错误页面
+            {
+                path:'/:xxx(.*)*',
+                name:'ErrorPage',
+                component:ErrorPage,
+                meta: {title:""}
+            },
         ]
     },
 ];

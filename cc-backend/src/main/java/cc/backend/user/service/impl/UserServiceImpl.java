@@ -136,8 +136,9 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         user.setUserStatus(UserStatus.DISABLE);
-        user.setUserRole(2);
+        user.setUserRole(0);
         user.setUserDate(new Date());
+        user.setNickName(user.getUserName());
         return userMapper.insert(user) > 0;
     }
 

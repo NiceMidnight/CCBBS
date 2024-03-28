@@ -18,7 +18,12 @@ export const getAllArticle = (queryCondition:QueryCondition) => {
         data: queryCondition,
     })
 }
-
+export const getHotArticleApi = () => {
+    return request({
+        method:'GET',
+        url:'/user/resources/getHotArticle'
+    })
+}
 /**
  * 文章标题链接查看对应文章全部信息
  */

@@ -3,8 +3,11 @@ package cc.backend.user.controller;
 import cc.backend.common.Result;
 import cc.backend.entity.Article;
 import cc.backend.entity.SearchData;
+import cc.backend.manager.service.impl.EChartServiceImpl;
 import cc.backend.user.service.impl.IndexArticleServiceImpl;
 import cc.backend.user.service.impl.IndexImgServiceImpl;
+import cc.backend.user.service.impl.TokenServiceImpl;
+import cc.backend.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +51,6 @@ public class ResourcesController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(imageList,headers, HttpStatus.OK);
     }
-
     /**
      * TODO 首页走马灯图片获取
      */
@@ -57,30 +59,52 @@ public class ResourcesController {
         List<String> indexImage = indexImgService.getIndexImage();
         return Result.successCDM(indexImage,"获取走马灯图片数据成功");
     }
-    @Autowired
-    private IndexArticleServiceImpl articleService;
 
     /**
-     * @description TODO 获取首页文章
-     * @param pageData
-     * @return: cc.backend.common.Result
+     * TODO 获取首页文章--获取热门公告--获取单个文章内容
      */
+    @Autowired
+    private IndexArticleServiceImpl articleService;
     @PostMapping("/getIndexArticle")
     public Result getIndexArticle(@RequestBody SearchData<Article> pageData) {
         SearchData<Article> indexArticle = articleService.getIndexArticle(pageData);
-        return Result.successCDM(indexArticle,"获取文章成功");
+        return Result.successCDM(indexArticle,"获取公告成功");
     }
-
-    /**
-     * @description TODO 获取单个文章内容
-     * @param articleId
-     * @return: cc.backend.common.Result
-     */
+    @GetMapping("/getHotArticle")
+    public Result getHotArticle()
+    {
+        List<Article> hotArticle = articleService.getHotArticle();
+        return Result.successCDM(hotArticle,"获取热门公告");
+    }
     @PostMapping("/getArticle")
     public Result getArticle(@RequestParam int articleId) {
         Article article = articleService.getArticle(articleId);
         System.out.println(article);
-        return Result.successCDM(article,"获取文章"+articleId+"成功");
+        return Result.successCDM(article,"获取公告"+articleId+"成功");
     }
 
+
+    @Autowired
+    private TokenServiceImpl tokenService;
+    /**
+     * TODO 获取登录人数
+     */
+    @GetMapping("/getTheNumOfLogins")
+    public Result getTheNumOfLogins()
+    {
+        Long theNumOfLogins = tokenService.getTheNumOfLogins();
+        return Result.successCDM(theNumOfLogins,"获取登录人数");
+    }
+
+    @Autowired
+    private EChartServiceImpl eChartService;
+    /**
+     * TODO 获取当日访问网站人数
+     */
+    @GetMapping("/getVisits")
+    public Result getVisits()
+    {
+        Long countOfTodayDailyUniqueVisitorsLog = eChartService.getCountOfTodayDailyUniqueVisitorsLog();
+        return Result.successCDM(countOfTodayDailyUniqueVisitorsLog,"获取当日访问网站人数");
+    }
 }

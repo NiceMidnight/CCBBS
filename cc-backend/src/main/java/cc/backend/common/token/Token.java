@@ -41,7 +41,7 @@ public class Token {
         ObjectMapper objectMapper = new ObjectMapper();
         String redisValue = objectMapper.writeValueAsString(user);
         String redisKey = insertTokenToRedis(redisValue);
-        if (user.getUserVersion() == 1)
+        if (user.getUserVersion() != 0) //未登录过设置版本0表示登录
         {
             boolean isInsertToSQL = insertTokenToSQL(user, redisKey, redisValue);
             if (isInsertToSQL)
@@ -50,8 +50,7 @@ public class Token {
                 return redisKey;
             }
         }
-        else if (user.getUserVersion() == 0)
-        {
+        else {  //查找redis中是否存在有效的token值，有则清除重新生成token值给新登录用户
             String selectRedisKey = tokenMapper.selectRedisKey(user, TokenStatus.EFFECTIVE);
             boolean isDeletedFromRedis = TopDeletesTheToken(user,selectRedisKey);
             if (isDeletedFromRedis)
