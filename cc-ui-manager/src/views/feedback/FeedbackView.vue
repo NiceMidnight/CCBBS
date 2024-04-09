@@ -80,9 +80,6 @@ const onLoad = async() => {
 }
 // 用户头像
 const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-const getImage = (userHead) => {
-  return `${baseUrl}/${userHead}`
-}
 /**
  * 转译
  * @param status
@@ -369,7 +366,7 @@ const downProgress = async (feedbackId:number,feedbackStatus:string) => {
         </el-tooltip>
       </el-table-column>
       <el-table-column prop="creatorHead" label="头像"  width="120" align="center" v-slot="{ row }">
-        <el-avatar :size="50" :src="getImage(row['creatorHead']) || circleUrl" />
+        <el-avatar :size="50" :src="row['creatorHead'] || circleUrl" />
       </el-table-column>
       <el-table-column prop="creatorName" label="反馈用户"  width="120" align="center" />
       <el-table-column prop="createdTime" label="反馈时间"  width="180" align="center" :formatter="timeHandler"/>

@@ -186,7 +186,7 @@ const truncateText = (text, maxLength) => {
       <div id="right" class="side-right-content" style="margin-left: 10px">
         <div class="r-container" v-if="userInfo['userName']">
           <div>
-            <el-avatar shape="square" :size="100" :src="baseUrl+'/'+userInfo['userHead']" />
+            <el-avatar shape="square" :size="100" :src="userInfo['userHead']" />
           </div>
           <div>
             {{ userInfo["userName"] }}

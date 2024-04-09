@@ -17,8 +17,6 @@ import java.util.Date;
  */
 @Data
 @TableName("images")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Images {
     /**
      * 图片id

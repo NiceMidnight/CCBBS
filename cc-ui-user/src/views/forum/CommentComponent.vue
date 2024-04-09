@@ -4,7 +4,7 @@
       <div style="display: flex;align-items: center;">
         <el-avatar
             :size="50"
-            :src="commentData.userHead ? `${baseUrl}/${commentData.userHead}` : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
+            :src="commentData.userHead || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
         />
         <div style="margin-left: 0.2rem">
           <div style="display: flex;align-items: center; ">

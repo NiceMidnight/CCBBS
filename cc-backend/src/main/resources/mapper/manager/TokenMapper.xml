@@ -13,7 +13,7 @@
     <update id="updateTokenStatus">
         UPDATE token
         SET token_status = #{tokenStatus}
-        WHERE user_id = #{user.id} AND user_name = #{user.userName}
+        WHERE user_id = #{user.id} AND user_name = #{user.userName} AND token_status = #{status}
     </update>
 
     <update id="updateTokenStatusByRedisKey">

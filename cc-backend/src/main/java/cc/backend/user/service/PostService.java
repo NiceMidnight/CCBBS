@@ -16,6 +16,7 @@ public interface PostService {
     Post getPostByPostId(Integer postId);
     Post updatePostLikesCount(Integer postId,boolean addOrDel);
     Post updatePostDislikesCount(Integer postId,boolean addOrDel);
+    Post updatePostFavoritesCount(Integer postId,boolean addOrDel);
     boolean updatePostCommentCount(Integer postId,boolean addOrDel);
     boolean increaseViewCount(Integer postId);
     List<Post> getTopPosts();

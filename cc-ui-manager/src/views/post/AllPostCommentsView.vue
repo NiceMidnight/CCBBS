@@ -60,11 +60,7 @@ onLoad()
 
 /**
  * 获取图片
- * @param imgPath
  */
-const getImage = (imgPath) => {
-  return `${baseUrl}/${imgPath}`
-}
 const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png' // 不能正常显示图片时显示该图片
 /**
  * 改变页数
@@ -303,7 +299,7 @@ const handleStatusChange = (value) => {
       <el-table-column type="index" label="行id"  width="100" align="center"/>
       <el-table-column prop="commentId" label="评论Id" width="100" align="center"/>
       <el-table-column label="头像"  width="100" align="center" v-slot="{ row }">
-        <el-avatar :size="50" :src="getImage(row['userHead']) || circleUrl" />
+        <el-avatar :size="50" :src="row['userHead'] || circleUrl" />
       </el-table-column>
       <el-table-column prop="userId" label="用户Id"  width="100" align="center"/>
       <el-table-column prop="userName" label="用户名"  width="130" align="center" v-slot="{ row }"/>

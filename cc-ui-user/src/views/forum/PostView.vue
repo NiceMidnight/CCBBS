@@ -77,7 +77,7 @@ const onLoad = async () => {
     await Promise.all(postData.value["data"].map(async (post) => {
       if (!userHeadUrls.value[post.userId]) {
         const userHead = await getUserHeadApi(post.userId);
-        userHeadUrls.value[post.userId] = `${baseUrl}/${userHead.data}`;
+        userHeadUrls.value[post.userId] = userHead.data;
       }
     }));
 
@@ -218,7 +218,7 @@ const updateHeadUrls = async () => {
   await Promise.all(postData.value["data"].map(async (post) => {
     if (!userHeadUrls.value[post['userId']]) {
       const userHead = await getUserHeadApi(post['userId']);
-      userHeadUrls.value[post["userId"]] = `${baseUrl}/${userHead.data}`;
+      userHeadUrls.value[post["userId"]] = userHead.data;
     }
   }));
 }

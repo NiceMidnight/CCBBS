@@ -120,6 +120,31 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
+     * TODO 更新收藏数量
+     */
+    @Override
+    public Post updatePostFavoritesCount(Integer postId, boolean addOrDel) {
+        Post post = postMapper.selectById(postId);
+        if (post!=null)
+        {
+            if (addOrDel)
+            {
+                post.setFavoriteCount(post.getFavoriteCount() + 1);
+                UpdateWrapper<Post> postUpdateWrapper = new UpdateWrapper<>();
+                postUpdateWrapper.eq("post_id",postId);
+                postMapper.update(post,postUpdateWrapper);
+            } else
+            {
+                post.setFavoriteCount(post.getFavoriteCount() - 1);
+                UpdateWrapper<Post> postUpdateWrapper = new UpdateWrapper<>();
+                postUpdateWrapper.eq("post_id",postId);
+                postMapper.update(post,postUpdateWrapper);
+            } return post;
+        }
+        return null;
+    }
+
+    /**
      * @description TODO 更新评论数量
      * @param postId
      * @param addOrDel

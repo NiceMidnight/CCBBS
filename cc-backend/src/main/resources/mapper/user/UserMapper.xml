@@ -5,11 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="cc.backend.user.mapper.UserMapper">
     <update id="updateUser" parameterType="user">
         UPDATE user
-        SET user_age = #{userAge},
-            user_sex = #{userSex},
+        SET user_sex = #{userSex},
             user_phone = #{userPhone},
             user_address = #{userAddress},
-            user_personality = #{userPersonality}
+            user_personality = #{userPersonality},
+            user_head = #{userHead}
         WHERE id = #{id}
     </update>
 

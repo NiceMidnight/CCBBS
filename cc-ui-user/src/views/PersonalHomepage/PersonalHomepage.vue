@@ -113,7 +113,7 @@ const redirectToPost = (postTitle,postId) => {
 
       <div class="first-head" >
         <div class="left">
-          <el-avatar :size="'large'" :src="baseUrl + '/' + userInfo['userHead']" v-if="userInfo['userHead']"/>
+          <el-avatar :size="'large'" :src=" userInfo['userHead']" v-if="userInfo['userHead']"/>
           <el-avatar :size="'large'" :src="circleUrl" v-else/>
         </div>
         <div class="right">

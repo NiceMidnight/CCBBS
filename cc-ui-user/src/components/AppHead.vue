@@ -28,14 +28,14 @@ const onLoginOrRegister = (loginOrRegister:boolean) => {
  * 登出
  */
 const onLogout = async () => {
-
   await ElMessageBox.confirm('确认登出吗?')
       .then(() => {
         logoutApi().then((res) => {
           if (res["code"] === '200')
           {
             ElMessage.success(res["msg"])
-            localStorage.clear();
+            localStorage.clear()
+            // localStorage.removeItem("TokenInfo");
             router.push("/login");
           } else ElMessage.error(res["msg"])
         })
@@ -181,7 +181,6 @@ const getMenu = () => {
 .right-model {
   display: flex;
   align-items: center;
-
 }
 @media screen and (max-width: 768px) {
   .title {

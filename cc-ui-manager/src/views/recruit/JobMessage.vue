@@ -227,9 +227,6 @@ const handleSelectionChange = (val: any) => {
 }
 // 用户头像
 const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-const getImage = (userHead) => {
-  return `${baseUrl}/${userHead}`
-}
 /**
  * 内容
  */
@@ -337,7 +334,7 @@ const jobView = async (job) => {
       </el-table-column>
       <el-table-column prop="userId" label="用户id"  width="70" align="center"/>
       <el-table-column label="头像" width="100" align="center" v-slot="{ row }">
-        <el-avatar :size="50" :src="getImage(row['userHead']) || circleUrl" />
+        <el-avatar :size="50" :src="row['userHead'] || circleUrl" />
       </el-table-column>
       <el-table-column prop="userName" label="用户名" width="100" align="center"/>
       <el-table-column prop="nickName" label="昵称" width="100" align="center"/>

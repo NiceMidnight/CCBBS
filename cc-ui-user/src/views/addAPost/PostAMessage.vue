@@ -2,7 +2,7 @@
 import { ref, reactive,onMounted } from 'vue';
 import TextEditor from "./TextEditor.vue";
 import {getPostTopicApi, postAPostApi,} from "../../api/post";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
 import {useRouter} from "vue-router";
 const topics = ref([]); //主题内容
 const router = useRouter()
@@ -29,12 +29,26 @@ const postData = reactive({
  * @returns {Promise<void>}
  */
 const onPost = async () => {
-  await postAPostApi(postData).then((res) => {
-    if (res["code"])
-    {
-      router.push("/forum");
-      ElMessage.success(res["msg"])
-    } else ElMessage.error(res["msg"])
+  if (postData.postTitle !== null && postData.postTitle !== '')
+  {
+    await postAPostApi(postData).then((res) => {
+      if (res["code"])
+      {
+        ElNotification({
+          title: '发布帖子',
+          message: res["msg"],
+          type: 'success',
+        })
+      } else ElNotification({
+        title: '发布帖子',
+        message: res["msg"],
+        type: 'error',
+      })
+    })
+  } else ElNotification({
+    title: '发布帖子',
+    message: "帖子标题不能为空",
+    type: 'info',
   })
 }
 const onCancel =  () => {

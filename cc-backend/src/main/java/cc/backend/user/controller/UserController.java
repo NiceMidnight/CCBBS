@@ -58,28 +58,22 @@ public class UserController {
     }
     /**
      * @description TODO 验证码
-     * @param request
      * @param response
      * @return: void
      */
     @GetMapping("/verify")
-    public void verify(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
+    public void verify(HttpServletResponse response) throws Exception {
         response.setDateHeader("Expires",0);
         response.setHeader("Cache-Control","no-store,no-cache,must-revalidate");
         response.addHeader("Cache-Control","post-check=0,pre-check=0");
         response.setHeader("Pragma","no-cache");
         response.setContentType("image/jpeg");
         String code = kaptcha.createText();
-        session.setAttribute("verify_code",code);
-        //  redis存储code
         redisTemplate.opsForValue().set(code,code,60, TimeUnit.SECONDS);
         BufferedImage bi = kaptcha.createImage(code);
         try (ServletOutputStream outputStream = response.getOutputStream()){
             ImageIO.write(bi,"jpg",outputStream);
         }
-        System.out.println("redis---"+redisTemplate.opsForValue().get(code));
-        System.out.println("session---"+session.getAttribute("verify_code"));
     }
 
     /**
@@ -114,7 +108,6 @@ public class UserController {
     @RequestMapping("/updateUserInfo")
     public Result updateUserInfo(@RequestBody User user)
     {
-        System.out.println(user);
         boolean isUpdateUserInfo = userService.updateUserInfo(user);
         if (isUpdateUserInfo)
         {

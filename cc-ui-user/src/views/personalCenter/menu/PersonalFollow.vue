@@ -126,7 +126,7 @@ const redirectToPersonalHomepage = (followingId:number) => {
     >
       <template #reference>
         <div class="user" @mouseenter="getUserInfo(user['followingId'])">
-          <div><el-avatar :size="50" :src="baseUrl + '/' + user['followingHead'] || circleUrl" /></div>
+          <div><el-avatar :size="50" :src="user['followingHead'] || circleUrl" /></div>
           <div class="user-message">
             <div>
               <el-link :underline="false" @click="redirectToPersonalHomepage(user['followingId'])">
@@ -145,7 +145,7 @@ const redirectToPersonalHomepage = (followingId:number) => {
       </template>
       <template #default>
         <div v-if="userInfo" class="demo-rich-content" style="display: flex; gap: 16px; flex-direction: column">
-          <el-avatar :size="60" :src="baseUrl + '/' + user['followingHead'] || circleUrl" style="margin-bottom: 8px"/>
+          <el-avatar :size="60" :src="user['followingHead'] || circleUrl" style="margin-bottom: 8px"/>
           <div>
             <p class="demo-rich-content__name" style="margin: 0; font-weight: 500;font-size: larger">
               {{userInfo['nickName']}}

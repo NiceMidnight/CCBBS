@@ -87,4 +87,8 @@ public class Post {
      * 帖子评论数量
      */
     private Integer commentCount;
+    /**
+     * 收藏数量
+     */
+    private Integer favoriteCount;
 }

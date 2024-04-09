@@ -46,10 +46,6 @@ public class User {
      */
     private Integer userSex;
     /**
-     * 年龄
-     */
-    private Integer userAge;
-    /**
      * 电话
      */
     private String userPhone;

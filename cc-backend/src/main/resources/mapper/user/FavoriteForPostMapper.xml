@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.user.mapper.FavoriteForPostMapper">
+
+    <select id="getFavoriteForPostStatus" resultType="cc.backend.enums.FavoriteStatus">
+        SELECT favorite_status
+        FROM favorite_for_post
+        WHERE user_id = #{userId} AND post_id = #{postId}
+    </select>
+
+    <update id="updateFavoriteStatus" parameterType="favoriteForPost">
+        UPDATE favorite_for_post
+        SET favorite_status = #{favoriteStatus} , timestamp = #{timestamp}
+        WHERE user_id = #{userId} AND post_id = #{postId}
+    </update>
+</mapper>

@@ -8,12 +8,24 @@ import {ElMessage, FormInstance, FormRules} from "element-plus";
 import {enterDailyUniqueVisitorsLogApi, loginApi} from "@/api/login";
 const route = useRoute()
 const { push } = useRouter();
+
+// 从本地存储中获取记住的账号密码
+const rememberAccount = localStorage.getItem("rememberAccount");
+// 如果有记住的账号，根据分隔符切割用户名和密码
+let defaultUsername = '';
+let defaultPassword = '';
+if (rememberAccount) {
+  const [savedUsername, savedPassword] = rememberAccount.split('|');
+  defaultUsername = savedUsername;
+  defaultPassword = savedPassword;
+}
+const remember = ref(rememberAccount !== null);
 /**
  * 登录数据
  */
 const form = reactive({
-  userName:'zhangsan',
-  password:'zhangsan',
+  userName: defaultUsername,
+  password: defaultPassword,
   code:''
 })
 /**
@@ -42,13 +54,20 @@ const onLogin = async () => {
       password:form.password,
     })
     await loginApi(user,form.code).then((res) => {
-      console.log(res)
+      // console.log(res)
       if (res["code"] === '200') {
         store.saveToken(res["token"])
         ElMessage.success(res["msg"])
         isLoading.value = false
         enterDailyUniqueVisitorsLogApi()
         push(route.query.redirect as string || '/')
+        // 如果用户选择了记住账号密码，将其保存到本地存储
+        if (remember.value) {
+          localStorage.setItem("rememberAccount", form.userName+'|'+form.password);
+        } else {
+          // 否则清除记住的账号密码
+          localStorage.removeItem("rememberAccount");
+        }
       } else {
         ElMessage.error(res["msg"])
       }
@@ -114,7 +133,11 @@ const onCancel = () => {
       </el-input>
       <el-image style="width: 110px;height: 36px;margin-left: 10px;border-radius: 5px" :src="verifyApi" alt="图片无法加载" @click="getNewVerify()" />
     </el-form-item>
-
+    <el-form-item >
+      <el-checkbox v-model="remember">记住登录状态</el-checkbox>
+      <div style="flex-grow: 1;" />
+      <el-link>忘记密码？</el-link>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onLogin" :loading="isLoading">登录</el-button>
       <el-button type="danger" @click="onCancel" >首页</el-button>

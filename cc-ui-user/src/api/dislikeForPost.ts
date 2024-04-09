@@ -39,3 +39,42 @@ export const giveADislikeApi = (postId:number) => {
         }
     })
 }
+/**
+ * 收藏状态
+ * @param postId
+ */
+export const getFavoriteForPostStatusApi = (postId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/favoriteForPost/getFavoriteForPostStatus',
+        params:{
+            postId:postId
+        }
+    })
+}
+/**
+ * 取消收藏
+ * @param postId
+ */
+export const cancelAFavoriteApi = (postId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/favoriteForPost/cancelAFavorite',
+        params:{
+            postId:postId
+        }
+    })
+}
+/**
+ * 收藏
+ * @param postId
+ */
+export const giveAFavoriteApi = (postId:number) => {
+    return request({
+        method:'GET',
+        url:'/user/favoriteForPost/giveAFavorite',
+        params:{
+            postId:postId
+        }
+    })
+}

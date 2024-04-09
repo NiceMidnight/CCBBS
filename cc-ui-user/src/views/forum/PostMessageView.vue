@@ -10,7 +10,12 @@ import {cancelFollowApi, followApi, getFollowStatusApi} from "../../api/follow";
 import {ElMessage, ElMessageBox, ElNotification} from "element-plus";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {cancelALikeApi, getLikesForPostStatusApi, giveALikeApi} from "../../api/likeForPost";
-import {cancelADislikeApi, getDislikesForPostStatusApi, giveADislikeApi} from "../../api/dislikeForPost";
+import {
+  cancelADislikeApi, cancelAFavoriteApi,
+  getDislikesForPostStatusApi,
+  getFavoriteForPostStatusApi,
+  giveADislikeApi, giveAFavoriteApi
+} from "../../api/dislikeForPost";
 import {
   deletePersonalCommentApi,
   getLatestCommentsApi,
@@ -31,6 +36,9 @@ const commentData = ref([]) //评论数据
 const userId = ref() //本人用户id
 const topPost = ref() //热门帖子
 const router = useRouter(); // 解析router
+const isLike = ref(false) //点赞true/false
+const isDislike = ref(false) //踩true/false
+const isFavorite = ref(false)//收藏true/false
 const redirectToPost =  (postTitle,postId) => {
   increaseViewCountApi(postId);
   router.push({ name: 'Post', params: { title:postTitle,id: postId } });
@@ -57,7 +65,7 @@ const loadData = async () => {
   {
     // console.log(res)
     userInfo.value = res.data
-    userHeadUrls.value =  `${baseUrl}/${res.data.userHead}`
+    userHeadUrls.value =  res.data.userHead
   })
   /**
    * 获取用户关注状态
@@ -77,6 +85,12 @@ const loadData = async () => {
    */
   await getDislikesForPostStatusApi(postId).then((res) => {
     isDislike.value = res.data
+  })
+  /**
+   * 获取帖子收藏状态
+   */
+  await getFavoriteForPostStatusApi(postId).then((res) => {
+    isFavorite.value = res.data
   })
   /**
    * 获取最热评论
@@ -184,8 +198,6 @@ const cancelFollow = async (followingId) => {
   }
 }
 
-const isLike = ref(false) //点赞true/false
-const isDislike = ref(false) //踩true/false
 
 /**
  * 已关注取消关注
@@ -223,7 +235,7 @@ const cancelADislike = async () => {
   })
 }
 /**
- * 未踩踩
+ * 未踩 踩
  */
 const giveADislike = async () => {
   await giveADislikeApi(postId).then((res) => {
@@ -231,6 +243,30 @@ const giveADislike = async () => {
     {
       isDislike.value = true
       post.value.dislikeCount = res.data
+    }
+  })
+}
+/**
+ * 取消收藏
+ */
+const cancelAFavorite = async () => {
+  await cancelAFavoriteApi(postId).then((res) => {
+    if (res["code"] === '200')
+    {
+      isFavorite.value = false
+      post.value.favoriteCount = res.data
+    }
+  })
+}
+/**
+ * 收藏
+ */
+const giveAFavorite = async () => {
+  await giveAFavoriteApi(postId).then((res) => {
+    if (res["code"] === '200')
+    {
+      isFavorite.value = true
+      post.value.favoriteCount = res.data
     }
   })
 }
@@ -449,14 +485,12 @@ const formattedPostContent = (postContent) =>{
             </span>
             {{ post.likeCount }}
           </el-button>
-
           <el-button type="primary" plain class="like-button" @click="giveALike" v-else>
             <span class="like-icon-container">
               <font-awesome-icon :icon="['far', 'thumbs-up']"/>
             </span>
             {{ post.likeCount }}
           </el-button>
-
           <!-- 踩贴-->
           <el-button type="primary" plain class="like-button" @click="cancelADislike" v-if="isDislike">
             <span class="like-icon-container">
@@ -469,6 +503,19 @@ const formattedPostContent = (postContent) =>{
               <font-awesome-icon :icon="['far', 'thumbs-down']" />
             </span>
             {{ post.dislikeCount }}
+          </el-button>
+          <!-- 收藏-->
+          <el-button type="primary" plain class="like-button" @click="cancelAFavorite" v-if="isFavorite">
+            <span class="like-icon-container">
+              <font-awesome-icon :icon="['fas', 'star']" />
+            </span>
+            {{ post.favoriteCount }}
+          </el-button>
+          <el-button type="primary" plain class="like-button" @click="giveAFavorite" v-else>
+            <span class="like-icon-container">
+              <font-awesome-icon :icon="['far', 'star']" />
+            </span>
+            {{ post.favoriteCount }}
           </el-button>
         </div>
 
@@ -538,7 +585,7 @@ const formattedPostContent = (postContent) =>{
               <div style="display: flex;align-items: center;">
                 <el-avatar
                     :size="50"
-                    :src="comment.userHead ? `${baseUrl}/${comment.userHead}` : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
+                    :src="comment.userHead || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
                 />
                 <div style="margin-left: 0.2rem">
                   <div style="display: flex;align-items: center; ">
@@ -585,7 +632,6 @@ const formattedPostContent = (postContent) =>{
                 justify-content: center;
                 display: flex;-webkit-text-stroke: 1px #2f8bc9;
                 -webkit-text-fill-color : transparent;
-                font-size: 1.5rem;
                 color:#c03232;">
                   还没有评论呢，快来一起畅所欲言吧......
                 </div>

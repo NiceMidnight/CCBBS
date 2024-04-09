@@ -45,7 +45,7 @@ const redirectToUser = (userId:any) => {
     </div>
 
     <div style="display: flex;align-items: center;">
-      <el-avatar :size="50" :src="baseUrl + '/' + jobData['userHead']" v-if="jobData['userHead']"/>
+      <el-avatar :size="50" :src="jobData['userHead']" v-if="jobData['userHead']"/>
       <el-avatar :size="'large'" :src="circleUrl" v-else/>
       <el-link type="primary" :underline="false" @click="redirectToUser(jobData['userId'])">{{jobData['nickName']}}</el-link>
     </div>

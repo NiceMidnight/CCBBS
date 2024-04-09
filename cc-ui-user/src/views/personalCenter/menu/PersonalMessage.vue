@@ -130,7 +130,7 @@ const redirectToPersonalHomepage = (userId:number) => {
         </el-link>
       </div>
       <div style="display: flex;align-items: center;">
-        <div v-if="comment['userHead']"><el-avatar :size="35" :src="baseUrl + '/' + comment['userHead']" /></div>
+        <div v-if="comment['userHead']"><el-avatar :size="35" :src="comment['userHead']" /></div>
         <div v-else><el-avatar :size="35" :src="circleUrl" /></div>
         <div>
           <el-link :underline="false" @click="redirectToPersonalHomepage(comment['userId'])" style="margin-right: 0.5rem">

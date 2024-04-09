@@ -73,20 +73,11 @@
         ORDER BY po.comment_count DESC, po.created_at DESC
     </select>
 
-    <select id="getPostByPostId" resultMap="postResultMap">
+    <select id="getPostByPostId" resultType="post">
         SELECT
-            po.post_id,
-            po.topic_id,
+            po.*,
             tfp.topic_name as topic_name,
-            po.post_title,
-            po.post_content,
-            po.user_id,
-            u.nick_name as nick_name,
-            po.created_at,
-            po.view_count,
-            po.like_count,
-            po.dislike_count,
-            po.comment_count
+            u.nick_name as nick_name
         FROM
             post po
                 LEFT JOIN
@@ -96,6 +87,7 @@
         WHERE
             po.post_id = #{postId}
     </select>
+
     <select id="getTopPosts" resultMap="postResultMap">
         SELECT
             po.post_id,

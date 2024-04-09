@@ -52,15 +52,13 @@ public class Token {
         }
         else {  //查找redis中是否存在有效的token值，有则清除重新生成token值给新登录用户
             String selectRedisKey = tokenMapper.selectRedisKey(user, TokenStatus.EFFECTIVE);
-            boolean isDeletedFromRedis = TopDeletesTheToken(user,selectRedisKey);
-            if (isDeletedFromRedis)
+            TopDeletesTheToken(user,selectRedisKey);
+            boolean isInsertToSQL = insertTokenToSQL(user, redisKey, redisValue);
+            if (isInsertToSQL)
             {
-                boolean isInsertToSQL = insertTokenToSQL(user, redisKey, redisValue);
-                if (isInsertToSQL)
-                {
-                    return redisKey;
-                }
+                return redisKey;
             }
+            return null;
         }
         return null;
     }
@@ -117,7 +115,7 @@ public class Token {
      * @return: boolean
      */
     public boolean TopDeletesTheToken(User user,String token) {
-        int isUpdate = tokenMapper.updateTokenStatus(user, TokenStatus.INVALID);
+        int isUpdate = tokenMapper.updateTokenStatus(user, TokenStatus.INVALID,TokenStatus.EFFECTIVE);
         if (isUpdate > 0)
         {
             Boolean isDeleted = redisTemplate.delete(token);

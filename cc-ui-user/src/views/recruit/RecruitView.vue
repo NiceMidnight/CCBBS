@@ -136,13 +136,6 @@ const handleSelect = async (index: any) => {
     console.log(res)
   })
 };
-/**
- * 获取头像
- * @param userHead
- */
-const getImage = (userHead) => {
-  return `${baseUrl}/${userHead}`
-}
 
 /**
  * 文本截断
@@ -277,7 +270,7 @@ const addAApplyRecruiter = async () => {
           <el-table-column prop="topicName" label="类型" align="center" width="100" />
 
           <el-table-column label="头像" width="80" align="center" v-slot="{ row }">
-            <el-avatar :size="50" :src="getImage(row['userHead']) || circleUrl"/>
+            <el-avatar :size="50" :src="row['userHead'] || circleUrl"/>
           </el-table-column>
 
           <el-table-column label="作者" align="center" width="100" v-slot="{ row }">

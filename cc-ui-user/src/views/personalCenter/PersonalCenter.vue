@@ -11,6 +11,7 @@ import PersonalFollow from "@/views/personalCenter/menu/PersonalFollow.vue";
 import PersonalDevelopment from "@/views/personalCenter/menu/PersonalDevelopment.vue";
 import {getReplyCommentsCountApi} from "@/api/comment";
 import ReservationView from "@/views/personalCenter/menu/ReservationView.vue";
+import FavoritePost from "@/views/personalCenter/menu/FavoritePost.vue";
 const route = useRouter()
 const token = localStorage.getItem("TokenInfo")
 const personalInfo = ref()  //个人信息
@@ -49,10 +50,12 @@ const selectedComponent = computed(() => {
     case "3":
       return PersonalFans;
     case "4":
-      return PersonalMessage;
+      return FavoritePost;
     case "5":
-      return ReservationView;
+      return PersonalMessage;
     case "6":
+      return ReservationView;
+    case "7":
       return PersonalDevelopment;
       // 添加更多菜单项对应的组件
     default:
@@ -84,16 +87,20 @@ const selectedComponent = computed(() => {
             <template #title>我的粉丝</template>
           </el-menu-item>
           <el-menu-item index="4">
+            <el-icon><Lollipop /></el-icon>
+            <template #title>我的收藏</template>
+          </el-menu-item>
+          <el-menu-item index="5">
             <el-badge :value="replyCommentsReply" :max="99" class="item">
               <el-icon><Message /></el-icon>
               我的消息
             </el-badge>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="6">
             <el-icon><Opportunity /></el-icon>
             <template #title>反馈</template>
           </el-menu-item>
-<!--          <el-menu-item index="6">-->
+<!--          <el-menu-item index="7">-->
 <!--            <el-icon><Memo /></el-icon>-->
 <!--            <template #title>成就值排行榜</template>-->
 <!--          </el-menu-item>-->

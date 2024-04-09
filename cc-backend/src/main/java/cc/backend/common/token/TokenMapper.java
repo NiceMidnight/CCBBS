@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface TokenMapper extends BaseMapper<Token> {
     String selectRedisKey(User user, @Param("tokenStatus")TokenStatus tokenStatus);
-    int updateTokenStatus(User user, @Param("tokenStatus")TokenStatus tokenStatus);
+    int updateTokenStatus(User user, @Param("tokenStatus")TokenStatus tokenStatus,@Param("status")TokenStatus status);
     int updateTokenStatusByRedisKey(@Param("redisKey")String redisKey,@Param("tokenStatus")TokenStatus tokenStatus);
 
 }

@@ -5,7 +5,13 @@ package cc.backend.enums;
  * @Author Tiamo_null
  * @Date 2023/12/19
  */
-public enum FavoriteForPostStatus {
+public enum FavoriteStatus {
+    /**
+     * 收藏
+     */
     Favorite,
+    /**
+     * 未收藏
+     */
     Unfavorite
 }

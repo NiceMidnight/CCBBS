@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @return: java.lang.String
      */
-    @SneakyThrows
     @Override
     public String login(User user) {
         //  用户名密码验证
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
                 .eq(true,User::getPassword,user.getPassword())
                 .eq(User::getUserStatus, UserStatus.ENABLE) //用户状态是否合法
                 .eq(User::getUserDeleted, 1)    //  逻辑删除,判断用户是否存在
-                .ne(User::getUserRole,1);       //  用户角色--学生
+                .ne(User::getUserRole,1);       //  用户角色--非管理员
         User isExist = userMapper.selectOne(lambdaQueryWrapper);
         if (isExist != null) { //  登录成功
             return token.TokenSave(isExist);

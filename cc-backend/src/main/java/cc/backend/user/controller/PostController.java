@@ -99,10 +99,14 @@ public class PostController {
     @PostMapping("/postAPost")
     public Result postAPost(@RequestBody Post post,@RequestHeader("Authorization")String tokenInfo)
     {
-        boolean isInsert = postService.insertAPost(post, tokenInfo);
-        if (isInsert)
+        if (post.getPostTitle() != null)
         {
-            return Result.successCM("提交帖子成功");
+            boolean isInsert = postService.insertAPost(post, tokenInfo);
+            if (isInsert)
+            {
+                return Result.successCM("提交帖子成功");
+            }
+            return Result.error("帖子标题不能为空");
         }
         return Result.error("提交帖子失败");
     }

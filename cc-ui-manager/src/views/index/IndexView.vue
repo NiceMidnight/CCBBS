@@ -8,7 +8,7 @@
       <PostECharts/>
       <JobECharts/>
     </div>
-    <EChartsContainer/>
+<!--    <EChartsContainer/>-->
   </div>
 </template>
 

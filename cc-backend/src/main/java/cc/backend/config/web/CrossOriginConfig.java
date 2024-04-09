@@ -30,5 +30,4 @@ public class CrossOriginConfig {
         return new CorsFilter(source);
     }
 
-
 }
