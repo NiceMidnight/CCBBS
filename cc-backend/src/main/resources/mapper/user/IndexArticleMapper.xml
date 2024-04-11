@@ -24,6 +24,9 @@
             <if test="articleTitle != null and articleTitle != ''">
                 AND ar.article_title LIKE CONCAT('%', #{articleTitle}, '%')
             </if>
+            <if test="topicId != null and topicId != ''">
+                AND ar.topic_id = #{topicId}
+            </if>
         </where>
         ORDER BY ar.created_time DESC
     </select>

@@ -37,6 +37,9 @@
             <if test="userName != null and userName != ''">
                 AND u_created.nick_name LIKE CONCAT('%', #{userName}, '%')
             </if>
+            <if test="startTime != null and endTime != null">
+                AND ar.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
         </where>
         ORDER BY ar.created_time DESC
     </select>

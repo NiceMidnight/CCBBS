@@ -30,7 +30,7 @@ public class IndexArticleServiceImpl implements IndexArticleService {
     @Override
     public SearchData<Article> getIndexArticle(SearchData<Article> pageData) {
         IPage<Article> articlePage = new Page<>(pageData.getPageNum(), pageData.getPageSize());
-        articleMapper.getAllByArticleTitle(articlePage,pageData.getData().getArticleTitle());
+        articleMapper.getAllByArticleTitle(articlePage,pageData.getData().getArticleTitle(),pageData.getData().getTopicId());
         return SearchData.pageData(
                 (int) articlePage.getCurrent(),
                 (int) articlePage.getSize(),

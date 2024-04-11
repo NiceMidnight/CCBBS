@@ -1,6 +1,6 @@
 package cc.backend.common;
 
-import cc.backend.entity.Images;
+import cc.backend.entity.OssImages;
 import cc.backend.manager.service.impl.OssImagesServiceImpl;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
@@ -37,7 +37,6 @@ public class AliyunOSSService {
     public String uploadPostFile(MultipartFile file) throws IOException {
         // 创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-
         try {
             // 获取文件输入流
             InputStream inputStream = file.getInputStream();
@@ -52,16 +51,32 @@ public class AliyunOSSService {
             // 构建图片的访问 URL
             String url = "https://" + bucketName + "." + endpoint + "/" + fileName;
             //存储数据库
-            Images images = new Images();
-            images.setUploadTime(new Date());
-            images.setImgName(fileName);
-            images.setImgUrl(url);
-            ossImagesService.insertOssImagesData(images);
-
+            OssImages ossImages = new OssImages();
+            ossImages.setUploadTime(new Date());
+            ossImages.setImgName(fileName);
+            ossImages.setImgUrl(url);
+            ossImagesService.insertOssImagesData(ossImages);
             return url;
         } finally {
             // 关闭OSSClient
             ossClient.shutdown();
+        }
+    }
+
+    public boolean deleteOssImageByFileName(String fileName) {
+        OSS ossClient = null;
+        try {
+            ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+            // 删除指定的图片
+            ossClient.deleteObject(bucketName, fileName);
+            return true; // 如果删除成功，返回 true
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // 如果删除失败，返回 false
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown(); // 确保关闭OSSClient
+            }
         }
     }
 }

@@ -34,17 +34,17 @@ public class PostController {
         return Result.successCDM(allPost,"获取帖子信息成功");
     }
 
-    /**
-     * @description: 通过主题获取帖子信息
-     * @param: @param queryCondition
-     * @return: cc.backend.common.Result
-     */
-    @PostMapping("/getPostByTopic")
-    public Result getPostByTopic(@RequestBody SearchData<Post> queryCondition) {
-        System.out.println(queryCondition);
-        SearchData<Post> postByTopic = postService.getPostByTopic(queryCondition);
-        return Result.successCDM(postByTopic,"通过主题获取帖子信息成功");
-    }
+//    /**
+//     * @description: 通过主题获取帖子信息
+//     * @param: @param queryCondition
+//     * @return: cc.backend.common.Result
+//     */
+//    @PostMapping("/getPostByTopic")
+//    public Result getPostByTopic(@RequestBody SearchData<Post> queryCondition) {
+//        System.out.println(queryCondition);
+//        SearchData<Post> postByTopic = postService.getPostByTopic(queryCondition);
+//        return Result.successCDM(postByTopic,"通过主题获取帖子信息成功");
+//    }
 
     /**
      * @description TODO 通过帖子id获取帖子内容

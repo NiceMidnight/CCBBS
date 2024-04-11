@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -29,9 +30,13 @@ public class ArticlesServiceImpl implements ArticlesService {
      * TODO 获取文章
      */
     @Override
-    public SearchData<Article> getAllArticle(SearchData<Article> searchData) {
+    public SearchData<Article> getAllArticle(SearchData<Article> searchData, LocalDateTime startTime, LocalDateTime endTime) {
         IPage<Article> iPage = new Page<>(searchData.getPageNum(),searchData.getPageSize());
-        articlesMapper.selectAllArticle(iPage, searchData.getData().getCreatedBy(), searchData.getData().getArticleTitle(), searchData.getData().getArticleContent());
+        articlesMapper.selectAllArticle(iPage,
+                searchData.getData().getCreatedBy(),
+                searchData.getData().getArticleTitle(),
+                searchData.getData().getArticleContent(),
+                startTime,endTime);
         return SearchData.pageData((int) iPage.getCurrent(), (int) iPage.getSize(), (int) iPage.getTotal(),iPage.getRecords());
     }
 
@@ -46,7 +51,6 @@ public class ArticlesServiceImpl implements ArticlesService {
         Integer userId = token.getUserId(tokenInfo);
         articleData.setCreatedId(userId);
         articleData.setCreatedTime(new Date());
-        System.out.println("时间---------------"+articleData.getUpdatedTime());
         return articlesMapper.insert(articleData) > 0;
     }
     /**

@@ -76,9 +76,6 @@ const provinceChanged = () => {
 const tokenInfo = localStorage.getItem("TokenInfo")
 let avatarUrl = ''; // 在这里定义avatarUrl变量
 const handleUploadSuccess = (response, file, fileList) => {
-  // 处理上传成功后的逻辑
-  // 更新 avatarUrl
-  console.log(response)
   avatarUrl = response.data;
 }
 

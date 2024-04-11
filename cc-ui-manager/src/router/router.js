@@ -33,7 +33,13 @@ const routes = [
                 path: '/images',
                 name: 'images',
                 component: () =>import("@/views/resources/SysImagesView.vue"),
-                meta: {title:"图片管理"}
+                meta: {title:"本地图片管理"}
+            },
+            {
+                path: '/ossImages',
+                name: 'ossImages',
+                component: () =>import("@/views/resources/OssImagesView.vue"),
+                meta: {title:"云端图片管理"}
             },
             {
                 path: '/users',

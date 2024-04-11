@@ -6,7 +6,10 @@ import cc.backend.entity.SearchData;
 import cc.backend.enums.ArticleStatus;
 import cc.backend.manager.service.impl.ArticlesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 /**
  * @FileName ArticleController
@@ -25,8 +28,10 @@ public class ArticleController {
      * @return: cc.backend.common.Result
      */
     @PostMapping("/getAllArticle")
-    public Result getAllArticle(@RequestBody SearchData<Article> searchData){
-        SearchData<Article> allArticle = articleService.getAllArticle(searchData);
+    public Result getAllArticle(@RequestBody SearchData<Article> searchData,
+                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime){
+        SearchData<Article> allArticle = articleService.getAllArticle(searchData,startTime,endTime);
         return Result.successCDM(allArticle,"获取文章数据成功");
     }
     /**

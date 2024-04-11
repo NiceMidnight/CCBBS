@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
+
 /**
  * @FileName ArticleMapper
  * @Description
@@ -19,7 +21,9 @@ public interface ArticlesMapper extends BaseMapper<Article> {
     IPage<Article> selectAllArticle(IPage<Article> iPage,
                                     @Param("userName") String userName,
                                     @Param("articleTitle")String articleTitle,
-                                    @Param("articleContent")String articleContent);
+                                    @Param("articleContent")String articleContent,
+                                    @Param("startTime") LocalDateTime startTime,
+                                    @Param("endTime")LocalDateTime endTime);
     Article getOneByArticleId(@Param("articleId") int articleId);
 
     int updateArticle(Article article);

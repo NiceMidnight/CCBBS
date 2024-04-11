@@ -17,7 +17,7 @@ import java.util.List;
  **/
 @Mapper
 public interface IndexArticleMapper extends BaseMapper<Article> {
-    Page<Article> getAllByArticleTitle(IPage articlePage, @Param("articleTitle")String articleTitle);
+    Page<Article> getAllByArticleTitle(IPage articlePage, @Param("articleTitle")String articleTitle,@Param("topicId")Integer topicId);
     List<Article> selectHotArticle();
     Article getOneByArticleIdArticle(@Param("articleId") int articleId);
 }

@@ -3,11 +3,9 @@ package cc.backend.user.controller;
 import cc.backend.common.Result;
 import cc.backend.entity.Article;
 import cc.backend.entity.SearchData;
+import cc.backend.entity.TopicForArticle;
 import cc.backend.manager.service.impl.EChartServiceImpl;
-import cc.backend.user.service.impl.IndexArticleServiceImpl;
-import cc.backend.user.service.impl.IndexImgServiceImpl;
-import cc.backend.user.service.impl.TokenServiceImpl;
-import cc.backend.user.service.impl.UserServiceImpl;
+import cc.backend.user.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
@@ -61,14 +59,21 @@ public class ResourcesController {
     }
 
     /**
-     * TODO 获取首页文章--获取热门公告--获取单个文章内容
+     * TODO 获取首页文章--获取公告类型选择器--获取热门公告--获取单个文章内容
      */
     @Autowired
     private IndexArticleServiceImpl articleService;
+    @Autowired
+    private TopicForArticleServiceImpl topicForArticleService;
     @PostMapping("/getIndexArticle")
     public Result getIndexArticle(@RequestBody SearchData<Article> pageData) {
         SearchData<Article> indexArticle = articleService.getIndexArticle(pageData);
         return Result.successCDM(indexArticle,"获取公告成功");
+    }
+    @GetMapping("/getTopicForArticleOptions")
+    public Result getTopicForArticleOptions() {
+        List<TopicForArticle> topicForArticle = topicForArticleService.getTopicForArticle();
+        return Result.successCDM(topicForArticle,"获取公告类型选择器成功");
     }
     @GetMapping("/getHotArticle")
     public Result getHotArticle()

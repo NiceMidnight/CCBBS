@@ -4,6 +4,8 @@ import cc.backend.entity.Article;
 import cc.backend.entity.SearchData;
 import cc.backend.enums.ArticleStatus;
 
+import java.time.LocalDateTime;
+
 /**
  * @FileName ArticleService
  * @Description
@@ -11,7 +13,7 @@ import cc.backend.enums.ArticleStatus;
  * @date 2023-09-02
  **/
 public interface ArticlesService {
-    SearchData<Article> getAllArticle(SearchData<Article> searchData);
+    SearchData<Article> getAllArticle(SearchData<Article> searchData, LocalDateTime startTime, LocalDateTime endTime);
     boolean addArticle(Article articleData,String loginToken);
     boolean editArticle(Article article,String loginToken);
     boolean deleteArticle(Integer articleId);

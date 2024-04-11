@@ -1,6 +1,5 @@
 <template>
   <el-row :gutter="10">
-
     <el-col :span="4">
       <div class="statistic-card">
         <el-statistic :value="todayUserCount">

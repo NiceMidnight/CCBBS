@@ -6,6 +6,12 @@ package cc.backend.enums;
  * @Date 2024/2/19
  */
 public enum ImageStatus {
+    /**
+     * 合法的
+     */
     legitimate,
+    /**
+     * 非法的
+     */
     illegality
 }

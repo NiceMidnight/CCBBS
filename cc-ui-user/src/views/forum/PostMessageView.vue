@@ -574,7 +574,6 @@ const formattedPostContent = (postContent) =>{
             />
           </el-form-item>
           <el-form-item style="margin-left: 4rem">
-            <el-button round><font-awesome-icon :icon="['far', 'image']" /></el-button>
             <el-button @click="postAComment" type="primary" class="publish-button">发布</el-button>
           </el-form-item>
         </el-form>

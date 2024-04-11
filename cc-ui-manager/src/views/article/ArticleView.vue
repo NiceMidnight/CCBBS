@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {reactive, ref,watch} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {
   addArticleApi,
@@ -38,7 +38,7 @@ const onLoad = async() => {
     await getArticleTopicApi().then((res) => {
       options.value = res.data
     })
-    await getAllArticle(queryForm).then((res) => {
+    await getAllArticle(queryForm,null,null).then((res) => {
       tableData.value = res.data
       console.log(res.data)
     })
@@ -71,7 +71,7 @@ const handleChange = async (act: "PUBLIC" | "PRIVATE", topicId: number) => {
  */
 const onQuery = async() => {
   try {
-    await getAllArticle(queryForm).then((res) => {
+    await getAllArticle(queryForm,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -91,7 +91,7 @@ const handleSizeChange = async (size:number) => {
       pageSize: size,
       data:queryForm.data
     }
-    await getAllArticle(queryParams).then((res) => {
+    await getAllArticle(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -105,7 +105,7 @@ const handleCurrentChange = async (num:number) => {
       pageSize: queryForm.pageSize,
       data:queryForm.data
     }
-    await getAllArticle(queryParams).then((res) => {
+    await getAllArticle(queryParams,startTime.value,endTime.value).then((res) => {
       tableData.value = res.data
     })
   } catch (e) {
@@ -144,7 +144,7 @@ const ifDeleteArticle = async (article) => {
         ElMessage.error(res["msg"])
       } else ElMessage.success(res["msg"])
     })
-    onLoad()
+    onQuery()
   }).catch(() => {
     ElMessage.info('取消删除')
   })
@@ -170,7 +170,6 @@ const articleData = reactive({
 const addArticle = async () => {
   addArticleDialogVisible.value = true
   await getUserName().then((res) => {
-    console.log(res)
     articleData.createdBy = res.data
   })
 }
@@ -193,7 +192,7 @@ const onSubmitAddArticle = async () => {
       if (res["code"] === 500) {
         ElMessage.error(res["msg"])
       } else ElMessage.success(res["msg"])
-      onLoad()
+      onQuery()
     })
   } catch (e) {
     ElMessage.error(e)
@@ -251,7 +250,7 @@ const onSubmitEditArticle = async () => {
         }
         else {
           editArticleDialogVisible.value = false
-          onLoad()
+          onQuery()
           ElMessage.success("文章"+editArticleData.articleId+res["msg"])
         }
       })
@@ -261,6 +260,60 @@ const onSubmitEditArticle = async () => {
     ElMessage.error(e)
   }
 }
+/**
+ * 时间范围
+ */
+const timeRange = ref("") //时间
+const startTime =  ref() ;
+const endTime =  ref();
+watch(timeRange,(newTime) => {
+  if (Array.isArray(newTime))
+  {
+    const start = new Date(newTime[0]);
+    start.setHours(start.getHours() + 8);
+    startTime.value = start.toISOString();
+    const end = new Date(newTime[1]);
+    end.setHours(end.getHours() + 8);
+    endTime.value = end.toISOString();
+  }
+  else {
+    startTime.value = ""
+    endTime.value = ""
+  }
+})
+/**
+ * 快速时间选择器
+ * @type {[{text: string, value: (function(): [Date,Date])},{text: string, value: (function(): [Date,Date])},{text: string, value: (function(): [Date,Date])}]}
+ */
+const shortcuts = [
+  {
+    text: '上周',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: '上个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: '过去三个月',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
 </script>
 
 <template>
@@ -276,6 +329,20 @@ const onSubmitEditArticle = async () => {
           </el-form-item>
           <el-form-item label="内容">
             <el-input v-model="queryForm.data.articleContent" placeholder="请输入文章内容" clearable @keyup.enter="onQuery"/>
+          </el-form-item>
+          <el-form-item>
+            <div >
+              <span >时间</span>
+              <el-date-picker
+                  v-model="timeRange"
+                  type="datetimerange"
+                  :shortcuts="shortcuts"
+                  range-separator="至"
+                  start-placeholder="起始时间"
+                  end-placeholder="结束时间"
+                  style="margin-left: 1rem"
+              />
+            </div>
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="onQuery">查询</el-button>

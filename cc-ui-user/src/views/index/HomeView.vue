@@ -1,53 +1,38 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-import { baseUrl } from "../../utils/request";
-import {getAllArticle, getHotArticleApi} from "../../api/article";
-import {ElMessage} from "element-plus";
-import {getIndexImage} from "../../api/image";
+import { baseUrl } from "@/utils/request";
+import {
+  getAllArticle,
+  getHotArticleApi,
+  getTopicForArticleOptionsApi
+} from "@/api/article";
+import {getIndexImage} from "@/api/image";
 import {useRouter} from "vue-router";
-import {getUserInfoApi} from "../../api/login";
-import {timeHandler} from "../../utils/timeHandler";
+import {getUserInfoApi} from "@/api/login";
+import {timeHandler} from "@/utils/timeHandler";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {getTheNumOfLoginsApi, getVisitsApi} from "@/api/nonPermissionData";
-import {Key} from "@element-plus/icons-vue";
+
 const queryForm = reactive({
   pageNum:1,
   pageSize:5,
   total:1,
   data:{
-    articleTitle:''
+    articleTitle:'',
+    topicId:null,
   }
 })
-
-const handleSizeChange = async (val: number) => {
-  try {
-    const queryParams = {
-      pageNum:queryForm.pageNum,
-      pageSize:val,
-      data:queryForm.data
-    }
-    await getAllArticle(queryParams).then((res) => {
-      tableData.value = res.data.data;
-    })
-  } catch (e) {
-    console.error(e)
+/**
+ * 清除搜索框
+ * @param value
+ */
+const handleTopicChange = (value) => {
+  if (value === '') {
+    queryForm.data.topicId = null;
+    onQuery()
   }
+  else onQuery()
 }
-const handleCurrentChange = async (val: number) => {
-  try {
-    const queryParams = {
-      pageNum:val,
-      pageSize:queryForm.pageSize,
-      data:queryForm.data
-    }
-    await getAllArticle(queryParams).then((res) => {
-      tableData.value = res.data.data;
-    })
-  } catch (e) {
-    console.error(e)
-  }
-}
-
 const router = useRouter(); // 解析router
 const articleTitle = ref('')  //  文章标题查询条件
 const tableData = ref([]) // 文章数据
@@ -57,6 +42,7 @@ const todayVisits = ref()
 const arr = ref([]) // 图片地址数组
 const squareUrl= 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'  //  默认头像
 const userInfo = ref([])
+const topicForArticleOptions = ref([])//公告类型选择器
 /**
  * 重定向文章标题到文章信息
  * @param articleTitle
@@ -93,6 +79,9 @@ const onLoad = async () => {
       todayVisits.value = res.data
       // console.log(res)
     })
+    await getTopicForArticleOptionsApi().then((res) => {
+      topicForArticleOptions.value = res.data
+    })
     if (localStorage.getItem("TokenInfo")) {
       await getUserInfoApi().then((res) => {
         userInfo.value = res.data
@@ -109,6 +98,34 @@ const onQuery = async () => {
     await getAllArticle(queryForm).then((res) => {
       queryForm.total = res.data.total
       tableData.value = res.data.data
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+const handleSizeChange = async (val: number) => {
+  try {
+    const queryParams = {
+      pageNum:queryForm.pageNum,
+      pageSize:val,
+      data:queryForm.data
+    }
+    await getAllArticle(queryParams).then((res) => {
+      tableData.value = res.data.data;
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+const handleCurrentChange = async (val: number) => {
+  try {
+    const queryParams = {
+      pageNum:val,
+      pageSize:queryForm.pageSize,
+      data:queryForm.data
+    }
+    await getAllArticle(queryParams).then((res) => {
+      tableData.value = res.data.data;
     })
   } catch (e) {
     console.error(e)
@@ -145,16 +162,32 @@ const truncateText = (text, maxLength) => {
                 @keyup.enter="onQuery"
                 clearable
                 class="search-input"
-                size="large"
+                size="default"
                 maxlength="50"
-                style="width: 300px;margin-right: 20px"
+                style="width: 250px;margin-right: 10px"
             />
             <el-button type="primary" @click="onQuery" plain >查询</el-button>
           </div>
+          <el-form-item label="主题" @keyup.enter="onQuery"  style="width: 200px;margin-left: 10px">
+            <el-select
+                v-model="queryForm.data.topicId"
+                placeholder="NULL"
+                clearable
+                @change="handleTopicChange"
+                v-if="topicForArticleOptions && topicForArticleOptions.length > 0"
+            >
+              <el-option
+                  v-for="option in topicForArticleOptions"
+                  :key="option.topicId"
+                  :value="option.topicId"
+                  :label="option['topicName']"
+              />
+            </el-select>
+          </el-form-item>
         </div>
 
         <div v-for="(item, index) in tableData" :key="index" class="container">
-          <el-link :underline="false" @click="redirectToArticle(item.articleTitle, item.articleId)">
+          <el-link :underline="false" @click="redirectToArticle(item.articleTitle, item['articleId'])">
             {{ item["articleTitle"] }}
           </el-link>
           <div class="content-left">
@@ -195,17 +228,15 @@ const truncateText = (text, maxLength) => {
             {{ userInfo["personality"] || "这个人很懒，什么都还没有写呢..." }}
           </div>
         </div>
-
         <div class="r-container" v-else>
           请登录后查看...
         </div>
-
         <div class="r-container">
           <div class="title">
             <font-awesome-icon :icon="['fas', 'fire']" style="margin-right: 0.5rem;justify-content: center;color:red"/>热门
           </div>
           <div class="content">
-            <div class="top-article" v-for="article in hotArticleData" :key="article.articleId"
+            <div class="top-article" v-for="article in hotArticleData" :key="article['articleId']"
                  @click="redirectToArticle(article['articleTitle'],article['articleId'])">
               <div class="font3">{{article['articleTitle']}}</div>
               <div >{{article['viewCount']}}次浏览</div>

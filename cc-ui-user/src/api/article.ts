@@ -4,7 +4,8 @@ export type QueryCondition = Partial<{
     pageSize: number
     total: number
     data: {
-        articleTitle: string
+        articleTitle: string,
+        topicId:number
     }
 }>
 /**
@@ -34,5 +35,12 @@ export const getArticle = (queryCondition:number) => {
         params:{
             articleId:queryCondition
         }
+    })
+}
+
+export const getTopicForArticleOptionsApi = () => {
+    return request({
+        method:"GET",
+        url:'/user/resources/getTopicForArticleOptions',
     })
 }

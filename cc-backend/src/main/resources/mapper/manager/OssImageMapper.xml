@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.backend.manager.mapper.OssImagesMapper">
+    <select id="selectOssImages" resultType="ossImages">
+        SELECT
+            *
+        FROM
+            images img
+        <where>
+            img.img_status = #{imageStatus}
+            <if test="ossImages.imgName != null and ossImages.imgName != ''">
+                AND img.img_name LIKE CONCAT('%', #{ossImages.imgName}, '%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND po.created_at BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY img.img_id DESC
+    </select>
+    <update id="updateOssImageStatus" parameterType="ossImages">
+        UPDATE images
+        SET img_status = #{imageStatus}
+        WHERE img_id = #{imgId}
+    </update>
+
+</mapper>

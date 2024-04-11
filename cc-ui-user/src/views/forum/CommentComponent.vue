@@ -29,7 +29,6 @@
           @delete="handleDelete"
       />
     </div>
-
 </template>
 
 <script setup>

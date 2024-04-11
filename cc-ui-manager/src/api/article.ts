@@ -17,11 +17,15 @@ export type articleData = {
  * 获得所有文章
  * @param queryCondition
  */
-export const getAllArticle = (queryCondition : QueryCondition) => {
+export const getAllArticle = (queryCondition : QueryCondition,startTime:any,endTime:any) => {
     return request({
         method:"POST",
         url:"/manager/article/getAllArticle",
-        data:queryCondition
+        data:queryCondition,
+        params:{
+            startTime:startTime,
+            endTime:endTime
+        }
     })
 }
 /**

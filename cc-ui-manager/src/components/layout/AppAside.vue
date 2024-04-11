@@ -23,6 +23,9 @@ import { isCollapse } from '../js/isCollapse.js'
         <el-menu-item index="/images">
           <el-icon><IEpSetting/></el-icon> <span> 图片管理</span>
         </el-menu-item>
+        <el-menu-item index="/ossImages">
+          <el-icon><IEpSetting/></el-icon> <span> 云端图片管理</span>
+        </el-menu-item>
       </el-sub-menu>
       <!-- 公告管理-->
       <el-sub-menu index="公告管理">
