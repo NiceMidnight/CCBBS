@@ -74,7 +74,6 @@ const onRegister = async () => {
       if (res["code"] === '200')
       {
         ElMessage.success(res["msg"])
-
         setTimeout(() => {
           push('/login')
         }, 2000); // 3000 毫秒 = 3 秒

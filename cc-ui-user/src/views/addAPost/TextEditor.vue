@@ -46,13 +46,18 @@ const editorConfig = {
       server: `${baseUrl}/user/images/upload`,
       fieldName:'file',
       name:`${uuidV4()}`,
+      maxSize: 1024 * 1024,
       customInsert(res:any,insertFn:any) {
         console.log(res)
         if (res.code === '200') {
           insertFn(res.data)
         } else {
-          ElMessage.error("富文本编辑器上传图片失败");
+          ElMessage.error("上传图片失败");
         }
+      },
+      onError(err) {
+        // 在 UI 上显示错误提示
+        ElMessage.error("上传图片失败,图片大小应在1M以内");
       }
     }
   }

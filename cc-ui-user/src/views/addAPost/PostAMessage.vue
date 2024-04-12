@@ -32,6 +32,7 @@ const onPost = async () => {
   if (postData.postTitle !== null && postData.postTitle !== '')
   {
     await postAPostApi(postData).then((res) => {
+      console.log(res)
       if (res["code"])
       {
         ElNotification({
@@ -47,7 +48,7 @@ const onPost = async () => {
     })
   } else ElNotification({
     title: '发布帖子',
-    message: "帖子标题不能为空",
+    message: "帖子标题不能为空啊啊啊",
     type: 'info',
   })
 }

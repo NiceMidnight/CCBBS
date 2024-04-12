@@ -104,11 +104,11 @@ public class PostController {
             boolean isInsert = postService.insertAPost(post, tokenInfo);
             if (isInsert)
             {
-                return Result.successCM("提交帖子成功");
+                return Result.successCM("发布帖子成功");
             }
-            return Result.error("帖子标题不能为空");
+            else return Result.error("发布帖子失败");
         }
-        return Result.error("提交帖子失败");
+        return Result.error("帖子标题不能为空");
     }
 
     /**

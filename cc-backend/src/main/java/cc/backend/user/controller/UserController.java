@@ -168,7 +168,7 @@ public class UserController {
         {
             return Result.successCM("注册用户成功");
         }
-        return Result.error("注册用户失败");
+        return Result.error("注册用户失败，账号已存在");
     }
 
     /**

@@ -88,21 +88,31 @@ const jobMessage = reactive({
 })
 const addJobMessage = async () => {
   try {
-    await addJobMessageApi(jobMessage).then((res) => {
-      if (res['code'] === '200')
-      {
-        ElNotification({
-          title: '提交招聘信息',
-          message: res["msg"],
-          type: 'success',
-        })
-        addJobDialogVisible.value = false
-      } else
-        ElNotification({
-          title: '提交招聘信息',
-          message: res["msg"],
-          type: 'error',
-        })
+    if (jobMessage.jobTitle != null && jobMessage.jobContent != null && jobMessage.jobTitle != '' && jobMessage.jobContent != '')
+    {
+      await addJobMessageApi(jobMessage).then((res) => {
+        if (res['code'] === '200')
+        {
+          ElNotification({
+            title: '提交招聘信息',
+            message: res["msg"],
+            type: 'success',
+          })
+          addJobDialogVisible.value = false
+          jobMessage.jobTitle = ''
+          jobMessage.jobContent = ''
+        } else
+          ElNotification({
+            title: '提交招聘信息',
+            message: res["msg"],
+            type: 'error',
+          })
+      })
+    }
+    else ElNotification({
+      title: '提交招聘信息',
+      message: '招聘标题或内容不能为空',
+      type: 'info',
     })
   } catch (e) {
     console.log(e)

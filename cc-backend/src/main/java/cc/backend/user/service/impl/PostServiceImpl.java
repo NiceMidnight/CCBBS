@@ -211,8 +211,7 @@ public class PostServiceImpl implements PostService {
         int userId = token.getUserId(tokenInfo);
         post.setCreatedAt(new Date());
         post.setUserId(userId);
-        postMapper.insert(post);
-        return false;
+        return postMapper.insert(post) > 0;
     }
 
     /**

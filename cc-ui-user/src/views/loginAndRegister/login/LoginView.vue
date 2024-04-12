@@ -122,7 +122,7 @@ const onCancel = () => {
     </el-form-item>
 
     <el-form-item @keyup.enter="onLogin" prop="password">
-      <el-input  placeholder="密码" :prefix-icon="Lock" v-model="form.password">
+      <el-input  placeholder="密码" :prefix-icon="Lock" v-model="form.password" show-password>
 
       </el-input>
     </el-form-item>
