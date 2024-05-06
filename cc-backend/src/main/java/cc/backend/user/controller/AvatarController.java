@@ -37,7 +37,6 @@ public class AvatarController {
     @RequestMapping("/uploadAvatar")
     public Result uploadImages(@RequestParam("file") MultipartFile file) throws IOException
     {
-        System.out.println(file);
         String imgUrl = aliyunOSSService.uploadPostFile(file);
         if (imgUrl != null)
         {

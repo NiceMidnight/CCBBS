@@ -45,7 +45,7 @@ const handleSizeChange = async (val: number) => {
     fanUserData.value = res.data;
     queryForm.total = res.data.total
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 /**
@@ -63,7 +63,7 @@ const handleCurrentChange = async (val: number) => {
     fanUserData.value = res.data;
     queryForm.total = res.data.total
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 const userInfo = ref(null) //用户信息
@@ -106,6 +106,7 @@ const redirectToPersonalHomepage = (followerId:number) => {
           </div>
         </div>
       </template>
+
       <template #default>
         <div v-if="userInfo" class="demo-rich-content" style="display: flex; gap: 16px; flex-direction: column">
           <el-avatar :size="60" :src="user['followingHead'] || circleUrl" style="margin-bottom: 8px"/>
@@ -113,10 +114,10 @@ const redirectToPersonalHomepage = (followerId:number) => {
             <p class="demo-rich-content__name" style="margin: 0; font-weight: 500;font-size: larger">
               {{userInfo['nickName']}}
             </p>
-            <p class="demo-rich-content__name" style="margin: 0; font-weight: 500">
+            <p class="demo-rich-content__name" style="margin: 0; font-size: 14px; color: var(--el-color-info)">
               用户名：{{userInfo['userName']}}
             </p>
-            <p class="demo-rich-content__name" style="margin: 0; font-weight: 500">
+            <p class="demo-rich-content__name" style="margin: 0; font-size: 14px; color: var(--el-color-info)">
               年龄：{{userInfo['userAge']}}
             </p>
             <p class="demo-rich-content__mention" style="margin: 0; font-size: 14px; color: var(--el-color-info)">

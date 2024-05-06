@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {baseUrl} from "@/utils/request";
 import {computed, ref} from "vue";
 import {onMounted} from "@vue/runtime-core";
@@ -20,7 +20,7 @@ onMounted(async () => {
       const addressParts = res.data.userAddress.split('、');
       selectedProvince.value = addressParts[0];
       selectedCity.value = addressParts[1];
-      // console.log(personalInfo.value.userAddress)
+
     })
   }
 })
@@ -95,11 +95,11 @@ const handleUploadSuccess = (response, file, fileList) => {
       </el-descriptions-item>
 
       <el-descriptions-item label="昵称" label-align="right" align="center">
-        <el-input v-model="personalInfo.nickName" />
+        <el-input v-model="personalInfo['nickName']" />
       </el-descriptions-item>
 
       <el-descriptions-item label="性别" label-align="right" align="center">
-        <el-radio-group v-model="personalInfo.userSex" class="ml-4">
+        <el-radio-group v-model="personalInfo['userSex']" class="ml-4">
           <el-radio :label="1">男</el-radio>
           <el-radio :label="0">女</el-radio>
         </el-radio-group>
@@ -128,7 +128,7 @@ const handleUploadSuccess = (response, file, fileList) => {
       </el-descriptions-item>
 
       <el-descriptions-item label="电话" label-align="right" align="center">
-        <el-input v-model="personalInfo.userPhone" />
+        <el-input v-model="personalInfo['userPhone']" />
       </el-descriptions-item>
 
       <el-descriptions-item label="地址" label-align="right" align="center" v-model="personalInfo.userAddress">
@@ -154,7 +154,7 @@ const handleUploadSuccess = (response, file, fileList) => {
 
       <el-descriptions-item label="个性签名" label-align="right" align="center">
         <el-input
-            v-model="personalInfo.userPersonality"
+            v-model="personalInfo['userPersonality']"
             maxlength="20"
             placeholder="输入个性签名...(20字)"
             show-word-limit

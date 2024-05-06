@@ -36,12 +36,16 @@ const onLoad = async () => {
       queryForm.total = res.data.total
       console.log(res)
     })
-    await getUserRoleApi().then((res) => {
-      userRole.value = res.data
-    })
+    if(localStorage.getItem("TokenInfo")!=null)
+    {
+      await getUserRoleApi().then((res) => {
+        userRole.value = res.data
+      })
+    }
+
   }
   catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 onLoad()
@@ -143,7 +147,7 @@ const handleSelect = async (index: any) => {
   await getJobMessageApi(queryForm).then((res) => {
     jobData.value = res.data.data
     queryForm.total = res.data.total
-    console.log(res)
+    // console.log(res)
   })
 };
 
@@ -219,7 +223,7 @@ const addAApplyRecruiter = async () => {
         })
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 </script>

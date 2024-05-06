@@ -1,9 +1,12 @@
 package cc.backend.user.service.impl;
 
+import cc.backend.entity.SearchData;
 import cc.backend.entity.forpost.FavoriteForPost;
+import cc.backend.enums.FavoritePostStatus;
 import cc.backend.enums.FavoriteStatus;
 import cc.backend.user.mapper.FavoriteForPostMapper;
 import cc.backend.user.service.FavoriteForPostService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +55,12 @@ public class FavoriteForPostServiceImpl implements FavoriteForPostService {
         favoriteForPost.setTimestamp(new Date());
         favoriteForPost.setFavoriteStatus(FavoriteStatus.Unfavorite);
         return favoriteForPostMapper.updateFavoriteStatus(favoriteForPost) > 0;
+    }
+
+    @Override
+    public SearchData<FavoriteForPost> getFavoritePost(SearchData<FavoriteForPost> searchData,Integer userId) {
+        Page<FavoriteForPost> page = new Page<>(searchData.getPageNum(), searchData.getPageSize());
+        favoriteForPostMapper.selectAllByUserId(page,userId,FavoriteStatus.Favorite, FavoritePostStatus.PUBLIC);
+        return SearchData.pageData((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords());
     }
 }

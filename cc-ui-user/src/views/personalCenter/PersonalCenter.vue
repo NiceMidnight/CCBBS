@@ -3,7 +3,7 @@ import {onMounted} from "@vue/runtime-core";
 import {getUserInfoApi} from "@/api/login";
 import {ref,computed } from "vue";
 import { useRouter } from "vue-router";
-import {ChatDotRound, Lollipop, Memo, Message, Opportunity, Star, User} from "@element-plus/icons-vue";
+import {ChatDotRound, Lollipop, Memo, Message, Opportunity, Star, Sunny, User} from "@element-plus/icons-vue";
 import PersonalInfo from "@/views/personalCenter/menu/PersonalInfo.vue";
 import PersonalMessage from "@/views/personalCenter/menu/PersonalMessage.vue";
 import PersonalFans from "@/views/personalCenter/menu/PersonalFans.vue";
@@ -87,7 +87,7 @@ const selectedComponent = computed(() => {
             <template #title>我的粉丝</template>
           </el-menu-item>
           <el-menu-item index="4">
-            <el-icon><Lollipop /></el-icon>
+            <el-icon><Sunny /></el-icon>
             <template #title>我的收藏</template>
           </el-menu-item>
           <el-menu-item index="5">

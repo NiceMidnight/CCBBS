@@ -31,6 +31,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/user/images/upload",
                         "/manager/token/tokenVerification",
                         "/user/token/tokenVerification",
-                        "/user/job/getJobMessage"); // 拦截？放行
+                        "/user/job/getJobMessage",
+                        "/user/job/getOneJobMessage",
+                        "/user/tfj/getTopicForJob",
+                        "/user/tfp/getPostTopic"); // 拦截？放行
     }
 }

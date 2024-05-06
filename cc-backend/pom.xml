@@ -194,5 +194,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
+    <packaging>jar</packaging>
 </project>

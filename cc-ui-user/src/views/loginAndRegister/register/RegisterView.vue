@@ -80,7 +80,7 @@ const onRegister = async () => {
       } else ElMessage.info(res["msg"])
     })
   }catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 const { push } = useRouter();

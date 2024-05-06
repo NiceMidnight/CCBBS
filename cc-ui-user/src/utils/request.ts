@@ -1,7 +1,8 @@
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
-export const baseUrl = 'http://localhost:8081';
+// export const baseUrl = 'http://localhost:8081';
+export const baseUrl = 'http://8.138.1.83:8081';
 // 创建一个取消请求的 CancelToken
 // @ts-ignore
 const request = axios.create({

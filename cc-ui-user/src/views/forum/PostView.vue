@@ -64,28 +64,29 @@ const queryForm = reactive({
 const postData = ref([]);
 const postTopicData = ref([]);
 const commentCount = ref({})
+const token = localStorage.getItem("TokenInfo")
 const onLoad = async () => {
   try {
-    await getPostTopicApi().then((res) => {
-      postTopicData.value = res.data;
-    });
-    await getAllPostApi(queryForm, postMsg.value).then((res) => {
-      queryForm.total = res.data.total
-      postData.value = res.data;
-
-    });
-    await Promise.all(postData.value["data"].map(async (post) => {
-      if (!userHeadUrls.value[post.userId]) {
-        const userHead = await getUserHeadApi(post.userId);
-        userHeadUrls.value[post.userId] = userHead.data;
-      }
-    }));
-
-    await Promise.all(postData.value["data"].map(async (post) => {
-      // 获取关注状态
-      post.followStatus = await getFollowStatus(post.userId);
-    }));
-
+    if(token!=null)
+    {
+      await getPostTopicApi().then((res) => {
+        postTopicData.value = res.data;
+      });
+      await getAllPostApi(queryForm, postMsg.value).then((res) => {
+        queryForm.total = res.data.total
+        postData.value = res.data;
+      });
+      await Promise.all(postData.value["data"].map(async (post) => {
+        if (!userHeadUrls.value[post.userId]) {
+          const userHead = await getUserHeadApi(post.userId);
+          userHeadUrls.value[post.userId] = userHead.data;
+        }
+      }));
+      await Promise.all(postData.value["data"].map(async (post) => {
+        // 获取关注状态
+        post.followStatus = await getFollowStatus(post.userId);
+      }));
+    }
   } catch (e) {
     console.log(e)
   }
@@ -191,7 +192,7 @@ const handleSizeChange = async (val: number) => {
       updateHeadUrls();
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 const handleCurrentChange = async (val: number) => {
@@ -208,7 +209,7 @@ const handleCurrentChange = async (val: number) => {
       updateHeadUrls();
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 /**

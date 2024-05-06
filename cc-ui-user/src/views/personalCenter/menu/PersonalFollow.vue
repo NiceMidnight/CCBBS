@@ -45,7 +45,7 @@ const handleSizeChange = async (val: number) => {
     followUserData.value = res.data;
     queryForm.total = res.data.total
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 /**
@@ -63,7 +63,7 @@ const handleCurrentChange = async (val: number) => {
     followUserData.value = res.data;
     queryForm.total = res.data.total
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 
@@ -150,10 +150,10 @@ const redirectToPersonalHomepage = (followingId:number) => {
             <p class="demo-rich-content__name" style="margin: 0; font-weight: 500;font-size: larger">
               {{userInfo['nickName']}}
             </p>
-            <p class="demo-rich-content__name" style="margin: 0; font-weight: 500">
+            <p class="demo-rich-content__name" style="margin: 0; font-size: 14px; color: var(--el-color-info)">
               用户名：{{userInfo['userName']}}
             </p>
-            <p class="demo-rich-content__name" style="margin: 0; font-weight: 500">
+            <p class="demo-rich-content__name" style="margin: 0; font-size: 14px; color: var(--el-color-info)">
               年龄：{{userInfo['userAge']}}
             </p>
             <p class="demo-rich-content__mention" style="margin: 0; font-size: 14px; color: var(--el-color-info)">

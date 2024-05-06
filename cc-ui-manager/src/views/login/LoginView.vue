@@ -34,8 +34,8 @@ const route = useRoute()
  * 响应数据
  */
 const form = reactive({
-  userName:'root',
-  password:'root',
+  userName:'',
+  password:'',
 })
 // 返回{token,saveToken}数据
 const store = useTokenStore()

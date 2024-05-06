@@ -47,7 +47,6 @@ watch(() => route.params.id, (newId, oldId) => {
   if (newId != null)
   {
     postId = Number(newId); // 更新 postId 的值
-    console.log(postId)
     loadData(postId.value); // 调用加载数据的方法
   }
 });

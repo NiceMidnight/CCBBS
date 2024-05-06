@@ -2,6 +2,7 @@ package cc.backend.entity.forpost;
 
 import cc.backend.enums.FavoriteStatus;
 import cc.backend.enums.FavoritePostStatus;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -27,6 +28,10 @@ public class FavoriteForPost {
      * 帖子id
      */
     private Integer postId;
+    @TableField(exist = false)
+    private String postTitle;
+    @TableField(exist = false)
+    private Date createdAt;
     /**
      * 收藏时间
      */

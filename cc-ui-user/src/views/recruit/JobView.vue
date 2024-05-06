@@ -16,11 +16,12 @@ const onLoad = async () => {
   try {
     await getOneJobMessageApi(jobId).then((res) => {
       jobData.value = res.data
-      console.log(res)
+      // console.log(res)
     })
   }
   catch (e) {
-    ElMessage.error("获取招聘信息错误："+e)
+    // ElMessage.error("获取招聘信息错误："+e)
+    console.log("获取招聘信息错误："+e)
   }
 }
 onLoad()

@@ -3,6 +3,8 @@ package cc.backend.user.controller;
 import cc.backend.common.Result;
 import cc.backend.common.token.Token;
 import cc.backend.entity.Post;
+import cc.backend.entity.SearchData;
+import cc.backend.entity.forpost.FavoriteForPost;
 import cc.backend.user.service.impl.FavoriteForPostServiceImpl;
 import cc.backend.user.service.impl.PostServiceImpl;
 import lombok.SneakyThrows;
@@ -70,5 +72,13 @@ public class FavoriteForPostController {
             return Result.error("取消收藏成功，但更新帖子收藏数失败");
         }
         return Result.error("取消收藏失败");
+    }
+
+    @RequestMapping("/getFavoritePost")
+    public Result getFavoritePost(@RequestBody SearchData<FavoriteForPost> queryForm,@RequestHeader("Authorization")String tokenInfo)
+    {
+        int userId = token.getUserId(tokenInfo);
+        SearchData<FavoriteForPost> favoritePost = favoriteForPostService.getFavoritePost(queryForm,userId);
+        return Result.successCDM(favoritePost,"获取当前用户收藏帖子成功");
     }
 }

@@ -17,6 +17,7 @@ spring:
     # 本地数据库
     url: jdbc:mysql://localhost:3306/cc?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
+#    password: 552929
     password: root
 # redis连接信息
   data:
@@ -46,7 +47,8 @@ spring:
       max-request-size: 10MB
   web:
     resources:
-      static-locations: classpath:/static/
+      static-locations: classpath:/static/,file:C:/cc/src/static/
+#1      static-locations: classpath:/static/
   config:
     location: classpath:/application.yml
 aliyun:
@@ -60,8 +62,9 @@ aliyun:
     # oss的存储空间
     bucketName: postfiles
     # 上传文件大小(M)
-
-
+#security:
+#  basic:
+#    enabled: false
 ## 自定义用户凭证---
 #  security:
 #    user:
@@ -69,7 +72,9 @@ aliyun:
 #      password: admin
 # 上传图片路径到本地
 upload:
+#  path: C:\cc\src
   path: src/main/resources/static/
+#  src/main/resources/static/
 # 添加图片到数据库，访问地址
 addSysImgToDB:
   path: static/sys_img/

@@ -78,7 +78,7 @@ const handleSizeChange = async (val: number) => {
       queryForm.total = res.data.total
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 const handleCurrentChange = async (val: number) => {
@@ -94,7 +94,7 @@ const handleCurrentChange = async (val: number) => {
       queryForm.total = res.data.total
     })
   } catch (e) {
-    ElMessage.error(e)
+    console.log(e)
   }
 }
 /**

@@ -75,6 +75,7 @@ const onLogin = async () => {
     })
   }catch (e) {
     ElMessage.error("error+"+e)
+    console.log(e)
     isLoading.value = false
   }
 }

@@ -438,6 +438,7 @@ const onLoad = async() => {
  * @param imgPath
  */
 const getImage = (imgPath) => {
+  // return `http://localhost:8081/${imgPath}`
   return `${baseUrl}/${imgPath}`
 }
 const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png' // 不能正常显示图片时显示该图片

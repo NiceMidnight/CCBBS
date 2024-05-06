@@ -32,7 +32,6 @@ const onLoad = async () => {
     statusForComplianceEnum.value = res.data
   })
   await getReplyCommentsApi(queryForm).then((res) => {
-    console.log(res)
     replyComments.value = res.data
     queryForm.total = res.data.total
     changeStatusForUser()
@@ -55,7 +54,7 @@ const changeStatusForUser = async () => {
       }
     }
   } catch (e) {
-    ElMessage.error('改变状态失败：' + e);
+    console.log('改变状态失败：' + e)
   }
 }
 /**

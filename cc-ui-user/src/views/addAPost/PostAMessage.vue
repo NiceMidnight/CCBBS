@@ -7,11 +7,7 @@ import {useRouter} from "vue-router";
 const topics = ref([]); //主题内容
 const router = useRouter()
 onMounted( async () => {
-  /**
-   * 获取主题
-   */
   await getPostTopicApi().then((res) => {
-    console.log(res)
     topics.value = res.data
   })
 })
@@ -32,7 +28,6 @@ const onPost = async () => {
   if (postData.postTitle !== null && postData.postTitle !== '')
   {
     await postAPostApi(postData).then((res) => {
-      console.log(res)
       if (res["code"])
       {
         ElNotification({

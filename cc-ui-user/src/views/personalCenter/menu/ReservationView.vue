@@ -15,7 +15,7 @@ const onLoad = async () => {
   })
   await getFeedbackApi().then((res) => {
     tableData.value = res.data
-    console.log(res.data)
+    // console.log(res.data)
   })
 }
 onLoad()

@@ -15,4 +15,20 @@
         SET favorite_status = #{favoriteStatus} , timestamp = #{timestamp}
         WHERE user_id = #{userId} AND post_id = #{postId}
     </update>
+
+    <select id="selectAllByUserId" resultType="favoriteForPost">
+        SELECT
+            ffp.*,
+            p.post_title AS postTitle,
+            p.created_at AS createdAt
+        FROM
+            favorite_for_post ffp
+                LEFT JOIN
+            post p ON ffp.post_id = p.post_id
+        WHERE ffp.user_id = #{userId}
+          AND ffp.favorite_status = #{favoriteStatus}
+          AND ffp.favorite_post_status = #{postStatus}
+        ORDER BY ffp.timestamp DESC
+    </select>
+
 </mapper>
